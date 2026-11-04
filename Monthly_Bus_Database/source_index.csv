@@ -1,0 +1,30 @@
+﻿dataset,detail,coverage_start,coverage_end,url
+DSAT quarterly statistics PDF,dsat_2020_Q1.pdf,2020-01,2020-03,https://www.dsat.gov.mo/pdf/statistics/2020/1/tc/1.pdf
+DSAT quarterly statistics PDF,dsat_2020_Q2.pdf,2020-01,2020-06,https://www.dsat.gov.mo/pdf/statistics/2020/2/tc/1.pdf
+DSAT quarterly statistics PDF,dsat_2020_Q3.pdf,2020-01,2020-09,https://www.dsat.gov.mo/pdf/statistics/2020/3/tc/1.pdf
+DSAT quarterly statistics PDF,dsat_2020_Q4.pdf,2020-01,2020-12,https://www.dsat.gov.mo/pdf/statistics/2020/4/tc/1.pdf
+DSAT quarterly statistics PDF,dsat_2021_Q1.pdf,2021-01,2021-03,https://www.dsat.gov.mo/pdf/statistics/2021/1/tc/1.pdf
+DSAT quarterly statistics PDF,dsat_2021_Q2.pdf,2021-01,2021-06,https://www.dsat.gov.mo/pdf/statistics/2021/2/tc/1.pdf
+DSAT quarterly statistics PDF,dsat_2021_Q3.pdf,2021-01,2021-09,https://www.dsat.gov.mo/pdf/statistics/2021/3/tc/1.pdf
+DSAT quarterly statistics PDF,dsat_2021_Q4.pdf,2021-01,2021-12,https://www.dsat.gov.mo/pdf/statistics/2021/4/tc/1.pdf
+DSAT quarterly statistics PDF,dsat_2022_Q1.pdf,2022-01,2022-03,https://www.dsat.gov.mo/pdf/statistics/2022/1/tc/1.pdf
+DSAT quarterly statistics PDF,dsat_2022_Q2.pdf,2022-01,2022-06,https://www.dsat.gov.mo/pdf/statistics/2022/2/tc/1.pdf
+DSAT quarterly statistics PDF,dsat_2022_Q3.pdf,2022-01,2022-09,https://www.dsat.gov.mo/pdf/statistics/2022/3/tc/1.pdf
+DSAT quarterly statistics PDF,dsat_2022_Q4.pdf,2022-01,2022-12,https://www.dsat.gov.mo/pdf/statistics/2022/4/tc/1.pdf
+DSAT quarterly statistics PDF,dsat_2023_Q1.pdf,2023-01,2023-03,https://www.dsat.gov.mo/pdf/statistics/2023/1/tc/1.pdf
+DSAT quarterly statistics PDF,dsat_2023_Q2.pdf,2023-01,2023-06,https://www.dsat.gov.mo/pdf/statistics/2023/2/tc/1.pdf
+DSAT quarterly statistics PDF,dsat_2023_Q3.pdf,2023-01,2023-09,https://www.dsat.gov.mo/pdf/statistics/2023/3/tc/1.pdf
+DSAT quarterly statistics PDF,dsat_2023_Q4.pdf,2023-01,2023-12,https://www.dsat.gov.mo/pdf/statistics/2023/4/tc/1.pdf
+DSAT quarterly statistics PDF,dsat_2024_Q1.pdf,2024-01,2024-03,https://www.dsat.gov.mo/pdf/statistics/2024/1/tc/1.pdf
+DSAT quarterly statistics PDF,dsat_2024_Q2.pdf,2024-01,2024-06,https://www.dsat.gov.mo/pdf/statistics/2024/2/tc/1.pdf
+DSAT quarterly statistics PDF,dsat_2024_Q3.pdf,2024-01,2024-09,https://www.dsat.gov.mo/pdf/statistics/2024/3/tc/1.pdf
+DSAT quarterly statistics PDF,dsat_2024_Q4.pdf,2024-01,2024-12,https://www.dsat.gov.mo/pdf/statistics/2024/4/tc/1.pdf
+DSAT quarterly statistics PDF,dsat_2025_Q1.pdf,2025-01,2025-03,https://www.dsat.gov.mo/pdf/statistics/2025/1/tc/1.pdf
+DSAT quarterly statistics PDF,dsat_2025_Q2.pdf,2025-01,2025-06,https://www.dsat.gov.mo/pdf/statistics/2025/2/tc/1.pdf
+DSAT quarterly statistics PDF,dsat_2025_Q3.pdf,2025-01,2025-09,https://www.dsat.gov.mo/pdf/statistics/2025/3/tc/1.pdf
+DSAT quarterly statistics PDF,dsat_2025_Q4.pdf,2025-01,2025-12,https://www.dsat.gov.mo/pdf/statistics/2025/4/tc/1.pdf
+DSAT quarterly statistics PDF,dsat_2026_Q1.pdf,2026-01,2026-03,https://www.dsat.gov.mo/pdf/statistics/2026/1/tc/1.pdf
+DSAT quarterly statistics PDF,dsat_2026_Q2.pdf,2026-01,2026-06,https://www.dsat.gov.mo/pdf/statistics/2026/2/tc/1.pdf
+DSAT monthly page,monthly daily average by operator (2026),2026-01,2026-09,https://www.dsat.gov.mo/dsat/subpage.aspx?a_id=1686905234
+Local supply series,"supply_official_series.csv (fleet, stops)",2019-01,2026-03,data_processed/supply_official_series.csv
+Local visitor arrivals,demand_monthly_arrivals.csv,2008-01,2026-08,data_processed/demand_monthly_arrivals.csv
