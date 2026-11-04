@@ -1,13 +1,4 @@
----
-AIGC:
-    Label: "1"
-    ContentProducer: 001191440300708461136T1XGW3
-    ProduceID: 8aaebaa239fa14c1cf5eb03fd99189ca_6ae1ee8dd84011f19232525400248c00
-    ReservedCode1: exiRMLT8bWnP9qeMsJzXPV6kmEGgCXAruhRT8Zr1ccY9kHFdpV6wHRGXhKDOt0X+WV3CfmWR3rcNsd0Q3xH68SuPiuaVq7kQq3J70uuGhf/OiwtlaFdfkDIZhG9aNan54d/dJFpey0eG6ZUuYGJMotmwfYzn7wBv2oWxwLb2oHfLmJi8oO4oPCpushg=
-    ContentPropagator: 001191440300708461136T1XGW3
-    PropagateID: 8aaebaa239fa14c1cf5eb03fd99189ca_6ae1ee8dd84011f19232525400248c00
-    ReservedCode2: exiRMLT8bWnP9qeMsJzXPV6kmEGgCXAruhRT8Zr1ccY9kHFdpV6wHRGXhKDOt0X+WV3CfmWR3rcNsd0Q3xH68SuPiuaVq7kQq3J70uuGhf/OiwtlaFdfkDIZhG9aNan54d/dJFpey0eG6ZUuYGJMotmwfYzn7wBv2oWxwLb2oHfLmJi8oO4oPCpushg=
----
+
 
 # Monthly Bus Database - Macau public bus
 
@@ -90,5 +81,4 @@ is therefore excluded from `annual_reference`.
 Source scripts sit outside this folder, in the session temp directory:
 `probe_dsat.py` (probe and download PDFs), `parse_dsat2.py` (PDF parsing), `build_monthly_db.py`
 (join, export, README). Re-running the three scripts in that order rebuilds this folder.
-*（内容由AI生成，仅供参考）*
-*（内容由AI生成，仅供参考）*
+
