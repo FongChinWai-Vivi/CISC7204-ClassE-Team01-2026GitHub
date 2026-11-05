@@ -1,0 +1,13 @@
+﻿check,value,status,note
+monthly panel rows (expected 45),45,PASS,2023-01 .. 2026-09
+monthly panel duplicate months,0,PASS,one row per month
+monthly panel missing months,0,PASS,no gap in the 45-month sequence
+district-hour duplicates,0,PASS,year-to-date rule verified
+district-hour balanced grid,1 month sizes / 576,PASS,24 districts x 24 hours
+negative headcount values,0,PASS,counts are non-negative
+zero headcount cells (%),0.0,INFO,night hours in low-traffic districts
+hotel series completeness,45/45,PASS,DSEC hotel survey
+bus series completeness,45/45,PASS,DSAT monthly statistics
+arrivals outliers (|z| > 3 in 2023-2026),0,INFO,none expected inside the post-pandemic window
+row-count reconciliation monthly -> quarterly,45 == 45,PASS,quarterly months sum
+district headcount share of arrivals (2025),99.9%,INFO,"hour-level indicator is a sample of total arrivals, not the total"

@@ -1,6 +1,6 @@
 ﻿route,direction,daytype,hour,departures,cross_bridge,zones_served,reaches_coloane
-1,0,holidays,0,0.0,False,Macau Peninsula,False
-1,0,holidays,1,0.0,False,Macau Peninsula,False
+1,0,holidays,0,5.454545454545454,False,Macau Peninsula,False
+1,0,holidays,1,1.3636363636363635,False,Macau Peninsula,False
 1,0,holidays,2,0.0,False,Macau Peninsula,False
 1,0,holidays,3,0.0,False,Macau Peninsula,False
 1,0,holidays,4,0.0,False,Macau Peninsula,False
@@ -23,8 +23,8 @@
 1,0,holidays,21,5.454545454545454,False,Macau Peninsula,False
 1,0,holidays,22,5.454545454545454,False,Macau Peninsula,False
 1,0,holidays,23,5.454545454545454,False,Macau Peninsula,False
-1,0,weekdays,0,0.0,False,Macau Peninsula,False
-1,0,weekdays,1,0.0,False,Macau Peninsula,False
+1,0,weekdays,0,5.454545454545454,False,Macau Peninsula,False
+1,0,weekdays,1,1.3636363636363635,False,Macau Peninsula,False
 1,0,weekdays,2,0.0,False,Macau Peninsula,False
 1,0,weekdays,3,0.0,False,Macau Peninsula,False
 1,0,weekdays,4,0.0,False,Macau Peninsula,False
@@ -47,8 +47,8 @@
 1,0,weekdays,21,5.454545454545454,False,Macau Peninsula,False
 1,0,weekdays,22,5.454545454545454,False,Macau Peninsula,False
 1,0,weekdays,23,5.454545454545454,False,Macau Peninsula,False
-1,0,weekends,0,0.0,False,Macau Peninsula,False
-1,0,weekends,1,0.0,False,Macau Peninsula,False
+1,0,weekends,0,5.454545454545454,False,Macau Peninsula,False
+1,0,weekends,1,1.3636363636363635,False,Macau Peninsula,False
 1,0,weekends,2,0.0,False,Macau Peninsula,False
 1,0,weekends,3,0.0,False,Macau Peninsula,False
 1,0,weekends,4,0.0,False,Macau Peninsula,False
@@ -71,7 +71,7 @@
 1,0,weekends,21,5.454545454545454,False,Macau Peninsula,False
 1,0,weekends,22,5.454545454545454,False,Macau Peninsula,False
 1,0,weekends,23,5.454545454545454,False,Macau Peninsula,False
-1,1,holidays,0,0.0,False,Macau Peninsula,False
+1,1,holidays,0,4.090909090909091,False,Macau Peninsula,False
 1,1,holidays,1,0.0,False,Macau Peninsula,False
 1,1,holidays,2,0.0,False,Macau Peninsula,False
 1,1,holidays,3,0.0,False,Macau Peninsula,False
@@ -95,7 +95,7 @@
 1,1,holidays,21,5.454545454545454,False,Macau Peninsula,False
 1,1,holidays,22,5.454545454545454,False,Macau Peninsula,False
 1,1,holidays,23,5.454545454545454,False,Macau Peninsula,False
-1,1,weekdays,0,0.0,False,Macau Peninsula,False
+1,1,weekdays,0,4.090909090909091,False,Macau Peninsula,False
 1,1,weekdays,1,0.0,False,Macau Peninsula,False
 1,1,weekdays,2,0.0,False,Macau Peninsula,False
 1,1,weekdays,3,0.0,False,Macau Peninsula,False
@@ -119,7 +119,7 @@
 1,1,weekdays,21,5.454545454545454,False,Macau Peninsula,False
 1,1,weekdays,22,5.454545454545454,False,Macau Peninsula,False
 1,1,weekdays,23,5.454545454545454,False,Macau Peninsula,False
-1,1,weekends,0,0.0,False,Macau Peninsula,False
+1,1,weekends,0,4.090909090909091,False,Macau Peninsula,False
 1,1,weekends,1,0.0,False,Macau Peninsula,False
 1,1,weekends,2,0.0,False,Macau Peninsula,False
 1,1,weekends,3,0.0,False,Macau Peninsula,False
@@ -143,8 +143,8 @@
 1,1,weekends,21,5.454545454545454,False,Macau Peninsula,False
 1,1,weekends,22,5.454545454545454,False,Macau Peninsula,False
 1,1,weekends,23,5.454545454545454,False,Macau Peninsula,False
-10,0,holidays,0,0.0,False,Macau Peninsula,False
-10,0,holidays,1,0.0,False,Macau Peninsula,False
+10,0,holidays,0,6.0,False,Macau Peninsula,False
+10,0,holidays,1,1.5,False,Macau Peninsula,False
 10,0,holidays,2,0.0,False,Macau Peninsula,False
 10,0,holidays,3,0.0,False,Macau Peninsula,False
 10,0,holidays,4,0.0,False,Macau Peninsula,False
@@ -167,8 +167,8 @@
 10,0,holidays,21,6.0,False,Macau Peninsula,False
 10,0,holidays,22,6.0,False,Macau Peninsula,False
 10,0,holidays,23,6.0,False,Macau Peninsula,False
-10,0,weekdays,0,0.0,False,Macau Peninsula,False
-10,0,weekdays,1,0.0,False,Macau Peninsula,False
+10,0,weekdays,0,6.0,False,Macau Peninsula,False
+10,0,weekdays,1,1.5,False,Macau Peninsula,False
 10,0,weekdays,2,0.0,False,Macau Peninsula,False
 10,0,weekdays,3,0.0,False,Macau Peninsula,False
 10,0,weekdays,4,0.0,False,Macau Peninsula,False
@@ -191,8 +191,8 @@
 10,0,weekdays,21,6.0,False,Macau Peninsula,False
 10,0,weekdays,22,6.0,False,Macau Peninsula,False
 10,0,weekdays,23,6.0,False,Macau Peninsula,False
-10,0,weekends,0,0.0,False,Macau Peninsula,False
-10,0,weekends,1,0.0,False,Macau Peninsula,False
+10,0,weekends,0,6.0,False,Macau Peninsula,False
+10,0,weekends,1,1.5,False,Macau Peninsula,False
 10,0,weekends,2,0.0,False,Macau Peninsula,False
 10,0,weekends,3,0.0,False,Macau Peninsula,False
 10,0,weekends,4,0.0,False,Macau Peninsula,False
@@ -215,7 +215,7 @@
 10,0,weekends,21,6.0,False,Macau Peninsula,False
 10,0,weekends,22,6.0,False,Macau Peninsula,False
 10,0,weekends,23,6.0,False,Macau Peninsula,False
-10,1,holidays,0,0.0,False,Macau Peninsula,False
+10,1,holidays,0,4.000000000000007,False,Macau Peninsula,False
 10,1,holidays,1,0.0,False,Macau Peninsula,False
 10,1,holidays,2,0.0,False,Macau Peninsula,False
 10,1,holidays,3,0.0,False,Macau Peninsula,False
@@ -239,7 +239,7 @@
 10,1,holidays,21,6.0,False,Macau Peninsula,False
 10,1,holidays,22,6.0,False,Macau Peninsula,False
 10,1,holidays,23,6.0,False,Macau Peninsula,False
-10,1,weekdays,0,0.0,False,Macau Peninsula,False
+10,1,weekdays,0,4.000000000000007,False,Macau Peninsula,False
 10,1,weekdays,1,0.0,False,Macau Peninsula,False
 10,1,weekdays,2,0.0,False,Macau Peninsula,False
 10,1,weekdays,3,0.0,False,Macau Peninsula,False
@@ -263,7 +263,7 @@
 10,1,weekdays,21,6.0,False,Macau Peninsula,False
 10,1,weekdays,22,6.0,False,Macau Peninsula,False
 10,1,weekdays,23,6.0,False,Macau Peninsula,False
-10,1,weekends,0,0.0,False,Macau Peninsula,False
+10,1,weekends,0,4.000000000000007,False,Macau Peninsula,False
 10,1,weekends,1,0.0,False,Macau Peninsula,False
 10,1,weekends,2,0.0,False,Macau Peninsula,False
 10,1,weekends,3,0.0,False,Macau Peninsula,False
@@ -647,8 +647,8 @@
 10A,1,weekends,21,4.285714285714286,False,Macau Peninsula,False
 10A,1,weekends,22,4.285714285714286,False,Macau Peninsula,False
 10A,1,weekends,23,4.285714285714286,False,Macau Peninsula,False
-10B,0,holidays,0,0.0,False,Macau Peninsula,False
-10B,0,holidays,1,0.0,False,Macau Peninsula,False
+10B,0,holidays,0,4.444444444444445,False,Macau Peninsula,False
+10B,0,holidays,1,1.1111111111111112,False,Macau Peninsula,False
 10B,0,holidays,2,0.0,False,Macau Peninsula,False
 10B,0,holidays,3,0.0,False,Macau Peninsula,False
 10B,0,holidays,4,0.0,False,Macau Peninsula,False
@@ -671,8 +671,8 @@
 10B,0,holidays,21,4.444444444444445,False,Macau Peninsula,False
 10B,0,holidays,22,4.444444444444445,False,Macau Peninsula,False
 10B,0,holidays,23,4.444444444444445,False,Macau Peninsula,False
-10B,0,weekdays,0,0.0,False,Macau Peninsula,False
-10B,0,weekdays,1,0.0,False,Macau Peninsula,False
+10B,0,weekdays,0,4.444444444444445,False,Macau Peninsula,False
+10B,0,weekdays,1,1.1111111111111112,False,Macau Peninsula,False
 10B,0,weekdays,2,0.0,False,Macau Peninsula,False
 10B,0,weekdays,3,0.0,False,Macau Peninsula,False
 10B,0,weekdays,4,0.0,False,Macau Peninsula,False
@@ -695,8 +695,8 @@
 10B,0,weekdays,21,4.444444444444445,False,Macau Peninsula,False
 10B,0,weekdays,22,4.444444444444445,False,Macau Peninsula,False
 10B,0,weekdays,23,4.444444444444445,False,Macau Peninsula,False
-10B,0,weekends,0,0.0,False,Macau Peninsula,False
-10B,0,weekends,1,0.0,False,Macau Peninsula,False
+10B,0,weekends,0,4.444444444444445,False,Macau Peninsula,False
+10B,0,weekends,1,1.1111111111111112,False,Macau Peninsula,False
 10B,0,weekends,2,0.0,False,Macau Peninsula,False
 10B,0,weekends,3,0.0,False,Macau Peninsula,False
 10B,0,weekends,4,0.0,False,Macau Peninsula,False
@@ -983,7 +983,7 @@
 15,0,weekends,21,0.0,False,Coloane + Taipa & Cotai,True
 15,0,weekends,22,0.0,False,Coloane + Taipa & Cotai,True
 15,0,weekends,23,0.0,False,Coloane + Taipa & Cotai,True
-16,0,holidays,0,0.0,False,Macau Peninsula,False
+16,0,holidays,0,3.6363636363636362,False,Macau Peninsula,False
 16,0,holidays,1,0.0,False,Macau Peninsula,False
 16,0,holidays,2,0.0,False,Macau Peninsula,False
 16,0,holidays,3,0.0,False,Macau Peninsula,False
@@ -1007,7 +1007,7 @@
 16,0,holidays,21,4.444444444444445,False,Macau Peninsula,False
 16,0,holidays,22,4.040404040404041,False,Macau Peninsula,False
 16,0,holidays,23,3.6363636363636362,False,Macau Peninsula,False
-16,0,weekdays,0,0.0,False,Macau Peninsula,False
+16,0,weekdays,0,3.6363636363636362,False,Macau Peninsula,False
 16,0,weekdays,1,0.0,False,Macau Peninsula,False
 16,0,weekdays,2,0.0,False,Macau Peninsula,False
 16,0,weekdays,3,0.0,False,Macau Peninsula,False
@@ -1031,7 +1031,7 @@
 16,0,weekdays,21,4.444444444444445,False,Macau Peninsula,False
 16,0,weekdays,22,4.040404040404041,False,Macau Peninsula,False
 16,0,weekdays,23,3.6363636363636362,False,Macau Peninsula,False
-16,0,weekends,0,0.0,False,Macau Peninsula,False
+16,0,weekends,0,3.6363636363636362,False,Macau Peninsula,False
 16,0,weekends,1,0.0,False,Macau Peninsula,False
 16,0,weekends,2,0.0,False,Macau Peninsula,False
 16,0,weekends,3,0.0,False,Macau Peninsula,False
@@ -1127,7 +1127,7 @@
 16S,0,weekends,21,0.0,False,Macau Peninsula,False
 16S,0,weekends,22,0.0,False,Macau Peninsula,False
 16S,0,weekends,23,0.0,False,Macau Peninsula,False
-17,0,holidays,0,0.0,False,Macau Peninsula,False
+17,0,holidays,0,3.9999999999999942,False,Macau Peninsula,False
 17,0,holidays,1,0.0,False,Macau Peninsula,False
 17,0,holidays,2,0.0,False,Macau Peninsula,False
 17,0,holidays,3,0.0,False,Macau Peninsula,False
@@ -1151,7 +1151,7 @@
 17,0,holidays,21,4.8,False,Macau Peninsula,False
 17,0,holidays,22,4.8,False,Macau Peninsula,False
 17,0,holidays,23,4.8,False,Macau Peninsula,False
-17,0,weekdays,0,0.0,False,Macau Peninsula,False
+17,0,weekdays,0,4.545454545454539,False,Macau Peninsula,False
 17,0,weekdays,1,0.0,False,Macau Peninsula,False
 17,0,weekdays,2,0.0,False,Macau Peninsula,False
 17,0,weekdays,3,0.0,False,Macau Peninsula,False
@@ -1175,7 +1175,7 @@
 17,0,weekdays,21,5.454545454545454,False,Macau Peninsula,False
 17,0,weekdays,22,5.454545454545454,False,Macau Peninsula,False
 17,0,weekdays,23,5.454545454545454,False,Macau Peninsula,False
-17,0,weekends,0,0.0,False,Macau Peninsula,False
+17,0,weekends,0,4.545454545454539,False,Macau Peninsula,False
 17,0,weekends,1,0.0,False,Macau Peninsula,False
 17,0,weekends,2,0.0,False,Macau Peninsula,False
 17,0,weekends,3,0.0,False,Macau Peninsula,False
@@ -1295,8 +1295,8 @@
 17S,1,weekends,21,0.0,False,Macau Peninsula,False
 17S,1,weekends,22,0.0,False,Macau Peninsula,False
 17S,1,weekends,23,0.0,False,Macau Peninsula,False
-18,0,holidays,0,0.0,False,Macau Peninsula,False
-18,0,holidays,1,0.0,False,Macau Peninsula,False
+18,0,holidays,0,2.727272727272727,False,Macau Peninsula,False
+18,0,holidays,1,0.45454545454545775,False,Macau Peninsula,False
 18,0,holidays,2,0.0,False,Macau Peninsula,False
 18,0,holidays,3,0.0,False,Macau Peninsula,False
 18,0,holidays,4,0.0,False,Macau Peninsula,False
@@ -1319,8 +1319,8 @@
 18,0,holidays,21,2.727272727272727,False,Macau Peninsula,False
 18,0,holidays,22,2.727272727272727,False,Macau Peninsula,False
 18,0,holidays,23,2.727272727272727,False,Macau Peninsula,False
-18,0,weekdays,0,0.0,False,Macau Peninsula,False
-18,0,weekdays,1,0.0,False,Macau Peninsula,False
+18,0,weekdays,0,3.0,False,Macau Peninsula,False
+18,0,weekdays,1,0.5000000000000036,False,Macau Peninsula,False
 18,0,weekdays,2,0.0,False,Macau Peninsula,False
 18,0,weekdays,3,0.0,False,Macau Peninsula,False
 18,0,weekdays,4,0.0,False,Macau Peninsula,False
@@ -1343,8 +1343,8 @@
 18,0,weekdays,21,3.0,False,Macau Peninsula,False
 18,0,weekdays,22,3.0,False,Macau Peninsula,False
 18,0,weekdays,23,3.0,False,Macau Peninsula,False
-18,0,weekends,0,0.0,False,Macau Peninsula,False
-18,0,weekends,1,0.0,False,Macau Peninsula,False
+18,0,weekends,0,3.0,False,Macau Peninsula,False
+18,0,weekends,1,0.5000000000000036,False,Macau Peninsula,False
 18,0,weekends,2,0.0,False,Macau Peninsula,False
 18,0,weekends,3,0.0,False,Macau Peninsula,False
 18,0,weekends,4,0.0,False,Macau Peninsula,False
@@ -1367,7 +1367,7 @@
 18,0,weekends,21,3.0,False,Macau Peninsula,False
 18,0,weekends,22,3.0,False,Macau Peninsula,False
 18,0,weekends,23,3.0,False,Macau Peninsula,False
-18,1,holidays,0,0.0,False,Macau Peninsula,False
+18,1,holidays,0,1.8181818181818215,False,Macau Peninsula,False
 18,1,holidays,1,0.0,False,Macau Peninsula,False
 18,1,holidays,2,0.0,False,Macau Peninsula,False
 18,1,holidays,3,0.0,False,Macau Peninsula,False
@@ -1391,7 +1391,7 @@
 18,1,holidays,21,2.727272727272727,False,Macau Peninsula,False
 18,1,holidays,22,2.727272727272727,False,Macau Peninsula,False
 18,1,holidays,23,2.727272727272727,False,Macau Peninsula,False
-18,1,weekdays,0,0.0,False,Macau Peninsula,False
+18,1,weekdays,0,2.0000000000000036,False,Macau Peninsula,False
 18,1,weekdays,1,0.0,False,Macau Peninsula,False
 18,1,weekdays,2,0.0,False,Macau Peninsula,False
 18,1,weekdays,3,0.0,False,Macau Peninsula,False
@@ -1415,7 +1415,7 @@
 18,1,weekdays,21,3.0,False,Macau Peninsula,False
 18,1,weekdays,22,3.0,False,Macau Peninsula,False
 18,1,weekdays,23,3.0,False,Macau Peninsula,False
-18,1,weekends,0,0.0,False,Macau Peninsula,False
+18,1,weekends,0,2.0000000000000036,False,Macau Peninsula,False
 18,1,weekends,1,0.0,False,Macau Peninsula,False
 18,1,weekends,2,0.0,False,Macau Peninsula,False
 18,1,weekends,3,0.0,False,Macau Peninsula,False
@@ -1727,7 +1727,7 @@
 19,0,weekends,21,5.217391304347826,False,Macau Peninsula,False
 19,0,weekends,22,5.217391304347826,False,Macau Peninsula,False
 19,0,weekends,23,5.217391304347826,False,Macau Peninsula,False
-1A,0,holidays,0,0.0,False,Macau Peninsula,False
+1A,0,holidays,0,0.740740740740746,False,Macau Peninsula,False
 1A,0,holidays,1,0.0,False,Macau Peninsula,False
 1A,0,holidays,2,0.0,False,Macau Peninsula,False
 1A,0,holidays,3,0.0,False,Macau Peninsula,False
@@ -1751,7 +1751,7 @@
 1A,0,holidays,21,4.444444444444445,False,Macau Peninsula,False
 1A,0,holidays,22,4.444444444444445,False,Macau Peninsula,False
 1A,0,holidays,23,4.444444444444445,False,Macau Peninsula,False
-1A,0,weekdays,0,0.0,False,Macau Peninsula,False
+1A,0,weekdays,0,0.740740740740746,False,Macau Peninsula,False
 1A,0,weekdays,1,0.0,False,Macau Peninsula,False
 1A,0,weekdays,2,0.0,False,Macau Peninsula,False
 1A,0,weekdays,3,0.0,False,Macau Peninsula,False
@@ -1775,7 +1775,7 @@
 1A,0,weekdays,21,4.444444444444445,False,Macau Peninsula,False
 1A,0,weekdays,22,4.444444444444445,False,Macau Peninsula,False
 1A,0,weekdays,23,4.444444444444445,False,Macau Peninsula,False
-1A,0,weekends,0,0.0,False,Macau Peninsula,False
+1A,0,weekends,0,0.740740740740746,False,Macau Peninsula,False
 1A,0,weekends,1,0.0,False,Macau Peninsula,False
 1A,0,weekends,2,0.0,False,Macau Peninsula,False
 1A,0,weekends,3,0.0,False,Macau Peninsula,False
@@ -1799,7 +1799,7 @@
 1A,0,weekends,21,4.444444444444445,False,Macau Peninsula,False
 1A,0,weekends,22,4.444444444444445,False,Macau Peninsula,False
 1A,0,weekends,23,4.444444444444445,False,Macau Peninsula,False
-1A,1,holidays,0,0.0,False,Macau Peninsula,False
+1A,1,holidays,0,0.740740740740746,False,Macau Peninsula,False
 1A,1,holidays,1,0.0,False,Macau Peninsula,False
 1A,1,holidays,2,0.0,False,Macau Peninsula,False
 1A,1,holidays,3,0.0,False,Macau Peninsula,False
@@ -1823,7 +1823,7 @@
 1A,1,holidays,21,4.444444444444445,False,Macau Peninsula,False
 1A,1,holidays,22,4.444444444444445,False,Macau Peninsula,False
 1A,1,holidays,23,4.444444444444445,False,Macau Peninsula,False
-1A,1,weekdays,0,0.0,False,Macau Peninsula,False
+1A,1,weekdays,0,0.740740740740746,False,Macau Peninsula,False
 1A,1,weekdays,1,0.0,False,Macau Peninsula,False
 1A,1,weekdays,2,0.0,False,Macau Peninsula,False
 1A,1,weekdays,3,0.0,False,Macau Peninsula,False
@@ -1847,7 +1847,7 @@
 1A,1,weekdays,21,4.444444444444445,False,Macau Peninsula,False
 1A,1,weekdays,22,4.444444444444445,False,Macau Peninsula,False
 1A,1,weekdays,23,4.444444444444445,False,Macau Peninsula,False
-1A,1,weekends,0,0.0,False,Macau Peninsula,False
+1A,1,weekends,0,0.740740740740746,False,Macau Peninsula,False
 1A,1,weekends,1,0.0,False,Macau Peninsula,False
 1A,1,weekends,2,0.0,False,Macau Peninsula,False
 1A,1,weekends,3,0.0,False,Macau Peninsula,False
@@ -1943,7 +1943,7 @@
 2,0,weekends,21,5.714285714285714,False,Macau Peninsula,False
 2,0,weekends,22,5.714285714285714,False,Macau Peninsula,False
 2,0,weekends,23,5.714285714285714,False,Macau Peninsula,False
-2,1,holidays,0,0.0,False,Macau Peninsula,False
+2,1,holidays,0,1.904761904761898,False,Macau Peninsula,False
 2,1,holidays,1,0.0,False,Macau Peninsula,False
 2,1,holidays,2,0.0,False,Macau Peninsula,False
 2,1,holidays,3,0.0,False,Macau Peninsula,False
@@ -1967,7 +1967,7 @@
 2,1,holidays,21,5.714285714285714,False,Macau Peninsula,False
 2,1,holidays,22,5.714285714285714,False,Macau Peninsula,False
 2,1,holidays,23,5.714285714285714,False,Macau Peninsula,False
-2,1,weekdays,0,0.0,False,Macau Peninsula,False
+2,1,weekdays,0,1.904761904761898,False,Macau Peninsula,False
 2,1,weekdays,1,0.0,False,Macau Peninsula,False
 2,1,weekdays,2,0.0,False,Macau Peninsula,False
 2,1,weekdays,3,0.0,False,Macau Peninsula,False
@@ -1991,7 +1991,7 @@
 2,1,weekdays,21,5.714285714285714,False,Macau Peninsula,False
 2,1,weekdays,22,5.714285714285714,False,Macau Peninsula,False
 2,1,weekdays,23,5.714285714285714,False,Macau Peninsula,False
-2,1,weekends,0,0.0,False,Macau Peninsula,False
+2,1,weekends,0,1.904761904761898,False,Macau Peninsula,False
 2,1,weekends,1,0.0,False,Macau Peninsula,False
 2,1,weekends,2,0.0,False,Macau Peninsula,False
 2,1,weekends,3,0.0,False,Macau Peninsula,False
@@ -2087,7 +2087,7 @@
 21A,0,weekends,21,2.142857142857143,True,Coloane + Macau Peninsula + Taipa & Cotai,True
 21A,0,weekends,22,2.142857142857143,True,Coloane + Macau Peninsula + Taipa & Cotai,True
 21A,0,weekends,23,1.0714285714285714,True,Coloane + Macau Peninsula + Taipa & Cotai,True
-21A,1,holidays,0,0.0,True,Coloane + Macau Peninsula + Taipa & Cotai,True
+21A,1,holidays,0,1.0714285714285714,True,Coloane + Macau Peninsula + Taipa & Cotai,True
 21A,1,holidays,1,0.0,True,Coloane + Macau Peninsula + Taipa & Cotai,True
 21A,1,holidays,2,0.0,True,Coloane + Macau Peninsula + Taipa & Cotai,True
 21A,1,holidays,3,0.0,True,Coloane + Macau Peninsula + Taipa & Cotai,True
@@ -2111,7 +2111,7 @@
 21A,1,holidays,21,2.142857142857143,True,Coloane + Macau Peninsula + Taipa & Cotai,True
 21A,1,holidays,22,2.142857142857143,True,Coloane + Macau Peninsula + Taipa & Cotai,True
 21A,1,holidays,23,2.142857142857143,True,Coloane + Macau Peninsula + Taipa & Cotai,True
-21A,1,weekdays,0,0.0,True,Coloane + Macau Peninsula + Taipa & Cotai,True
+21A,1,weekdays,0,1.0714285714285714,True,Coloane + Macau Peninsula + Taipa & Cotai,True
 21A,1,weekdays,1,0.0,True,Coloane + Macau Peninsula + Taipa & Cotai,True
 21A,1,weekdays,2,0.0,True,Coloane + Macau Peninsula + Taipa & Cotai,True
 21A,1,weekdays,3,0.0,True,Coloane + Macau Peninsula + Taipa & Cotai,True
@@ -2135,7 +2135,7 @@
 21A,1,weekdays,21,2.142857142857143,True,Coloane + Macau Peninsula + Taipa & Cotai,True
 21A,1,weekdays,22,2.142857142857143,True,Coloane + Macau Peninsula + Taipa & Cotai,True
 21A,1,weekdays,23,2.142857142857143,True,Coloane + Macau Peninsula + Taipa & Cotai,True
-21A,1,weekends,0,0.0,True,Coloane + Macau Peninsula + Taipa & Cotai,True
+21A,1,weekends,0,1.0714285714285714,True,Coloane + Macau Peninsula + Taipa & Cotai,True
 21A,1,weekends,1,0.0,True,Coloane + Macau Peninsula + Taipa & Cotai,True
 21A,1,weekends,2,0.0,True,Coloane + Macau Peninsula + Taipa & Cotai,True
 21A,1,weekends,3,0.0,True,Coloane + Macau Peninsula + Taipa & Cotai,True
@@ -2159,7 +2159,7 @@
 21A,1,weekends,21,2.142857142857143,True,Coloane + Macau Peninsula + Taipa & Cotai,True
 21A,1,weekends,22,2.142857142857143,True,Coloane + Macau Peninsula + Taipa & Cotai,True
 21A,1,weekends,23,2.142857142857143,True,Coloane + Macau Peninsula + Taipa & Cotai,True
-22,0,holidays,0,0.0,True,Macau Peninsula + Taipa & Cotai,False
+22,0,holidays,0,1.111111111111119,True,Macau Peninsula + Taipa & Cotai,False
 22,0,holidays,1,0.0,True,Macau Peninsula + Taipa & Cotai,False
 22,0,holidays,2,0.0,True,Macau Peninsula + Taipa & Cotai,False
 22,0,holidays,3,0.0,True,Macau Peninsula + Taipa & Cotai,False
@@ -2183,7 +2183,7 @@
 22,0,holidays,21,6.666666666666667,True,Macau Peninsula + Taipa & Cotai,False
 22,0,holidays,22,6.666666666666667,True,Macau Peninsula + Taipa & Cotai,False
 22,0,holidays,23,6.666666666666667,True,Macau Peninsula + Taipa & Cotai,False
-22,0,weekdays,0,0.0,True,Macau Peninsula + Taipa & Cotai,False
+22,0,weekdays,0,1.111111111111119,True,Macau Peninsula + Taipa & Cotai,False
 22,0,weekdays,1,0.0,True,Macau Peninsula + Taipa & Cotai,False
 22,0,weekdays,2,0.0,True,Macau Peninsula + Taipa & Cotai,False
 22,0,weekdays,3,0.0,True,Macau Peninsula + Taipa & Cotai,False
@@ -2207,7 +2207,7 @@
 22,0,weekdays,21,6.666666666666667,True,Macau Peninsula + Taipa & Cotai,False
 22,0,weekdays,22,6.666666666666667,True,Macau Peninsula + Taipa & Cotai,False
 22,0,weekdays,23,6.666666666666667,True,Macau Peninsula + Taipa & Cotai,False
-22,0,weekends,0,0.0,True,Macau Peninsula + Taipa & Cotai,False
+22,0,weekends,0,1.111111111111119,True,Macau Peninsula + Taipa & Cotai,False
 22,0,weekends,1,0.0,True,Macau Peninsula + Taipa & Cotai,False
 22,0,weekends,2,0.0,True,Macau Peninsula + Taipa & Cotai,False
 22,0,weekends,3,0.0,True,Macau Peninsula + Taipa & Cotai,False
@@ -2303,8 +2303,8 @@
 23,0,weekends,21,4.444444444444445,False,Macau Peninsula,False
 23,0,weekends,22,4.444444444444445,False,Macau Peninsula,False
 23,0,weekends,23,2.2222222222222223,False,Macau Peninsula,False
-25,0,holidays,0,0.0,True,Coloane + Macau Peninsula + Taipa & Cotai,True
-25,0,holidays,1,0.0,True,Coloane + Macau Peninsula + Taipa & Cotai,True
+25,0,holidays,0,3.6363636363636362,True,Coloane + Macau Peninsula + Taipa & Cotai,True
+25,0,holidays,1,0.9090909090909091,True,Coloane + Macau Peninsula + Taipa & Cotai,True
 25,0,holidays,2,0.0,True,Coloane + Macau Peninsula + Taipa & Cotai,True
 25,0,holidays,3,0.0,True,Coloane + Macau Peninsula + Taipa & Cotai,True
 25,0,holidays,4,0.0,True,Coloane + Macau Peninsula + Taipa & Cotai,True
@@ -2327,8 +2327,8 @@
 25,0,holidays,21,3.6363636363636362,True,Coloane + Macau Peninsula + Taipa & Cotai,True
 25,0,holidays,22,3.6363636363636362,True,Coloane + Macau Peninsula + Taipa & Cotai,True
 25,0,holidays,23,3.6363636363636362,True,Coloane + Macau Peninsula + Taipa & Cotai,True
-25,0,weekdays,0,0.0,True,Coloane + Macau Peninsula + Taipa & Cotai,True
-25,0,weekdays,1,0.0,True,Coloane + Macau Peninsula + Taipa & Cotai,True
+25,0,weekdays,0,4.444444444444445,True,Coloane + Macau Peninsula + Taipa & Cotai,True
+25,0,weekdays,1,1.1111111111111112,True,Coloane + Macau Peninsula + Taipa & Cotai,True
 25,0,weekdays,2,0.0,True,Coloane + Macau Peninsula + Taipa & Cotai,True
 25,0,weekdays,3,0.0,True,Coloane + Macau Peninsula + Taipa & Cotai,True
 25,0,weekdays,4,0.0,True,Coloane + Macau Peninsula + Taipa & Cotai,True
@@ -2351,8 +2351,8 @@
 25,0,weekdays,21,4.444444444444445,True,Coloane + Macau Peninsula + Taipa & Cotai,True
 25,0,weekdays,22,4.444444444444445,True,Coloane + Macau Peninsula + Taipa & Cotai,True
 25,0,weekdays,23,4.444444444444445,True,Coloane + Macau Peninsula + Taipa & Cotai,True
-25,0,weekends,0,0.0,True,Coloane + Macau Peninsula + Taipa & Cotai,True
-25,0,weekends,1,0.0,True,Coloane + Macau Peninsula + Taipa & Cotai,True
+25,0,weekends,0,3.6363636363636362,True,Coloane + Macau Peninsula + Taipa & Cotai,True
+25,0,weekends,1,0.9090909090909091,True,Coloane + Macau Peninsula + Taipa & Cotai,True
 25,0,weekends,2,0.0,True,Coloane + Macau Peninsula + Taipa & Cotai,True
 25,0,weekends,3,0.0,True,Coloane + Macau Peninsula + Taipa & Cotai,True
 25,0,weekends,4,0.0,True,Coloane + Macau Peninsula + Taipa & Cotai,True
@@ -2423,7 +2423,7 @@
 25AX,1,weekdays,21,0.0,True,Coloane + Macau Peninsula + Taipa & Cotai,True
 25AX,1,weekdays,22,0.0,True,Coloane + Macau Peninsula + Taipa & Cotai,True
 25AX,1,weekdays,23,0.0,True,Coloane + Macau Peninsula + Taipa & Cotai,True
-25B,0,holidays,0,0.0,True,Macau Peninsula + Taipa & Cotai,False
+25B,0,holidays,0,4.8,True,Macau Peninsula + Taipa & Cotai,False
 25B,0,holidays,1,0.0,True,Macau Peninsula + Taipa & Cotai,False
 25B,0,holidays,2,0.0,True,Macau Peninsula + Taipa & Cotai,False
 25B,0,holidays,3,0.0,True,Macau Peninsula + Taipa & Cotai,False
@@ -2447,7 +2447,7 @@
 25B,0,holidays,21,4.8,True,Macau Peninsula + Taipa & Cotai,False
 25B,0,holidays,22,4.8,True,Macau Peninsula + Taipa & Cotai,False
 25B,0,holidays,23,4.8,True,Macau Peninsula + Taipa & Cotai,False
-25B,0,weekdays,0,0.0,True,Macau Peninsula + Taipa & Cotai,False
+25B,0,weekdays,0,4.8,True,Macau Peninsula + Taipa & Cotai,False
 25B,0,weekdays,1,0.0,True,Macau Peninsula + Taipa & Cotai,False
 25B,0,weekdays,2,0.0,True,Macau Peninsula + Taipa & Cotai,False
 25B,0,weekdays,3,0.0,True,Macau Peninsula + Taipa & Cotai,False
@@ -2471,7 +2471,7 @@
 25B,0,weekdays,21,4.8,True,Macau Peninsula + Taipa & Cotai,False
 25B,0,weekdays,22,4.8,True,Macau Peninsula + Taipa & Cotai,False
 25B,0,weekdays,23,4.8,True,Macau Peninsula + Taipa & Cotai,False
-25B,0,weekends,0,0.0,True,Macau Peninsula + Taipa & Cotai,False
+25B,0,weekends,0,4.8,True,Macau Peninsula + Taipa & Cotai,False
 25B,0,weekends,1,0.0,True,Macau Peninsula + Taipa & Cotai,False
 25B,0,weekends,2,0.0,True,Macau Peninsula + Taipa & Cotai,False
 25B,0,weekends,3,0.0,True,Macau Peninsula + Taipa & Cotai,False
@@ -2495,7 +2495,7 @@
 25B,0,weekends,21,4.8,True,Macau Peninsula + Taipa & Cotai,False
 25B,0,weekends,22,4.8,True,Macau Peninsula + Taipa & Cotai,False
 25B,0,weekends,23,4.8,True,Macau Peninsula + Taipa & Cotai,False
-25B,1,holidays,0,0.0,True,Macau Peninsula + Taipa & Cotai,False
+25B,1,holidays,0,4.8,True,Macau Peninsula + Taipa & Cotai,False
 25B,1,holidays,1,0.0,True,Macau Peninsula + Taipa & Cotai,False
 25B,1,holidays,2,0.0,True,Macau Peninsula + Taipa & Cotai,False
 25B,1,holidays,3,0.0,True,Macau Peninsula + Taipa & Cotai,False
@@ -2519,7 +2519,7 @@
 25B,1,holidays,21,4.8,True,Macau Peninsula + Taipa & Cotai,False
 25B,1,holidays,22,4.8,True,Macau Peninsula + Taipa & Cotai,False
 25B,1,holidays,23,4.8,True,Macau Peninsula + Taipa & Cotai,False
-25B,1,weekdays,0,0.0,True,Macau Peninsula + Taipa & Cotai,False
+25B,1,weekdays,0,4.8,True,Macau Peninsula + Taipa & Cotai,False
 25B,1,weekdays,1,0.0,True,Macau Peninsula + Taipa & Cotai,False
 25B,1,weekdays,2,0.0,True,Macau Peninsula + Taipa & Cotai,False
 25B,1,weekdays,3,0.0,True,Macau Peninsula + Taipa & Cotai,False
@@ -2543,7 +2543,7 @@
 25B,1,weekdays,21,4.8,True,Macau Peninsula + Taipa & Cotai,False
 25B,1,weekdays,22,4.8,True,Macau Peninsula + Taipa & Cotai,False
 25B,1,weekdays,23,4.8,True,Macau Peninsula + Taipa & Cotai,False
-25B,1,weekends,0,0.0,True,Macau Peninsula + Taipa & Cotai,False
+25B,1,weekends,0,4.8,True,Macau Peninsula + Taipa & Cotai,False
 25B,1,weekends,1,0.0,True,Macau Peninsula + Taipa & Cotai,False
 25B,1,weekends,2,0.0,True,Macau Peninsula + Taipa & Cotai,False
 25B,1,weekends,3,0.0,True,Macau Peninsula + Taipa & Cotai,False
@@ -2687,7 +2687,7 @@
 26,0,weekends,21,2.5,True,Coloane + Macau Peninsula + Taipa & Cotai,True
 26,0,weekends,22,2.5,True,Coloane + Macau Peninsula + Taipa & Cotai,True
 26,0,weekends,23,1.25,True,Coloane + Macau Peninsula + Taipa & Cotai,True
-26A,0,holidays,0,0.0,True,Coloane + Macau Peninsula + Taipa & Cotai,True
+26A,0,holidays,0,2.142857142857143,True,Coloane + Macau Peninsula + Taipa & Cotai,True
 26A,0,holidays,1,0.0,True,Coloane + Macau Peninsula + Taipa & Cotai,True
 26A,0,holidays,2,0.0,True,Coloane + Macau Peninsula + Taipa & Cotai,True
 26A,0,holidays,3,0.0,True,Coloane + Macau Peninsula + Taipa & Cotai,True
@@ -2711,7 +2711,7 @@
 26A,0,holidays,21,4.285714285714286,True,Coloane + Macau Peninsula + Taipa & Cotai,True
 26A,0,holidays,22,4.285714285714286,True,Coloane + Macau Peninsula + Taipa & Cotai,True
 26A,0,holidays,23,4.285714285714286,True,Coloane + Macau Peninsula + Taipa & Cotai,True
-26A,0,weekdays,0,0.0,True,Coloane + Macau Peninsula + Taipa & Cotai,True
+26A,0,weekdays,0,2.2222222222222223,True,Coloane + Macau Peninsula + Taipa & Cotai,True
 26A,0,weekdays,1,0.0,True,Coloane + Macau Peninsula + Taipa & Cotai,True
 26A,0,weekdays,2,0.0,True,Coloane + Macau Peninsula + Taipa & Cotai,True
 26A,0,weekdays,3,0.0,True,Coloane + Macau Peninsula + Taipa & Cotai,True
@@ -2735,7 +2735,7 @@
 26A,0,weekdays,21,4.444444444444445,True,Coloane + Macau Peninsula + Taipa & Cotai,True
 26A,0,weekdays,22,4.444444444444445,True,Coloane + Macau Peninsula + Taipa & Cotai,True
 26A,0,weekdays,23,4.444444444444445,True,Coloane + Macau Peninsula + Taipa & Cotai,True
-26A,0,weekends,0,0.0,True,Coloane + Macau Peninsula + Taipa & Cotai,True
+26A,0,weekends,0,2.2222222222222223,True,Coloane + Macau Peninsula + Taipa & Cotai,True
 26A,0,weekends,1,0.0,True,Coloane + Macau Peninsula + Taipa & Cotai,True
 26A,0,weekends,2,0.0,True,Coloane + Macau Peninsula + Taipa & Cotai,True
 26A,0,weekends,3,0.0,True,Coloane + Macau Peninsula + Taipa & Cotai,True
@@ -2759,7 +2759,7 @@
 26A,0,weekends,21,4.444444444444445,True,Coloane + Macau Peninsula + Taipa & Cotai,True
 26A,0,weekends,22,4.444444444444445,True,Coloane + Macau Peninsula + Taipa & Cotai,True
 26A,0,weekends,23,4.444444444444445,True,Coloane + Macau Peninsula + Taipa & Cotai,True
-26A,1,holidays,0,0.0,True,Coloane + Macau Peninsula + Taipa & Cotai,True
+26A,1,holidays,0,4.285714285714286,True,Coloane + Macau Peninsula + Taipa & Cotai,True
 26A,1,holidays,1,0.0,True,Coloane + Macau Peninsula + Taipa & Cotai,True
 26A,1,holidays,2,0.0,True,Coloane + Macau Peninsula + Taipa & Cotai,True
 26A,1,holidays,3,0.0,True,Coloane + Macau Peninsula + Taipa & Cotai,True
@@ -2783,7 +2783,7 @@
 26A,1,holidays,21,4.285714285714286,True,Coloane + Macau Peninsula + Taipa & Cotai,True
 26A,1,holidays,22,4.285714285714286,True,Coloane + Macau Peninsula + Taipa & Cotai,True
 26A,1,holidays,23,4.285714285714286,True,Coloane + Macau Peninsula + Taipa & Cotai,True
-26A,1,weekdays,0,0.0,True,Coloane + Macau Peninsula + Taipa & Cotai,True
+26A,1,weekdays,0,4.444444444444445,True,Coloane + Macau Peninsula + Taipa & Cotai,True
 26A,1,weekdays,1,0.0,True,Coloane + Macau Peninsula + Taipa & Cotai,True
 26A,1,weekdays,2,0.0,True,Coloane + Macau Peninsula + Taipa & Cotai,True
 26A,1,weekdays,3,0.0,True,Coloane + Macau Peninsula + Taipa & Cotai,True
@@ -2807,7 +2807,7 @@
 26A,1,weekdays,21,4.444444444444445,True,Coloane + Macau Peninsula + Taipa & Cotai,True
 26A,1,weekdays,22,4.444444444444445,True,Coloane + Macau Peninsula + Taipa & Cotai,True
 26A,1,weekdays,23,4.444444444444445,True,Coloane + Macau Peninsula + Taipa & Cotai,True
-26A,1,weekends,0,0.0,True,Coloane + Macau Peninsula + Taipa & Cotai,True
+26A,1,weekends,0,4.444444444444445,True,Coloane + Macau Peninsula + Taipa & Cotai,True
 26A,1,weekends,1,0.0,True,Coloane + Macau Peninsula + Taipa & Cotai,True
 26A,1,weekends,2,0.0,True,Coloane + Macau Peninsula + Taipa & Cotai,True
 26A,1,weekends,3,0.0,True,Coloane + Macau Peninsula + Taipa & Cotai,True
@@ -2903,7 +2903,7 @@
 27,0,weekends,21,4.444444444444445,False,Macau Peninsula,False
 27,0,weekends,22,4.444444444444445,False,Macau Peninsula,False
 27,0,weekends,23,4.444444444444445,False,Macau Peninsula,False
-28A,0,holidays,0,0.0,True,Macau Peninsula + Taipa & Cotai,False
+28A,0,holidays,0,0.6060606060606104,True,Macau Peninsula + Taipa & Cotai,False
 28A,0,holidays,1,0.0,True,Macau Peninsula + Taipa & Cotai,False
 28A,0,holidays,2,0.0,True,Macau Peninsula + Taipa & Cotai,False
 28A,0,holidays,3,0.0,True,Macau Peninsula + Taipa & Cotai,False
@@ -2927,7 +2927,7 @@
 28A,0,holidays,21,3.6363636363636362,True,Macau Peninsula + Taipa & Cotai,False
 28A,0,holidays,22,3.6363636363636362,True,Macau Peninsula + Taipa & Cotai,False
 28A,0,holidays,23,3.6363636363636362,True,Macau Peninsula + Taipa & Cotai,False
-28A,0,weekdays,0,0.0,True,Macau Peninsula + Taipa & Cotai,False
+28A,0,weekdays,0,0.6666666666666714,True,Macau Peninsula + Taipa & Cotai,False
 28A,0,weekdays,1,0.0,True,Macau Peninsula + Taipa & Cotai,False
 28A,0,weekdays,2,0.0,True,Macau Peninsula + Taipa & Cotai,False
 28A,0,weekdays,3,0.0,True,Macau Peninsula + Taipa & Cotai,False
@@ -2951,7 +2951,7 @@
 28A,0,weekdays,21,4.0,True,Macau Peninsula + Taipa & Cotai,False
 28A,0,weekdays,22,4.0,True,Macau Peninsula + Taipa & Cotai,False
 28A,0,weekdays,23,4.0,True,Macau Peninsula + Taipa & Cotai,False
-28A,0,weekends,0,0.0,True,Macau Peninsula + Taipa & Cotai,False
+28A,0,weekends,0,0.6060606060606104,True,Macau Peninsula + Taipa & Cotai,False
 28A,0,weekends,1,0.0,True,Macau Peninsula + Taipa & Cotai,False
 28A,0,weekends,2,0.0,True,Macau Peninsula + Taipa & Cotai,False
 28A,0,weekends,3,0.0,True,Macau Peninsula + Taipa & Cotai,False
@@ -3047,7 +3047,7 @@
 28B,0,weekends,21,4.285714285714286,False,Macau Peninsula,False
 28B,0,weekends,22,4.285714285714286,False,Macau Peninsula,False
 28B,0,weekends,23,3.2142857142857144,False,Macau Peninsula,False
-28C,0,holidays,0,0.0,False,Macau Peninsula,False
+28C,0,holidays,0,2.727272727272727,False,Macau Peninsula,False
 28C,0,holidays,1,0.0,False,Macau Peninsula,False
 28C,0,holidays,2,0.0,False,Macau Peninsula,False
 28C,0,holidays,3,0.0,False,Macau Peninsula,False
@@ -3071,7 +3071,7 @@
 28C,0,holidays,21,3.6363636363636362,False,Macau Peninsula,False
 28C,0,holidays,22,3.6363636363636362,False,Macau Peninsula,False
 28C,0,holidays,23,3.6363636363636362,False,Macau Peninsula,False
-28C,0,weekdays,0,0.0,False,Macau Peninsula,False
+28C,0,weekdays,0,2.727272727272727,False,Macau Peninsula,False
 28C,0,weekdays,1,0.0,False,Macau Peninsula,False
 28C,0,weekdays,2,0.0,False,Macau Peninsula,False
 28C,0,weekdays,3,0.0,False,Macau Peninsula,False
@@ -3095,7 +3095,7 @@
 28C,0,weekdays,21,3.6363636363636362,False,Macau Peninsula,False
 28C,0,weekdays,22,3.6363636363636362,False,Macau Peninsula,False
 28C,0,weekdays,23,3.6363636363636362,False,Macau Peninsula,False
-28C,0,weekends,0,0.0,False,Macau Peninsula,False
+28C,0,weekends,0,2.727272727272727,False,Macau Peninsula,False
 28C,0,weekends,1,0.0,False,Macau Peninsula,False
 28C,0,weekends,2,0.0,False,Macau Peninsula,False
 28C,0,weekends,3,0.0,False,Macau Peninsula,False
@@ -3263,8 +3263,8 @@
 2A,0,weekends,21,4.444444444444445,False,Macau Peninsula,False
 2A,0,weekends,22,2.2222222222222223,False,Macau Peninsula,False
 2A,0,weekends,23,0.0,False,Macau Peninsula,False
-3,0,holidays,0,0.0,False,Macau Peninsula,False
-3,0,holidays,1,0.0,False,Macau Peninsula,False
+3,0,holidays,0,10.0,False,Macau Peninsula,False
+3,0,holidays,1,2.5,False,Macau Peninsula,False
 3,0,holidays,2,0.0,False,Macau Peninsula,False
 3,0,holidays,3,0.0,False,Macau Peninsula,False
 3,0,holidays,4,0.0,False,Macau Peninsula,False
@@ -3287,8 +3287,8 @@
 3,0,holidays,21,10.0,False,Macau Peninsula,False
 3,0,holidays,22,10.0,False,Macau Peninsula,False
 3,0,holidays,23,10.0,False,Macau Peninsula,False
-3,0,weekdays,0,0.0,False,Macau Peninsula,False
-3,0,weekdays,1,0.0,False,Macau Peninsula,False
+3,0,weekdays,0,8.0,False,Macau Peninsula,False
+3,0,weekdays,1,2.0,False,Macau Peninsula,False
 3,0,weekdays,2,0.0,False,Macau Peninsula,False
 3,0,weekdays,3,0.0,False,Macau Peninsula,False
 3,0,weekdays,4,0.0,False,Macau Peninsula,False
@@ -3311,8 +3311,8 @@
 3,0,weekdays,21,8.0,False,Macau Peninsula,False
 3,0,weekdays,22,8.0,False,Macau Peninsula,False
 3,0,weekdays,23,8.0,False,Macau Peninsula,False
-3,0,weekends,0,0.0,False,Macau Peninsula,False
-3,0,weekends,1,0.0,False,Macau Peninsula,False
+3,0,weekends,0,8.0,False,Macau Peninsula,False
+3,0,weekends,1,2.0,False,Macau Peninsula,False
 3,0,weekends,2,0.0,False,Macau Peninsula,False
 3,0,weekends,3,0.0,False,Macau Peninsula,False
 3,0,weekends,4,0.0,False,Macau Peninsula,False
@@ -3335,7 +3335,7 @@
 3,0,weekends,21,8.0,False,Macau Peninsula,False
 3,0,weekends,22,8.0,False,Macau Peninsula,False
 3,0,weekends,23,8.0,False,Macau Peninsula,False
-3,1,holidays,0,0.0,False,Macau Peninsula,False
+3,1,holidays,0,7.5,False,Macau Peninsula,False
 3,1,holidays,1,0.0,False,Macau Peninsula,False
 3,1,holidays,2,0.0,False,Macau Peninsula,False
 3,1,holidays,3,0.0,False,Macau Peninsula,False
@@ -3359,7 +3359,7 @@
 3,1,holidays,21,10.0,False,Macau Peninsula,False
 3,1,holidays,22,10.0,False,Macau Peninsula,False
 3,1,holidays,23,10.0,False,Macau Peninsula,False
-3,1,weekdays,0,0.0,False,Macau Peninsula,False
+3,1,weekdays,0,6.0,False,Macau Peninsula,False
 3,1,weekdays,1,0.0,False,Macau Peninsula,False
 3,1,weekdays,2,0.0,False,Macau Peninsula,False
 3,1,weekdays,3,0.0,False,Macau Peninsula,False
@@ -3383,7 +3383,7 @@
 3,1,weekdays,21,8.0,False,Macau Peninsula,False
 3,1,weekdays,22,8.0,False,Macau Peninsula,False
 3,1,weekdays,23,8.0,False,Macau Peninsula,False
-3,1,weekends,0,0.0,False,Macau Peninsula,False
+3,1,weekends,0,6.0,False,Macau Peninsula,False
 3,1,weekends,1,0.0,False,Macau Peninsula,False
 3,1,weekends,2,0.0,False,Macau Peninsula,False
 3,1,weekends,3,0.0,False,Macau Peninsula,False
@@ -3407,8 +3407,8 @@
 3,1,weekends,21,8.0,False,Macau Peninsula,False
 3,1,weekends,22,8.0,False,Macau Peninsula,False
 3,1,weekends,23,8.0,False,Macau Peninsula,False
-30,0,holidays,0,0.0,True,Macau Peninsula + Taipa & Cotai,False
-30,0,holidays,1,0.0,True,Macau Peninsula + Taipa & Cotai,False
+30,0,holidays,0,5.454545454545454,True,Macau Peninsula + Taipa & Cotai,False
+30,0,holidays,1,0.9090909090909155,True,Macau Peninsula + Taipa & Cotai,False
 30,0,holidays,2,0.0,True,Macau Peninsula + Taipa & Cotai,False
 30,0,holidays,3,0.0,True,Macau Peninsula + Taipa & Cotai,False
 30,0,holidays,4,0.0,True,Macau Peninsula + Taipa & Cotai,False
@@ -3431,8 +3431,8 @@
 30,0,holidays,21,5.454545454545454,True,Macau Peninsula + Taipa & Cotai,False
 30,0,holidays,22,5.454545454545454,True,Macau Peninsula + Taipa & Cotai,False
 30,0,holidays,23,5.454545454545454,True,Macau Peninsula + Taipa & Cotai,False
-30,0,weekdays,0,0.0,True,Macau Peninsula + Taipa & Cotai,False
-30,0,weekdays,1,0.0,True,Macau Peninsula + Taipa & Cotai,False
+30,0,weekdays,0,6.0,True,Macau Peninsula + Taipa & Cotai,False
+30,0,weekdays,1,1.000000000000007,True,Macau Peninsula + Taipa & Cotai,False
 30,0,weekdays,2,0.0,True,Macau Peninsula + Taipa & Cotai,False
 30,0,weekdays,3,0.0,True,Macau Peninsula + Taipa & Cotai,False
 30,0,weekdays,4,0.0,True,Macau Peninsula + Taipa & Cotai,False
@@ -3455,8 +3455,8 @@
 30,0,weekdays,21,6.0,True,Macau Peninsula + Taipa & Cotai,False
 30,0,weekdays,22,6.0,True,Macau Peninsula + Taipa & Cotai,False
 30,0,weekdays,23,6.0,True,Macau Peninsula + Taipa & Cotai,False
-30,0,weekends,0,0.0,True,Macau Peninsula + Taipa & Cotai,False
-30,0,weekends,1,0.0,True,Macau Peninsula + Taipa & Cotai,False
+30,0,weekends,0,6.0,True,Macau Peninsula + Taipa & Cotai,False
+30,0,weekends,1,1.000000000000007,True,Macau Peninsula + Taipa & Cotai,False
 30,0,weekends,2,0.0,True,Macau Peninsula + Taipa & Cotai,False
 30,0,weekends,3,0.0,True,Macau Peninsula + Taipa & Cotai,False
 30,0,weekends,4,0.0,True,Macau Peninsula + Taipa & Cotai,False
@@ -3599,7 +3599,7 @@
 32,0,weekends,21,4.444444444444445,False,Macau Peninsula,False
 32,0,weekends,22,4.444444444444445,False,Macau Peninsula,False
 32,0,weekends,23,4.444444444444445,False,Macau Peninsula,False
-33,0,holidays,0,0.0,True,Macau Peninsula + Taipa & Cotai,False
+33,0,holidays,0,3.75,True,Macau Peninsula + Taipa & Cotai,False
 33,0,holidays,1,0.0,True,Macau Peninsula + Taipa & Cotai,False
 33,0,holidays,2,0.0,True,Macau Peninsula + Taipa & Cotai,False
 33,0,holidays,3,0.0,True,Macau Peninsula + Taipa & Cotai,False
@@ -3623,7 +3623,7 @@
 33,0,holidays,21,7.5,True,Macau Peninsula + Taipa & Cotai,False
 33,0,holidays,22,7.5,True,Macau Peninsula + Taipa & Cotai,False
 33,0,holidays,23,7.5,True,Macau Peninsula + Taipa & Cotai,False
-33,0,weekdays,0,0.0,True,Macau Peninsula + Taipa & Cotai,False
+33,0,weekdays,0,3.75,True,Macau Peninsula + Taipa & Cotai,False
 33,0,weekdays,1,0.0,True,Macau Peninsula + Taipa & Cotai,False
 33,0,weekdays,2,0.0,True,Macau Peninsula + Taipa & Cotai,False
 33,0,weekdays,3,0.0,True,Macau Peninsula + Taipa & Cotai,False
@@ -3647,7 +3647,7 @@
 33,0,weekdays,21,7.5,True,Macau Peninsula + Taipa & Cotai,False
 33,0,weekdays,22,7.5,True,Macau Peninsula + Taipa & Cotai,False
 33,0,weekdays,23,7.5,True,Macau Peninsula + Taipa & Cotai,False
-33,0,weekends,0,0.0,True,Macau Peninsula + Taipa & Cotai,False
+33,0,weekends,0,3.75,True,Macau Peninsula + Taipa & Cotai,False
 33,0,weekends,1,0.0,True,Macau Peninsula + Taipa & Cotai,False
 33,0,weekends,2,0.0,True,Macau Peninsula + Taipa & Cotai,False
 33,0,weekends,3,0.0,True,Macau Peninsula + Taipa & Cotai,False
@@ -3671,7 +3671,7 @@
 33,0,weekends,21,7.5,True,Macau Peninsula + Taipa & Cotai,False
 33,0,weekends,22,7.5,True,Macau Peninsula + Taipa & Cotai,False
 33,0,weekends,23,7.5,True,Macau Peninsula + Taipa & Cotai,False
-34,0,holidays,0,0.0,True,Macau Peninsula + Taipa & Cotai,False
+34,0,holidays,0,4.444444444444445,True,Macau Peninsula + Taipa & Cotai,False
 34,0,holidays,1,0.0,True,Macau Peninsula + Taipa & Cotai,False
 34,0,holidays,2,0.0,True,Macau Peninsula + Taipa & Cotai,False
 34,0,holidays,3,0.0,True,Macau Peninsula + Taipa & Cotai,False
@@ -3695,7 +3695,7 @@
 34,0,holidays,21,4.444444444444445,True,Macau Peninsula + Taipa & Cotai,False
 34,0,holidays,22,4.444444444444445,True,Macau Peninsula + Taipa & Cotai,False
 34,0,holidays,23,4.444444444444445,True,Macau Peninsula + Taipa & Cotai,False
-34,0,weekdays,0,0.0,True,Macau Peninsula + Taipa & Cotai,False
+34,0,weekdays,0,4.444444444444445,True,Macau Peninsula + Taipa & Cotai,False
 34,0,weekdays,1,0.0,True,Macau Peninsula + Taipa & Cotai,False
 34,0,weekdays,2,0.0,True,Macau Peninsula + Taipa & Cotai,False
 34,0,weekdays,3,0.0,True,Macau Peninsula + Taipa & Cotai,False
@@ -3719,7 +3719,7 @@
 34,0,weekdays,21,4.444444444444445,True,Macau Peninsula + Taipa & Cotai,False
 34,0,weekdays,22,4.444444444444445,True,Macau Peninsula + Taipa & Cotai,False
 34,0,weekdays,23,4.444444444444445,True,Macau Peninsula + Taipa & Cotai,False
-34,0,weekends,0,0.0,True,Macau Peninsula + Taipa & Cotai,False
+34,0,weekends,0,4.444444444444445,True,Macau Peninsula + Taipa & Cotai,False
 34,0,weekends,1,0.0,True,Macau Peninsula + Taipa & Cotai,False
 34,0,weekends,2,0.0,True,Macau Peninsula + Taipa & Cotai,False
 34,0,weekends,3,0.0,True,Macau Peninsula + Taipa & Cotai,False
@@ -3743,7 +3743,7 @@
 34,0,weekends,21,4.444444444444445,True,Macau Peninsula + Taipa & Cotai,False
 34,0,weekends,22,4.444444444444445,True,Macau Peninsula + Taipa & Cotai,False
 34,0,weekends,23,4.444444444444445,True,Macau Peninsula + Taipa & Cotai,False
-34,1,holidays,0,0.0,True,Macau Peninsula + Taipa & Cotai,False
+34,1,holidays,0,2.5925925925925872,True,Macau Peninsula + Taipa & Cotai,False
 34,1,holidays,1,0.0,True,Macau Peninsula + Taipa & Cotai,False
 34,1,holidays,2,0.0,True,Macau Peninsula + Taipa & Cotai,False
 34,1,holidays,3,0.0,True,Macau Peninsula + Taipa & Cotai,False
@@ -3767,7 +3767,7 @@
 34,1,holidays,21,4.444444444444445,True,Macau Peninsula + Taipa & Cotai,False
 34,1,holidays,22,4.444444444444445,True,Macau Peninsula + Taipa & Cotai,False
 34,1,holidays,23,4.444444444444445,True,Macau Peninsula + Taipa & Cotai,False
-34,1,weekdays,0,0.0,True,Macau Peninsula + Taipa & Cotai,False
+34,1,weekdays,0,2.5925925925925872,True,Macau Peninsula + Taipa & Cotai,False
 34,1,weekdays,1,0.0,True,Macau Peninsula + Taipa & Cotai,False
 34,1,weekdays,2,0.0,True,Macau Peninsula + Taipa & Cotai,False
 34,1,weekdays,3,0.0,True,Macau Peninsula + Taipa & Cotai,False
@@ -3791,7 +3791,7 @@
 34,1,weekdays,21,4.444444444444445,True,Macau Peninsula + Taipa & Cotai,False
 34,1,weekdays,22,4.444444444444445,True,Macau Peninsula + Taipa & Cotai,False
 34,1,weekdays,23,4.444444444444445,True,Macau Peninsula + Taipa & Cotai,False
-34,1,weekends,0,0.0,True,Macau Peninsula + Taipa & Cotai,False
+34,1,weekends,0,2.5925925925925872,True,Macau Peninsula + Taipa & Cotai,False
 34,1,weekends,1,0.0,True,Macau Peninsula + Taipa & Cotai,False
 34,1,weekends,2,0.0,True,Macau Peninsula + Taipa & Cotai,False
 34,1,weekends,3,0.0,True,Macau Peninsula + Taipa & Cotai,False
@@ -4127,7 +4127,7 @@
 39,0,weekends,21,2.6666666666666665,True,Macau Peninsula + Taipa & Cotai,False
 39,0,weekends,22,2.6666666666666665,True,Macau Peninsula + Taipa & Cotai,False
 39,0,weekends,23,2.6666666666666665,True,Macau Peninsula + Taipa & Cotai,False
-3A,0,holidays,0,0.0,False,Macau Peninsula,False
+3A,0,holidays,0,3.75,False,Macau Peninsula,False
 3A,0,holidays,1,0.0,False,Macau Peninsula,False
 3A,0,holidays,2,0.0,False,Macau Peninsula,False
 3A,0,holidays,3,0.0,False,Macau Peninsula,False
@@ -4151,7 +4151,7 @@
 3A,0,holidays,21,5.0,False,Macau Peninsula,False
 3A,0,holidays,22,5.0,False,Macau Peninsula,False
 3A,0,holidays,23,5.0,False,Macau Peninsula,False
-3A,0,weekdays,0,0.0,False,Macau Peninsula,False
+3A,0,weekdays,0,3.75,False,Macau Peninsula,False
 3A,0,weekdays,1,0.0,False,Macau Peninsula,False
 3A,0,weekdays,2,0.0,False,Macau Peninsula,False
 3A,0,weekdays,3,0.0,False,Macau Peninsula,False
@@ -4175,7 +4175,7 @@
 3A,0,weekdays,21,5.0,False,Macau Peninsula,False
 3A,0,weekdays,22,5.0,False,Macau Peninsula,False
 3A,0,weekdays,23,5.0,False,Macau Peninsula,False
-3A,0,weekends,0,0.0,False,Macau Peninsula,False
+3A,0,weekends,0,3.75,False,Macau Peninsula,False
 3A,0,weekends,1,0.0,False,Macau Peninsula,False
 3A,0,weekends,2,0.0,False,Macau Peninsula,False
 3A,0,weekends,3,0.0,False,Macau Peninsula,False
@@ -4319,7 +4319,7 @@
 3X,0,weekends,21,6.666666666666667,False,Macau Peninsula,False
 3X,0,weekends,22,6.666666666666667,False,Macau Peninsula,False
 3X,0,weekends,23,0.0,False,Macau Peninsula,False
-4,0,holidays,0,0.0,False,Macau Peninsula,False
+4,0,holidays,0,0.6060606060606104,False,Macau Peninsula,False
 4,0,holidays,1,0.0,False,Macau Peninsula,False
 4,0,holidays,2,0.0,False,Macau Peninsula,False
 4,0,holidays,3,0.0,False,Macau Peninsula,False
@@ -4343,7 +4343,7 @@
 4,0,holidays,21,3.6363636363636362,False,Macau Peninsula,False
 4,0,holidays,22,3.6363636363636362,False,Macau Peninsula,False
 4,0,holidays,23,3.6363636363636362,False,Macau Peninsula,False
-4,0,weekdays,0,0.0,False,Macau Peninsula,False
+4,0,weekdays,0,0.6060606060606104,False,Macau Peninsula,False
 4,0,weekdays,1,0.0,False,Macau Peninsula,False
 4,0,weekdays,2,0.0,False,Macau Peninsula,False
 4,0,weekdays,3,0.0,False,Macau Peninsula,False
@@ -4367,7 +4367,7 @@
 4,0,weekdays,21,3.6363636363636362,False,Macau Peninsula,False
 4,0,weekdays,22,3.6363636363636362,False,Macau Peninsula,False
 4,0,weekdays,23,3.6363636363636362,False,Macau Peninsula,False
-4,0,weekends,0,0.0,False,Macau Peninsula,False
+4,0,weekends,0,0.6060606060606104,False,Macau Peninsula,False
 4,0,weekends,1,0.0,False,Macau Peninsula,False
 4,0,weekends,2,0.0,False,Macau Peninsula,False
 4,0,weekends,3,0.0,False,Macau Peninsula,False
@@ -4391,7 +4391,7 @@
 4,0,weekends,21,3.6363636363636362,False,Macau Peninsula,False
 4,0,weekends,22,3.6363636363636362,False,Macau Peninsula,False
 4,0,weekends,23,3.6363636363636362,False,Macau Peninsula,False
-5,0,holidays,0,0.0,False,Macau Peninsula,False
+5,0,holidays,0,4.444444444444445,False,Macau Peninsula,False
 5,0,holidays,1,0.0,False,Macau Peninsula,False
 5,0,holidays,2,0.0,False,Macau Peninsula,False
 5,0,holidays,3,0.0,False,Macau Peninsula,False
@@ -4415,7 +4415,7 @@
 5,0,holidays,21,5.454545454545454,False,Macau Peninsula,False
 5,0,holidays,22,4.94949494949495,False,Macau Peninsula,False
 5,0,holidays,23,4.444444444444445,False,Macau Peninsula,False
-5,0,weekdays,0,0.0,False,Macau Peninsula,False
+5,0,weekdays,0,4.444444444444445,False,Macau Peninsula,False
 5,0,weekdays,1,0.0,False,Macau Peninsula,False
 5,0,weekdays,2,0.0,False,Macau Peninsula,False
 5,0,weekdays,3,0.0,False,Macau Peninsula,False
@@ -4439,7 +4439,7 @@
 5,0,weekdays,21,5.714285714285714,False,Macau Peninsula,False
 5,0,weekdays,22,5.079365079365079,False,Macau Peninsula,False
 5,0,weekdays,23,4.444444444444445,False,Macau Peninsula,False
-5,0,weekends,0,0.0,False,Macau Peninsula,False
+5,0,weekends,0,4.444444444444445,False,Macau Peninsula,False
 5,0,weekends,1,0.0,False,Macau Peninsula,False
 5,0,weekends,2,0.0,False,Macau Peninsula,False
 5,0,weekends,3,0.0,False,Macau Peninsula,False
@@ -4607,7 +4607,7 @@
 50B,0,weekends,21,0.0,True,Macau Peninsula + Taipa & Cotai,False
 50B,0,weekends,22,0.0,True,Macau Peninsula + Taipa & Cotai,False
 50B,0,weekends,23,0.0,True,Macau Peninsula + Taipa & Cotai,False
-51,0,holidays,0,0.0,True,Coloane + Macau Peninsula + Taipa & Cotai,True
+51,0,holidays,0,4.444444444444445,True,Coloane + Macau Peninsula + Taipa & Cotai,True
 51,0,holidays,1,0.0,True,Coloane + Macau Peninsula + Taipa & Cotai,True
 51,0,holidays,2,0.0,True,Coloane + Macau Peninsula + Taipa & Cotai,True
 51,0,holidays,3,0.0,True,Coloane + Macau Peninsula + Taipa & Cotai,True
@@ -4631,7 +4631,7 @@
 51,0,holidays,21,4.444444444444445,True,Coloane + Macau Peninsula + Taipa & Cotai,True
 51,0,holidays,22,4.444444444444445,True,Coloane + Macau Peninsula + Taipa & Cotai,True
 51,0,holidays,23,4.444444444444445,True,Coloane + Macau Peninsula + Taipa & Cotai,True
-51,0,weekdays,0,0.0,True,Coloane + Macau Peninsula + Taipa & Cotai,True
+51,0,weekdays,0,4.8,True,Coloane + Macau Peninsula + Taipa & Cotai,True
 51,0,weekdays,1,0.0,True,Coloane + Macau Peninsula + Taipa & Cotai,True
 51,0,weekdays,2,0.0,True,Coloane + Macau Peninsula + Taipa & Cotai,True
 51,0,weekdays,3,0.0,True,Coloane + Macau Peninsula + Taipa & Cotai,True
@@ -4655,7 +4655,7 @@
 51,0,weekdays,21,4.8,True,Coloane + Macau Peninsula + Taipa & Cotai,True
 51,0,weekdays,22,4.8,True,Coloane + Macau Peninsula + Taipa & Cotai,True
 51,0,weekdays,23,4.8,True,Coloane + Macau Peninsula + Taipa & Cotai,True
-51,0,weekends,0,0.0,True,Coloane + Macau Peninsula + Taipa & Cotai,True
+51,0,weekends,0,4.8,True,Coloane + Macau Peninsula + Taipa & Cotai,True
 51,0,weekends,1,0.0,True,Coloane + Macau Peninsula + Taipa & Cotai,True
 51,0,weekends,2,0.0,True,Coloane + Macau Peninsula + Taipa & Cotai,True
 51,0,weekends,3,0.0,True,Coloane + Macau Peninsula + Taipa & Cotai,True
@@ -4943,7 +4943,7 @@
 52,0,holidays,21,4.444444444444445,True,Coloane + Macau Peninsula + Taipa & Cotai,True
 52,0,holidays,22,4.444444444444445,True,Coloane + Macau Peninsula + Taipa & Cotai,True
 52,0,holidays,23,4.444444444444445,True,Coloane + Macau Peninsula + Taipa & Cotai,True
-52,0,weekdays,0,0.0,True,Coloane + Macau Peninsula + Taipa & Cotai,True
+52,0,weekdays,0,2.2222222222222223,True,Coloane + Macau Peninsula + Taipa & Cotai,True
 52,0,weekdays,1,0.0,True,Coloane + Macau Peninsula + Taipa & Cotai,True
 52,0,weekdays,2,0.0,True,Coloane + Macau Peninsula + Taipa & Cotai,True
 52,0,weekdays,3,0.0,True,Coloane + Macau Peninsula + Taipa & Cotai,True
@@ -5519,7 +5519,7 @@
 7,0,weekends,21,7.0588235294117645,False,Macau Peninsula,False
 7,0,weekends,22,7.0588235294117645,False,Macau Peninsula,False
 7,0,weekends,23,5.882352941176462,False,Macau Peninsula,False
-7,1,holidays,0,0.0,False,Macau Peninsula,False
+7,1,holidays,0,1.1764705882353024,False,Macau Peninsula,False
 7,1,holidays,1,0.0,False,Macau Peninsula,False
 7,1,holidays,2,0.0,False,Macau Peninsula,False
 7,1,holidays,3,0.0,False,Macau Peninsula,False
@@ -5543,7 +5543,7 @@
 7,1,holidays,21,7.0588235294117645,False,Macau Peninsula,False
 7,1,holidays,22,7.0588235294117645,False,Macau Peninsula,False
 7,1,holidays,23,7.0588235294117645,False,Macau Peninsula,False
-7,1,weekdays,0,0.0,False,Macau Peninsula,False
+7,1,weekdays,0,1.5384615384615494,False,Macau Peninsula,False
 7,1,weekdays,1,0.0,False,Macau Peninsula,False
 7,1,weekdays,2,0.0,False,Macau Peninsula,False
 7,1,weekdays,3,0.0,False,Macau Peninsula,False
@@ -5567,7 +5567,7 @@
 7,1,weekdays,21,9.23076923076923,False,Macau Peninsula,False
 7,1,weekdays,22,9.23076923076923,False,Macau Peninsula,False
 7,1,weekdays,23,9.23076923076923,False,Macau Peninsula,False
-7,1,weekends,0,0.0,False,Macau Peninsula,False
+7,1,weekends,0,1.5384615384615494,False,Macau Peninsula,False
 7,1,weekends,1,0.0,False,Macau Peninsula,False
 7,1,weekends,2,0.0,False,Macau Peninsula,False
 7,1,weekends,3,0.0,False,Macau Peninsula,False
@@ -5783,7 +5783,7 @@
 71S,1,weekdays,21,0.0,True,Macau Peninsula + Taipa & Cotai,False
 71S,1,weekdays,22,0.0,True,Macau Peninsula + Taipa & Cotai,False
 71S,1,weekdays,23,0.0,True,Macau Peninsula + Taipa & Cotai,False
-72,0,holidays,0,0.0,False,Taipa & Cotai,False
+72,0,holidays,0,0.9375,False,Taipa & Cotai,False
 72,0,holidays,1,0.0,False,Taipa & Cotai,False
 72,0,holidays,2,0.0,False,Taipa & Cotai,False
 72,0,holidays,3,0.0,False,Taipa & Cotai,False
@@ -5807,7 +5807,7 @@
 72,0,holidays,21,3.75,False,Taipa & Cotai,False
 72,0,holidays,22,3.75,False,Taipa & Cotai,False
 72,0,holidays,23,3.75,False,Taipa & Cotai,False
-72,0,weekdays,0,0.0,False,Taipa & Cotai,False
+72,0,weekdays,0,0.8571428571428571,False,Taipa & Cotai,False
 72,0,weekdays,1,0.0,False,Taipa & Cotai,False
 72,0,weekdays,2,0.0,False,Taipa & Cotai,False
 72,0,weekdays,3,0.0,False,Taipa & Cotai,False
@@ -5831,7 +5831,7 @@
 72,0,weekdays,21,3.4285714285714284,False,Taipa & Cotai,False
 72,0,weekdays,22,3.4285714285714284,False,Taipa & Cotai,False
 72,0,weekdays,23,3.4285714285714284,False,Taipa & Cotai,False
-72,0,weekends,0,0.0,False,Taipa & Cotai,False
+72,0,weekends,0,0.8571428571428571,False,Taipa & Cotai,False
 72,0,weekends,1,0.0,False,Taipa & Cotai,False
 72,0,weekends,2,0.0,False,Taipa & Cotai,False
 72,0,weekends,3,0.0,False,Taipa & Cotai,False
@@ -5855,7 +5855,7 @@
 72,0,weekends,21,3.4285714285714284,False,Taipa & Cotai,False
 72,0,weekends,22,3.4285714285714284,False,Taipa & Cotai,False
 72,0,weekends,23,3.4285714285714284,False,Taipa & Cotai,False
-73,0,holidays,0,0.0,True,Macau Peninsula + Taipa & Cotai,False
+73,0,holidays,0,0.6666666666666714,True,Macau Peninsula + Taipa & Cotai,False
 73,0,holidays,1,0.0,True,Macau Peninsula + Taipa & Cotai,False
 73,0,holidays,2,0.0,True,Macau Peninsula + Taipa & Cotai,False
 73,0,holidays,3,0.0,True,Macau Peninsula + Taipa & Cotai,False
@@ -5879,7 +5879,7 @@
 73,0,holidays,21,4.0,True,Macau Peninsula + Taipa & Cotai,False
 73,0,holidays,22,4.0,True,Macau Peninsula + Taipa & Cotai,False
 73,0,holidays,23,4.0,True,Macau Peninsula + Taipa & Cotai,False
-73,0,weekdays,0,0.0,True,Macau Peninsula + Taipa & Cotai,False
+73,0,weekdays,0,0.6666666666666714,True,Macau Peninsula + Taipa & Cotai,False
 73,0,weekdays,1,0.0,True,Macau Peninsula + Taipa & Cotai,False
 73,0,weekdays,2,0.0,True,Macau Peninsula + Taipa & Cotai,False
 73,0,weekdays,3,0.0,True,Macau Peninsula + Taipa & Cotai,False
@@ -5903,7 +5903,7 @@
 73,0,weekdays,21,4.0,True,Macau Peninsula + Taipa & Cotai,False
 73,0,weekdays,22,4.0,True,Macau Peninsula + Taipa & Cotai,False
 73,0,weekdays,23,4.0,True,Macau Peninsula + Taipa & Cotai,False
-73,0,weekends,0,0.0,True,Macau Peninsula + Taipa & Cotai,False
+73,0,weekends,0,0.6666666666666714,True,Macau Peninsula + Taipa & Cotai,False
 73,0,weekends,1,0.0,True,Macau Peninsula + Taipa & Cotai,False
 73,0,weekends,2,0.0,True,Macau Peninsula + Taipa & Cotai,False
 73,0,weekends,3,0.0,True,Macau Peninsula + Taipa & Cotai,False
@@ -6047,7 +6047,7 @@
 8,0,weekends,21,5.454545454545454,False,Macau Peninsula,False
 8,0,weekends,22,5.454545454545454,False,Macau Peninsula,False
 8,0,weekends,23,5.454545454545454,False,Macau Peninsula,False
-8,1,holidays,0,0.0,False,Macau Peninsula,False
+8,1,holidays,0,0.9090909090909155,False,Macau Peninsula,False
 8,1,holidays,1,0.0,False,Macau Peninsula,False
 8,1,holidays,2,0.0,False,Macau Peninsula,False
 8,1,holidays,3,0.0,False,Macau Peninsula,False
@@ -6071,7 +6071,7 @@
 8,1,holidays,21,5.454545454545454,False,Macau Peninsula,False
 8,1,holidays,22,5.454545454545454,False,Macau Peninsula,False
 8,1,holidays,23,5.454545454545454,False,Macau Peninsula,False
-8,1,weekdays,0,0.0,False,Macau Peninsula,False
+8,1,weekdays,0,0.9090909090909155,False,Macau Peninsula,False
 8,1,weekdays,1,0.0,False,Macau Peninsula,False
 8,1,weekdays,2,0.0,False,Macau Peninsula,False
 8,1,weekdays,3,0.0,False,Macau Peninsula,False
@@ -6095,7 +6095,7 @@
 8,1,weekdays,21,5.454545454545454,False,Macau Peninsula,False
 8,1,weekdays,22,5.454545454545454,False,Macau Peninsula,False
 8,1,weekdays,23,5.454545454545454,False,Macau Peninsula,False
-8,1,weekends,0,0.0,False,Macau Peninsula,False
+8,1,weekends,0,0.9090909090909155,False,Macau Peninsula,False
 8,1,weekends,1,0.0,False,Macau Peninsula,False
 8,1,weekends,2,0.0,False,Macau Peninsula,False
 8,1,weekends,3,0.0,False,Macau Peninsula,False
@@ -6191,8 +6191,8 @@
 8A,0,weekends,21,5.454545454545454,False,Macau Peninsula,False
 8A,0,weekends,22,5.454545454545454,False,Macau Peninsula,False
 8A,0,weekends,23,2.727272727272727,False,Macau Peninsula,False
-9,0,holidays,0,0.0,False,Macau Peninsula,False
-9,0,holidays,1,0.0,False,Macau Peninsula,False
+9,0,holidays,0,4.444444444444445,False,Macau Peninsula,False
+9,0,holidays,1,0.740740740740746,False,Macau Peninsula,False
 9,0,holidays,2,0.0,False,Macau Peninsula,False
 9,0,holidays,3,0.0,False,Macau Peninsula,False
 9,0,holidays,4,0.0,False,Macau Peninsula,False
@@ -6215,8 +6215,8 @@
 9,0,holidays,21,4.444444444444445,False,Macau Peninsula,False
 9,0,holidays,22,4.444444444444445,False,Macau Peninsula,False
 9,0,holidays,23,4.444444444444445,False,Macau Peninsula,False
-9,0,weekdays,0,0.0,False,Macau Peninsula,False
-9,0,weekdays,1,0.0,False,Macau Peninsula,False
+9,0,weekdays,0,4.444444444444445,False,Macau Peninsula,False
+9,0,weekdays,1,0.740740740740746,False,Macau Peninsula,False
 9,0,weekdays,2,0.0,False,Macau Peninsula,False
 9,0,weekdays,3,0.0,False,Macau Peninsula,False
 9,0,weekdays,4,0.0,False,Macau Peninsula,False
@@ -6239,8 +6239,8 @@
 9,0,weekdays,21,4.444444444444445,False,Macau Peninsula,False
 9,0,weekdays,22,4.444444444444445,False,Macau Peninsula,False
 9,0,weekdays,23,4.444444444444445,False,Macau Peninsula,False
-9,0,weekends,0,0.0,False,Macau Peninsula,False
-9,0,weekends,1,0.0,False,Macau Peninsula,False
+9,0,weekends,0,4.444444444444445,False,Macau Peninsula,False
+9,0,weekends,1,0.740740740740746,False,Macau Peninsula,False
 9,0,weekends,2,0.0,False,Macau Peninsula,False
 9,0,weekends,3,0.0,False,Macau Peninsula,False
 9,0,weekends,4,0.0,False,Macau Peninsula,False
@@ -6263,8 +6263,8 @@
 9,0,weekends,21,4.444444444444445,False,Macau Peninsula,False
 9,0,weekends,22,4.444444444444445,False,Macau Peninsula,False
 9,0,weekends,23,4.444444444444445,False,Macau Peninsula,False
-9A,0,holidays,0,0.0,False,Macau Peninsula,False
-9A,0,holidays,1,0.0,False,Macau Peninsula,False
+9A,0,holidays,0,3.6363636363636362,False,Macau Peninsula,False
+9A,0,holidays,1,0.6060606060606104,False,Macau Peninsula,False
 9A,0,holidays,2,0.0,False,Macau Peninsula,False
 9A,0,holidays,3,0.0,False,Macau Peninsula,False
 9A,0,holidays,4,0.0,False,Macau Peninsula,False
@@ -6287,8 +6287,8 @@
 9A,0,holidays,21,3.6363636363636362,False,Macau Peninsula,False
 9A,0,holidays,22,3.6363636363636362,False,Macau Peninsula,False
 9A,0,holidays,23,3.6363636363636362,False,Macau Peninsula,False
-9A,0,weekdays,0,0.0,False,Macau Peninsula,False
-9A,0,weekdays,1,0.0,False,Macau Peninsula,False
+9A,0,weekdays,0,4.0,False,Macau Peninsula,False
+9A,0,weekdays,1,0.6666666666666714,False,Macau Peninsula,False
 9A,0,weekdays,2,0.0,False,Macau Peninsula,False
 9A,0,weekdays,3,0.0,False,Macau Peninsula,False
 9A,0,weekdays,4,0.0,False,Macau Peninsula,False
@@ -6311,8 +6311,8 @@
 9A,0,weekdays,21,4.0,False,Macau Peninsula,False
 9A,0,weekdays,22,4.0,False,Macau Peninsula,False
 9A,0,weekdays,23,4.0,False,Macau Peninsula,False
-9A,0,weekends,0,0.0,False,Macau Peninsula,False
-9A,0,weekends,1,0.0,False,Macau Peninsula,False
+9A,0,weekends,0,4.0,False,Macau Peninsula,False
+9A,0,weekends,1,0.6666666666666714,False,Macau Peninsula,False
 9A,0,weekends,2,0.0,False,Macau Peninsula,False
 9A,0,weekends,3,0.0,False,Macau Peninsula,False
 9A,0,weekends,4,0.0,False,Macau Peninsula,False
@@ -6335,8 +6335,8 @@
 9A,0,weekends,21,4.0,False,Macau Peninsula,False
 9A,0,weekends,22,4.0,False,Macau Peninsula,False
 9A,0,weekends,23,4.0,False,Macau Peninsula,False
-AP1,0,holidays,0,0.0,True,Macau Peninsula + Taipa & Cotai,False
-AP1,0,holidays,1,0.0,True,Macau Peninsula + Taipa & Cotai,False
+AP1,0,holidays,0,3.6363636363636362,True,Macau Peninsula + Taipa & Cotai,False
+AP1,0,holidays,1,1.2121212121212077,True,Macau Peninsula + Taipa & Cotai,False
 AP1,0,holidays,2,0.0,True,Macau Peninsula + Taipa & Cotai,False
 AP1,0,holidays,3,0.0,True,Macau Peninsula + Taipa & Cotai,False
 AP1,0,holidays,4,0.0,True,Macau Peninsula + Taipa & Cotai,False
@@ -6359,8 +6359,8 @@ AP1,0,holidays,20,0.0,True,Macau Peninsula + Taipa & Cotai,False
 AP1,0,holidays,21,0.0,True,Macau Peninsula + Taipa & Cotai,False
 AP1,0,holidays,22,1.8181818181818181,True,Macau Peninsula + Taipa & Cotai,False
 AP1,0,holidays,23,3.6363636363636362,True,Macau Peninsula + Taipa & Cotai,False
-AP1,0,weekdays,0,0.0,True,Macau Peninsula + Taipa & Cotai,False
-AP1,0,weekdays,1,0.0,True,Macau Peninsula + Taipa & Cotai,False
+AP1,0,weekdays,0,3.6363636363636362,True,Macau Peninsula + Taipa & Cotai,False
+AP1,0,weekdays,1,1.2121212121212077,True,Macau Peninsula + Taipa & Cotai,False
 AP1,0,weekdays,2,0.0,True,Macau Peninsula + Taipa & Cotai,False
 AP1,0,weekdays,3,0.0,True,Macau Peninsula + Taipa & Cotai,False
 AP1,0,weekdays,4,0.0,True,Macau Peninsula + Taipa & Cotai,False
@@ -6383,8 +6383,8 @@ AP1,0,weekdays,20,3.6363636363636362,True,Macau Peninsula + Taipa & Cotai,False
 AP1,0,weekdays,21,3.6363636363636362,True,Macau Peninsula + Taipa & Cotai,False
 AP1,0,weekdays,22,3.6363636363636362,True,Macau Peninsula + Taipa & Cotai,False
 AP1,0,weekdays,23,3.6363636363636362,True,Macau Peninsula + Taipa & Cotai,False
-AP1,0,weekends,0,0.0,True,Macau Peninsula + Taipa & Cotai,False
-AP1,0,weekends,1,0.0,True,Macau Peninsula + Taipa & Cotai,False
+AP1,0,weekends,0,3.6363636363636362,True,Macau Peninsula + Taipa & Cotai,False
+AP1,0,weekends,1,1.2121212121212077,True,Macau Peninsula + Taipa & Cotai,False
 AP1,0,weekends,2,0.0,True,Macau Peninsula + Taipa & Cotai,False
 AP1,0,weekends,3,0.0,True,Macau Peninsula + Taipa & Cotai,False
 AP1,0,weekends,4,0.0,True,Macau Peninsula + Taipa & Cotai,False
@@ -6815,7 +6815,7 @@ MT3,0,weekends,20,3.75,True,Macau Peninsula + Taipa & Cotai,False
 MT3,0,weekends,21,0.0,True,Macau Peninsula + Taipa & Cotai,False
 MT3,0,weekends,22,0.0,True,Macau Peninsula + Taipa & Cotai,False
 MT3,0,weekends,23,0.0,True,Macau Peninsula + Taipa & Cotai,False
-MT4,0,holidays,0,0.0,True,Macau Peninsula + Taipa & Cotai,False
+MT4,0,holidays,0,4.0,True,Macau Peninsula + Taipa & Cotai,False
 MT4,0,holidays,1,0.0,True,Macau Peninsula + Taipa & Cotai,False
 MT4,0,holidays,2,0.0,True,Macau Peninsula + Taipa & Cotai,False
 MT4,0,holidays,3,0.0,True,Macau Peninsula + Taipa & Cotai,False
@@ -6839,7 +6839,7 @@ MT4,0,holidays,20,4.0,True,Macau Peninsula + Taipa & Cotai,False
 MT4,0,holidays,21,4.0,True,Macau Peninsula + Taipa & Cotai,False
 MT4,0,holidays,22,4.0,True,Macau Peninsula + Taipa & Cotai,False
 MT4,0,holidays,23,4.0,True,Macau Peninsula + Taipa & Cotai,False
-MT4,0,weekdays,0,0.0,True,Macau Peninsula + Taipa & Cotai,False
+MT4,0,weekdays,0,4.444444444444445,True,Macau Peninsula + Taipa & Cotai,False
 MT4,0,weekdays,1,0.0,True,Macau Peninsula + Taipa & Cotai,False
 MT4,0,weekdays,2,0.0,True,Macau Peninsula + Taipa & Cotai,False
 MT4,0,weekdays,3,0.0,True,Macau Peninsula + Taipa & Cotai,False
@@ -6863,7 +6863,7 @@ MT4,0,weekdays,20,4.444444444444445,True,Macau Peninsula + Taipa & Cotai,False
 MT4,0,weekdays,21,4.444444444444445,True,Macau Peninsula + Taipa & Cotai,False
 MT4,0,weekdays,22,4.444444444444445,True,Macau Peninsula + Taipa & Cotai,False
 MT4,0,weekdays,23,4.444444444444445,True,Macau Peninsula + Taipa & Cotai,False
-MT4,0,weekends,0,0.0,True,Macau Peninsula + Taipa & Cotai,False
+MT4,0,weekends,0,4.444444444444445,True,Macau Peninsula + Taipa & Cotai,False
 MT4,0,weekends,1,0.0,True,Macau Peninsula + Taipa & Cotai,False
 MT4,0,weekends,2,0.0,True,Macau Peninsula + Taipa & Cotai,False
 MT4,0,weekends,3,0.0,True,Macau Peninsula + Taipa & Cotai,False
@@ -6887,7 +6887,7 @@ MT4,0,weekends,20,4.444444444444445,True,Macau Peninsula + Taipa & Cotai,False
 MT4,0,weekends,21,4.444444444444445,True,Macau Peninsula + Taipa & Cotai,False
 MT4,0,weekends,22,4.444444444444445,True,Macau Peninsula + Taipa & Cotai,False
 MT4,0,weekends,23,4.444444444444445,True,Macau Peninsula + Taipa & Cotai,False
-MT4,1,holidays,0,0.0,True,Macau Peninsula + Taipa & Cotai,False
+MT4,1,holidays,0,3.0,True,Macau Peninsula + Taipa & Cotai,False
 MT4,1,holidays,1,0.0,True,Macau Peninsula + Taipa & Cotai,False
 MT4,1,holidays,2,0.0,True,Macau Peninsula + Taipa & Cotai,False
 MT4,1,holidays,3,0.0,True,Macau Peninsula + Taipa & Cotai,False
@@ -6911,7 +6911,7 @@ MT4,1,holidays,20,4.0,True,Macau Peninsula + Taipa & Cotai,False
 MT4,1,holidays,21,4.0,True,Macau Peninsula + Taipa & Cotai,False
 MT4,1,holidays,22,4.0,True,Macau Peninsula + Taipa & Cotai,False
 MT4,1,holidays,23,4.0,True,Macau Peninsula + Taipa & Cotai,False
-MT4,1,weekdays,0,0.0,True,Macau Peninsula + Taipa & Cotai,False
+MT4,1,weekdays,0,3.3333333333333335,True,Macau Peninsula + Taipa & Cotai,False
 MT4,1,weekdays,1,0.0,True,Macau Peninsula + Taipa & Cotai,False
 MT4,1,weekdays,2,0.0,True,Macau Peninsula + Taipa & Cotai,False
 MT4,1,weekdays,3,0.0,True,Macau Peninsula + Taipa & Cotai,False
@@ -6935,7 +6935,7 @@ MT4,1,weekdays,20,4.444444444444445,True,Macau Peninsula + Taipa & Cotai,False
 MT4,1,weekdays,21,4.444444444444445,True,Macau Peninsula + Taipa & Cotai,False
 MT4,1,weekdays,22,4.444444444444445,True,Macau Peninsula + Taipa & Cotai,False
 MT4,1,weekdays,23,4.444444444444445,True,Macau Peninsula + Taipa & Cotai,False
-MT4,1,weekends,0,0.0,True,Macau Peninsula + Taipa & Cotai,False
+MT4,1,weekends,0,3.3333333333333335,True,Macau Peninsula + Taipa & Cotai,False
 MT4,1,weekends,1,0.0,True,Macau Peninsula + Taipa & Cotai,False
 MT4,1,weekends,2,0.0,True,Macau Peninsula + Taipa & Cotai,False
 MT4,1,weekends,3,0.0,True,Macau Peninsula + Taipa & Cotai,False
