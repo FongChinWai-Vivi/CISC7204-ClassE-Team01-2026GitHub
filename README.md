@@ -54,6 +54,9 @@ is already in the repository.
 | `scripts/build_panels.py` | The only script: builds the three integrated panels from raw / intermediate files |
 | `notebooks/cisc7204_proposal_figures_colour.ipynb` | The only figure notebook: draws Figures 1-6 into `figures/` |
 | `figures/fig1_general_trend.png` ... `fig6_workplan.png` | The six figure files embedded in the proposal, in proposal order |
+| `notebooks/cisc7204_pipeline_M3_vivi.ipynb` | The M3 pipeline: cleaning, panels, matching layer, Figures 1-6 and Section 14 (Figures 7-13) |
+| `scripts/build_period_analysis.py` | Builds the monthly / quarterly / annual tables and the optional analysis blocks read by Section 14 |
+| `figures/fig7_*.png` ... `fig13_*.png` | The seven extra figures drawn by Section 14 - **not** embedded in the proposal |
 | `figures/archive/` | Superseded figures kept for traceability - **not** used by the proposal |
 | `data/mgtodataplus/` | MGTO *Macao Tourism Data Plus* district x hour downloads (year-to-date workbooks) |
 | `data/dsec_timeseries/` | DSEC key-indicator JSON snapshots used for the arrivals series |
@@ -144,7 +147,45 @@ in the proposal).
 
 ---
 
-## 6. Known gaps
+## 6. M3 pipeline: monthly, quarterly and annual analysis
+
+The proposal quotes a single quarterly table and a pooled correlation. `notebooks/cisc7204_pipeline_M3_vivi.ipynb`
+(the M3 pipeline, 72 cells) extends that into three time grains and draws the four analysis layers that were
+computed but never plotted. Section 14 of that notebook does this work; it reads only the CSVs written by
+`scripts/build_period_analysis.py`.
+
+```bash
+# Step 1b - rebuild the period layer and the optional analysis blocks
+python scripts/build_period_analysis.py
+
+# Step 1c - re-run the pipeline notebook (writes Figures 1-13)
+jupyter nbconvert --to notebook --execute --inplace notebooks/cisc7204_pipeline_M3_vivi.ipynb
+```
+
+| Output | Grain | Rows | Content |
+| --- | --- | --- | --- |
+| `monthly_detail_2023_01_2026_09.csv` | month | 45 | every monthly indicator plus YoY, MoM, 3-month moving average, seasonal index, within-year rank |
+| `monthly_seasonality_index.csv` | month of year | 12 | seasonal index on the 2023-2025 mean, with the three annual means behind it |
+| `zone_month_share.csv` | month x zone | 45 | monthly headcount share of the three zones |
+| `quarterly_detail_2023Q1_2026Q3.csv` | quarter | 15 | quarterly panel plus QoQ, YoY, guests per room, annualised arrivals |
+| `annual_alignment_2018_2026.csv` | year | 9 | passenger trips against arrivals, 2018-2026 |
+| `annual_summary_2023_2026.csv` | year | 4 | panel roll-up joined with the zone shares |
+| `annual_zone_share.csv`, `annual_hour_profile.csv`, `annual_month_profile.csv` | year x zone / hour / month | 4 / 4 / 19 | the shape of each year in space, hour of day and month |
+| `optional_event_crowding_summary.csv`, `optional_event_segment_crowding_top20.csv` | event x route | 4 / 20 | Grand Prix crowding against a normal week |
+| `optional_gateways_summary.csv` | gateway | 8 | departures and share of gateway departures |
+| `optional_shuttle_quarterly.csv` | quarter | 32 | hotel / point-to-point shuttle channel |
+| `optional_goldenweek_summary.csv` | holiday year | 24 | Golden Week demand against the month average |
+| `optional_2026_zone_shift.csv`, `optional_2026_hour_shift.csv` | zone / hour | 3 / 24 | 2026 Jan-Sep against the 2023-2025 baseline, in percentage points |
+
+Figures 7-13 (monthly dashboard, seasonality, quarterly evolution, annual alignment, monthly zone share,
+optional blocks, 2026 shift) are drawn by Section 14 of the pipeline notebook into `figures/`.
+
+The correlation window stays frozen at 2023-01..2025-12 in every grain. 2026 is partial wherever it appears
+(9 months at monthly grain, 3 quarters at quarterly grain, Jan-Jul at the hour layer) and is labelled as such.
+
+---
+
+## 7. Known gaps
 
 - `demand_district_hour_panel_2023_2026.csv`, `match_zone_supply_demand.csv` and
   `match_hourly_profile.csv` were produced by exploratory steps that were not saved as
@@ -159,7 +200,7 @@ in the proposal).
 
 ---
 
-## 7. Data sources and access dates
+## 8. Data sources and access dates
 
 All downloads were taken on 4 November 2026. Provenance per file is recorded in
 `Monthly_Bus_Database/source_index.csv` and in the `Note.` line of the proposal's

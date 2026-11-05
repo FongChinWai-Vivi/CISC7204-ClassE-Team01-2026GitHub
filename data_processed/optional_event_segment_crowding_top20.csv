@@ -1,0 +1,21 @@
+﻿route,phase,startStation,endStation,obs,mean_crowd,crowded_share
+3,Grand Prix,2,4,1,4.0,100.0
+3,Grand Prix,5,7,1,5.0,100.0
+3,Grand Prix,8,12,4,3.75,75.0
+3,Grand Prix,6,7,256,2.414,29.688
+3,Grand Prix,7,12,109,2.165,29.358
+3,Grand Prix,5,6,254,2.413,29.134
+3,Normal week,6,7,168,2.435,27.381
+3,Grand Prix,12,13,240,1.971,27.083
+3,Grand Prix,4,5,251,2.371,26.693
+3,Normal week,5,6,170,2.388,26.471
+3,Normal week,8,9,164,2.152,25.61
+3,Normal week,7,8,166,2.295,24.699
+3,Normal week,9,10,165,1.933,23.636
+3,Grand Prix,3,4,255,2.227,23.529
+3,Grand Prix,1,2,248,2.222,22.984
+3,Normal week,12,13,162,1.79,22.84
+3,Normal week,10,11,141,1.858,22.695
+3,Normal week,13,14,165,1.739,22.424
+3,Normal week,4,5,167,2.257,21.557
+3,Normal week,11,12,165,1.77,21.212
