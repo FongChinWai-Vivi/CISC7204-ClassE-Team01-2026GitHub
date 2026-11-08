@@ -29,7 +29,9 @@ notebook.** The two tables further down give that chain file by file.
 Run from the repository root, in this order.
 
 ```bash
-# Step 1 - rebuild the three integrated panels from the raw / intermediate files
+# Step 1 - (optional, legacy) rebuild the three integrated panels from the raw / intermediate files.
+#          The M3 notebook rebuilds the same panels in its own cells, so this is only needed
+#          if the committed files in data_processed/ are removed.
 python scripts/build_panels.py
 
 # Step 2 - rebuild the six figures from data_processed/
@@ -42,6 +44,14 @@ jupyter nbconvert --to notebook --execute notebooks/cisc7204_proposal_figures_co
 
 Step 1 is byte-for-byte reproducible: re-running it overwrites the three panels with
 files identical to the ones committed here (checked with `md5sum` on 2026-11-05).
+
+**The M3 pipeline is one file and needs no helper script.**
+`notebooks/cisc7204_pipeline_M3_vivi.ipynb` builds every panel, the matching layers, the
+period tables, the 24-district geometry and all sixteen figures inside its own cells, and
+displays each figure in the notebook. Run it top to bottom; nothing has to be executed
+beforehand. `scripts/build_period_analysis.py` and `scripts/build_district_map.py` are
+legacy artefacts kept only so the CSVs and the PNG already committed can be traced back to
+the code that first wrote them — the notebook regenerates all of them.
 
 Requirements: Python 3.11 or newer, `pandas`, `numpy`, `matplotlib`, `seaborn`,
 `scipy`, `openpyxl`, plus Jupyter for step 2. No network access is needed; every input
@@ -57,11 +67,11 @@ is already in the repository.
 | `notebooks/cisc7204_proposal_figures_colour.ipynb` | The only figure notebook: draws Figures 1-6 into `figures/` |
 | `figures/fig1_general_trend.png` ... `fig6_workplan.png` | The six figure files embedded in the proposal, in proposal order |
 | `notebooks/cisc7204_pipeline_M3_vivi.ipynb` | The M3 pipeline: cleaning, panels, matching layer, Figures 1-13 (Sections 7 and 14) and the 24-district map with its interactive twin (Section 15) |
-| `scripts/build_period_analysis.py` | Builds the monthly / quarterly / annual tables and the optional analysis blocks read by Section 14 |
+| `scripts/build_period_analysis.py` | Legacy: first wrote the monthly / quarterly / annual tables and the optional blocks. Section 14 of the notebook now derives them itself and rewrites the same CSVs |
 | `figures/fig7_*.png` ... `fig13_*.png` | The seven extra figures drawn by Section 14 - **not** embedded in the proposal |
-| `scripts/build_district_map.py` | Builds the 24-district geometry layer, its indicators and Figure 14 |
+| `scripts/build_district_map.py` | Legacy: first built the 24-district geometry layer, its indicators and Figure 14. Section 15 of the notebook now builds all three from the panel it already holds |
 | `data/geo/stats_zones/` | Source statistical-district polygons (GeoJSON, WGS84), one file per district |
-| `figures/fig14_district_choropleth.png` | The three-panel district map drawn by the script - **not** embedded in the proposal |
+| `figures/fig14_district_choropleth.png` | The three-panel district map, drawn and displayed by Section 15 of the notebook - **not** embedded in the proposal |
 | `reports/district_map_interactive.html` | The standalone interactive district map written by Section 15 |
 | `figures/archive/` | Superseded figures kept for traceability - **not** used by the proposal |
 | `data/mgtodataplus/` | MGTO *Macao Tourism Data Plus* district x hour downloads (year-to-date workbooks) |
@@ -156,18 +166,13 @@ in the proposal).
 ## 6. M3 pipeline: monthly, quarterly and annual analysis
 
 The proposal quotes a single quarterly table and a pooled correlation. `notebooks/cisc7204_pipeline_M3_vivi.ipynb`
-(the M3 pipeline, 80 cells) extends that into three time grains and draws the four analysis layers that were
-computed but never plotted. Section 14 of that notebook does this work; it reads only the CSVs written by
-`scripts/build_period_analysis.py`.
+(the M3 pipeline, 81 cells) extends that into three time grains and draws the four analysis layers that were
+computed but never plotted. Section 14 of that notebook does all of this itself: cell 14.0 derives every table
+from the panels the notebook already holds and writes them to `data_processed/`, so there is no helper script and
+no CSV is read back from disk. Section 15 does the same for the geometry layer.
 
 ```bash
-# Step 1b - rebuild the period layer and the optional analysis blocks
-python scripts/build_period_analysis.py
-
-# Step 1c - rebuild the 24-district geometry layer, its indicators and Figure 14
-python scripts/build_district_map.py
-
-# Step 1d - re-run the pipeline notebook (writes Figures 1-13 and the interactive map)
+# the only step - run the pipeline notebook (writes Figures 1-16, the tables and the interactive map)
 jupyter nbconvert --to notebook --execute --inplace notebooks/cisc7204_pipeline_M3_vivi.ipynb
 ```
 
@@ -207,9 +212,13 @@ The two repositories are merged because `路氹填海區` (43.96% of all headcou
 University of Macau Hengqin campus polygon that also ships there is dropped, since it is not one of the 24 DSEC
 districts and holds no MGTO observations.
 
+Section 15 builds the geometry layer, the district indicators, Figure 14 and the interactive twin from files the
+notebook already has open; the cell below is the whole reproduction step.
+
 ```bash
-# Step 1c - rebuild the geometry layer, the district indicators and Figure 14
-python scripts/build_district_map.py
+# nothing to run before the notebook - Section 15 downloads the polygons if they are missing,
+# merges them, assigns the 586 stops and draws Figures 14-16 in place
+jupyter nbconvert --to notebook --execute --inplace notebooks/cisc7204_pipeline_M3_vivi.ipynb
 ```
 
 | Output | Shape | Content |
