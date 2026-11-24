@@ -1,7 +1,7 @@
 import pandas as pd
 from pathlib import Path
 
-folder = Path(r"C:\Users\user\Documents\cisc7204\Project\Github\CISC7204-ClassE-Team01-2026GitHub\Dataset")
+folder = Path(__file__).resolve().parent / "Dataset"
 markets = ["CN", "HK", "KR", "TW"]
 
 #data cleaning for Visitors_Arrival_byOnday_Overnight
@@ -58,7 +58,7 @@ summary.to_csv(folder / "visitors_2023_2026_summary.csv", index=False, encoding=
 by_market.to_csv(folder / "visitors_2023_2026_by_market_summary.csv", index=False, encoding="utf-8-sig")
 
 # data cleaning for Hotel_occ_byHotelStar
-path_hotel = r"C:\Users\user\Documents\cisc7204\Project\Github\CISC7204-ClassE-Team01-2026GitHub\Dataset\Hotel_Arr_byHotelStar.csv"
+path_hotel = folder / "Hotel_Arr_byHotelStar.csv"
 df1 = pd.read_csv(path_hotel, encoding="utf-8-sig")
 
 df1.columns = df1.columns.str.strip().str.replace(r"\s+", "_", regex=True)
@@ -94,7 +94,7 @@ print(summary.duplicated(["Year", "Month", "Hotel_Establishments"]).sum())
 summary.to_csv(folder / "hotel_Arrival_byHotelStar_summary.csv", index=False, encoding="utf-8-sig")
 
 #data cleaning for hotel occ total
-path_hotel_occ = r"C:\Users\user\Documents\cisc7204\Project\Github\CISC7204-ClassE-Team01-2026GitHub\Dataset\Hotel_occ_total.csv"
+path_hotel_occ = folder / "Hotel_occ_total.csv"
 df2 = pd.read_csv(path_hotel_occ, encoding="utf-8-sig")
 df2.columns = df2.columns.str.strip().str.replace(r"\s+", "_", regex=True)
 

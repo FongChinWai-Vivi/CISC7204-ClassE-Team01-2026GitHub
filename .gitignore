@@ -1,1 +1,12 @@
-﻿~$*
+﻿# --- Word / Office lock files -------------------------------------------------
+~$*
+
+# --- dataset drop folder: not part of the deliverable -------------------------
+extension/
+
+# --- Python and notebook litter ----------------------------------------------
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+temp/
+temp_nbrun.*

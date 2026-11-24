@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Visualizing the Relationship Between Visitor Arrivals, Hotel Occupancy, and Bus Ridership in Macao</title>
+
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="tag">CISC7204 Data Science and Data Visualization &middot; Class E &middot; Team 01</div>
+    <h1>Visualizing the Relationship Between Visitor Arrivals,<br/>Hotel Occupancy, and Bus Ridership in Macao</h1>
+    <p>Interactive companion to the team report. Visitor arrivals, hotel occupancy and public-bus ridership
+       are put on one screen so the supply-demand mismatch can be read at three grains - city, zone and the
+       24 DSEC statistical districts - and at two time grains, the month and the hour of day.</p>
+    <div class="pills">
+      <span class="pill">Data window: 2023-01 to 2026-09 (2026 partial) &middot; hotel occupancy history from 2014</span>
+      <span class="pill">Estimation window: 36 months, 2023-01 to 2025-12</span>
+      <span class="pill">Sources: MGTO Data Plus &middot; DSEC &middot; DSAT</span>
+      <span class="pill">Click a district on the map, a row in the heatmap or a bar to filter &middot; hover to preview &middot; arrow keys step the year &middot; Play cycles 2023-2026 &middot; click a legend item to highlight it across every chart</span>
+    </div>
+  </header>
+
+  <div class="filterbar">
+    <div class="field"><label for="selYear">Year</label><select id="selYear"></select></div>
+    <div class="field"><label for="selZone">Zone</label><select id="selZone"></select></div>
+    <div class="field"><label for="selDistrict">District</label><select id="selDistrict"></select></div>
+    <div class="field"><label for="btnPlay">Auto-cycle</label><button class="btn" id="btnPlay" title="Animate the year filter">&#9654; Play years</button></div>
+    <div class="field"><label>&nbsp;</label><button class="btn" id="btnReset">Reset filters</button></div>
+    <div class="chip" id="hiChip" style="display:none"></div>
+    <div class="scope" id="scopeText"></div>
+  </div>
+
+  <section class="kpis">
+      <div class="kpi"><div class="kpi-v">103.2M</div><div class="kpi-l">Visitor arrivals</div>
+        <div class="kpi-s">36-month window, 2023-01 to 2025-12</div></div>
+      <div class="kpi"><div class="kpi-v">42.5M</div><div class="kpi-l">Hotel guests</div>
+        <div class="kpi-s">same 36-month window</div></div>
+      <div class="kpi"><div class="kpi-v">9.96 &rarr; 5.83</div><div class="kpi-l">Bus trips per visitor</div>
+        <div class="kpi-s">-42% from 2023Q1 to 2025Q4</div></div>
+      <div class="kpi"><div class="kpi-v" id="kpiHhiV">2,229</div><div class="kpi-l">District concentration (HHI)</div>
+        <div class="kpi-s" id="kpiHhiS">equivalent of 4.49 equal districts &middot; top 3 = 62.4%</div></div>
+      <div class="kpi"><div class="kpi-v">85.7%</div><div class="kpi-l">Hotel occupancy rate</div>
+        <div class="kpi-s">36-month mean &middot; peak 94.6% in 2026-02</div></div>
+      <div class="kpi"><div class="kpi-v">0.51</div><div class="kpi-l">Taipa &amp; Cotai supply/demand ratio</div>
+        <div class="kpi-s">vs 1.57 on the Peninsula &middot; 203 headcount per departure</div></div>
+</section>
+
+  <section class="grid">
+    <div class="card span12">
+      <h3>1 &middot; Long-run monthly visitor arrivals, 2015-2026</h3>
+      <p class="sub">Pandemic years are drawn in red and cannot be read as normal demand; the shaded band is the 36-month estimation window used in every correlation reported below.</p>
+      <div id="f_long" class="plot"></div>
+    </div>
+
+    <div class="card span7">
+      <h3>2 &middot; Arrivals and bus passenger trips, monthly</h3>
+      <p class="sub">Arrivals recover year by year, but the ridership line on the right axis does not keep pace - the coupling weakens as the market grows.</p>
+      <div id="f_month" class="plot"></div>
+    </div>
+
+    <div class="card span5">
+      <h3>3 &middot; Bus trips per visitor, quarterly</h3>
+      <p class="sub">The headline ratio falls every quarter: each visitor is served by fewer scheduled trips than the quarter before.</p>
+      <div id="f_quarter" class="plot"></div>
+    </div>
+
+    <div class="card span7">
+      <h3>4 &middot; Visitor arrivals and the hotel occupancy rate<span class="chip" data-chip="1"></span></h3>
+      <p class="sub">Rooms fill as the city fills: the occupancy rate on the right axis tracks visitor arrivals on the left, month by month, so the hotel stock is doing the work of absorbing the crowd.</p>
+      <div id="f_hocc" class="plot"></div>
+    </div>
+
+    <div class="card span5">
+      <h3>5 &middot; Occupancy against bus trips per visitor<span class="chip" data-chip="1"></span></h3>
+      <p class="sub">Each point is one month and the colour is the year. Occupancy pushes to the right across 2023-2026 while ridership per visitor slides down: the rooms fill up, but the bus network does not carry proportionally more.</p>
+      <div id="f_hrel" class="plot"></div>
+    </div>
+
+    <div class="card span6">
+      <h3>6 &middot; Who fills the rooms: hotel guests by hotel class<span class="chip" data-chip="1"></span></h3>
+      <p class="sub">Monthly guest counts split by hotel star rating, straight from the DSEC hotel survey. The 5-star tier dominates the stack, so capacity that ignores it is capacity aimed at a minority of the hotel base.</p>
+      <div id="f_hstar" class="plot"></div>
+    </div>
+
+    <div class="card span6">
+      <h3>7 &middot; The long occupancy record, 2014-2026</h3>
+      <p class="sub">The full DSEC monthly occupancy series: the pandemic collapse, the 2023-2026 climb, and how far the market now sits above the 2019 mean before the buses are planned for it.</p>
+      <div id="f_hhist" class="plot"></div>
+    </div>
+
+    <div class="card span6">
+      <h3>8 &middot; Supply-demand mismatch across the three zones<span class="chip" data-chip="1"></span></h3>
+      <p class="sub">Demand share is compared with the share of scheduled departures and of bus stops. A zone where the demand bar is taller than the supply bars is under-supplied.</p>
+      <div id="f_zone" class="plot"></div>
+    </div>
+
+    <div class="card span6">
+      <h3>9 &middot; Visitor headcount carried per scheduled departure<span class="chip" data-chip="1"></span></h3>
+      <p class="sub">The cleanest single measure of load: how many visitor-hours of demand sit behind each scheduled departure in the zone. Hover for the supply/demand ratio.</p>
+      <div id="f_dep" class="plot"></div>
+    </div>
+
+    <div class="card span12">
+      <h3>10 &middot; Demand and scheduled supply by hour of day<span class="chip" id="hoverChip" style="display:none"></span><span class="chip" data-chip="1"></span></h3>
+      <p class="sub">The red line is the visitor demand share for the current filter; the blue line is the scheduled departure share. Bars are the gap in percentage points - red bars are hours where demand runs ahead of supply.</p>
+      <div id="f_hour" class="plot"></div>
+    </div>
+
+    <div class="card span7">
+      <h3>11 &middot; The 24 DSEC statistical districts<span class="chip" data-chip="1"></span></h3>
+      <div class="head">
+        <p class="sub">The Year / Zone / District filters above drive this map (colours are recomputed for the selected year); pick a Zone or a district with the top filters to spotlight it. Click a district here to filter views 8, 9, 10 and 12.</p>
+        <select id="selMetric">
+          <option value="share">Headcount share (%)</option>
+          <option value="density">Headcount per km&sup2; per month</option>
+          <option value="delta">2026 share shift (pp)</option>
+          <option value="perdep">Headcount per departure</option>
+        </select>
+      </div>
+      <div id="f_map" class="plot"></div>
+    </div>
+
+    <div class="card span5">
+      <h3>12 &middot; District by hour-of-day profile<span class="chip" id="heatCount"></span><span class="chip" data-chip="1"></span></h3>
+      <p class="sub">Each row is rescaled to that district's own daily total, so a small district and Cotai can be read side by side. Click a row to filter.</p>
+      <div id="f_heat" class="plot"></div>
+    </div>
+
+    <div class="card span6">
+      <h3>13 &middot; Seasonality of arrivals, 2023-2025</h3>
+      <p class="sub">Index on the 2023-2025 monthly mean; red bars are the flagged peak months. Capacity planning that ignores this shape under-supplies the peaks.</p>
+      <div id="f_season" class="plot"></div>
+    </div>
+
+    <div class="card span6">
+      <h3>14 &middot; Golden Week daily intensity</h3>
+      <p class="sub">Daily arrivals inside the 1st October Golden Week expressed as a multiple of that month's average day. The shape of the peak is what the bus schedule has to absorb.</p>
+      <div id="f_golden" class="plot"></div>
+    </div>
+
+    <div class="card span12">
+      <h3>15 &middot; What shifted in 2026</h3>
+      <p class="sub">2026 year-to-date against the 2023-2025 baseline: the demand keeps tilting towards Cotai, and the hour-of-day shape barely moves.</p>
+      <div id="f_shift_zone" class="plot"></div>
+      <div id="f_shift_hour" class="plot"></div>
+    </div>
+  </section>
+
+  <footer>
+    <b>How to read this dashboard.</b> Every figure is computed at build time from the cleaned panels in
+    <code>data/</code>, which are the files committed in
+    <code>data_processed/</code> of FongChinWai-Vivi/CISC7204-ClassE-Team01-2026GitHub.
+    Headcount is a stock summed over the panel (2023-01 to 2026-09) and is comparable between districts, never
+    across publications. Density is the only column comparable across district sizes. Supply is stop-level
+    scheduled departures; stops outside the 24 polygons are excluded, not snapped.
+    Demand-side sources: MGTO Macao Tourism Data Plus (district x hour), DSEC visitor arrivals, hotel
+    occupancy and hotel guests. Supply-side sources: DSAT monthly and quarterly ridership and timetable
+    releases, data.gov.mo public bus route and stop export. 2026 is partial in every view that shows it.<br/>
+    Hotel block: <code>hotel_occ_monthly_2023_2026.csv</code>,
+    <code>hotel_guests_by_star_2023_2026.csv</code> and <code>hotel_occ_history_2014_2025.csv</code>, copied
+    from <code>Dataset/</code> of the same team repository (hotel occupancy total, guests by hotel class and
+    the long 2014-2026 occupancy record).<br/>
+    Built with Plotly.js inside a single offline HTML file - no server and no network connection required.
+  </footer>
+</div>
+
+
+
+</body>
+</html>

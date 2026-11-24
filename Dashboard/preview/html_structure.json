@@ -1,0 +1,1215 @@
+{
+ "source_html": "C:\\Users\\07viv\\Desktop\\CISC7204-Team01\\Dashboard\\CISC7204_ClassE_Team01_Dashboard.html",
+ "source_html_bytes": 6420532,
+ "page_title": "Visualizing the Relationship Between Visitor Arrivals, Hotel Occupancy, and Bus Ridership in Macao",
+ "css_file": "C:\\Users\\07viv\\Desktop\\CISC7204-Team01\\Dashboard\\assets\\dashboard.css",
+ "css_bytes": 5510,
+ "css_variables": {
+  "--navy": "#1B4965",
+  "--blue": "#2E86AB",
+  "--sky": "#62B6CB",
+  "--red": "#EE6C4D",
+  "--gold": "#F4A259",
+  "--green": "#3E8914",
+  "--purple": "#7B2CBF",
+  "--ink": "#0E2136",
+  "--muted": "#374B61",
+  "--bg": "#EDF1F6",
+  "--card": "#FFFFFF",
+  "--line": "#E1E8F0"
+ },
+ "filter_controls": [
+  {
+   "id": "selYear",
+   "label": "Year",
+   "options": [
+    "All years (2023-2026)",
+    "2023",
+    "2024",
+    "2025",
+    "2026 (partial)"
+   ],
+   "default": "all"
+  },
+  {
+   "id": "selZone",
+   "label": "Zone",
+   "options": [
+    "All zones",
+    "Macau Peninsula",
+    "Taipa & Cotai",
+    "Coloane"
+   ],
+   "default": "all"
+  },
+  {
+   "id": "selDistrict",
+   "label": "District",
+   "options": [
+    "All 24 districts",
+    "COTAI Reclamation Area (路氹填海區)",
+    "Zona de Aterros do Porto Exterior (新口岸區)",
+    "Novos Aterros do Porto Exterior & Aterros da Baía da Praia Grande (外港及南灣湖新填海區)",
+    "Baixa de Macau (中區)",
+    "Pac On & Taipa Grande (北安及大潭山區)",
+    "Cidade & Hipódromo da Taipa (氹仔舊城及馬場區)",
+    "Patane & São Paulo (沙梨頭及大三巴區)",
+    "Baixa da Taipa (氹仔中心區)",
+    "Areia Preta & Iao Hon (黑沙環及祐漢區)",
+    "Barra/Manduco (下環區)",
+    "Tamagnini Barbosa (台山區)",
+    "Coloane (路環區)",
+    "Novos Aterros da Areia Preta (黑沙環新填海區)",
+    "Barca (新橋區)",
+    "Móng Há & Reservatório (望廈及水塘區)",
+    "Conselheiro Ferreira de Almeida (荷蘭園區)",
+    "Praia Grande & Penha (南西灣及主教山區)",
+    "Horta e Costa & Ouvidor Arriaga (高士德及雅廉訪區)",
+    "Doca do Lamau (林茂塘區)",
+    "Fai Chi Kei (筷子基區)",
+    "Jardins do Oceano & Taipa Pequena (海洋及小潭山區)",
+    "Ilha Verde (青洲區)",
+    "Universidade & Baía de Pac On (大學及北安灣區)",
+    "Ferreira do Amaral (Guia) (東望洋區(松山區))"
+   ],
+   "default": "all"
+  },
+  {
+   "id": "selMetric",
+   "label": "Map metric",
+   "options": [
+    "Headcount share (%)",
+    "Headcount per km² per month",
+    "2026 share shift (pp)",
+    "Headcount per departure"
+   ],
+   "default": "share"
+  },
+  {
+   "id": "btnPlay",
+   "label": "▶ Play years (auto-cycle 2023→2026, 1.7 s/step)"
+  },
+  {
+   "id": "btnReset",
+   "label": "Reset filters"
+  }
+ ],
+ "kpi_cards": [
+  "103.2M Visitor arrivals",
+  "42.5M Visitor-guests",
+  "9.96 → 5.83 Bus trips per visitor",
+  "2,229 District concentration (HHI)",
+  "85.7% Occupancy rate",
+  "0.51 Taipa & Cotai demand/supply"
+ ],
+ "kpi_dynamic": {
+  "kpiHhiV": "HHI value, recomputed when a filter is active",
+  "kpiHhiS": "equivalent district count + top-3 share"
+ },
+ "figure_order": [
+  "f_long",
+  "f_month",
+  "f_quarter",
+  "f_hocc",
+  "f_hrel",
+  "f_hstar",
+  "f_hhist",
+  "f_zone",
+  "f_dep",
+  "f_hour",
+  "f_map",
+  "f_heat",
+  "f_season",
+  "f_golden",
+  "f_shift_zone",
+  "f_shift_hour"
+ ],
+ "cards": [
+  {
+   "fig_ids": [
+    "f_long"
+   ],
+   "fig_id": "f_long",
+   "span": "span12",
+   "texts": [
+    "1 · Long-run monthly visitor arrivals, 2015-2026",
+    "Pandemic years are drawn in red and cannot be read as normal demand; the shaded band is the 36-month estimation window used in every correlation reported below.",
+    "<div"
+   ]
+  },
+  {
+   "fig_ids": [
+    "f_month"
+   ],
+   "fig_id": "f_month",
+   "span": "span7",
+   "texts": [
+    "2 · Arrivals and bus passenger trips, monthly",
+    "Arrivals recover year by year, but the ridership line on the right axis does not keep pace - the coupling weakens as the market grows.",
+    "<div"
+   ]
+  },
+  {
+   "fig_ids": [
+    "f_quarter"
+   ],
+   "fig_id": "f_quarter",
+   "span": "span5",
+   "texts": [
+    "3 · Bus trips per visitor, quarterly",
+    "The headline ratio falls every quarter: each visitor is served by fewer scheduled trips than the quarter before.",
+    "<div"
+   ]
+  },
+  {
+   "fig_ids": [
+    "f_hocc"
+   ],
+   "fig_id": "f_hocc",
+   "span": "span7",
+   "texts": [
+    "4 · Visitor arrivals and the hotel occupancy rate",
+    "Rooms fill as the city fills: the occupancy rate on the right axis tracks visitor arrivals on the left, month by month, so the hotel stock is doing the work of absorbing the crowd.",
+    "<div"
+   ]
+  },
+  {
+   "fig_ids": [
+    "f_hrel"
+   ],
+   "fig_id": "f_hrel",
+   "span": "span5",
+   "texts": [
+    "5 · Occupancy against bus trips per visitor",
+    "Each point is one month and the colour is the year. Occupancy pushes to the right across 2023-2026 while ridership per visitor slides down: the rooms fill up, but the bus network does not carry proportionally more.",
+    "<div"
+   ]
+  },
+  {
+   "fig_ids": [
+    "f_hstar"
+   ],
+   "fig_id": "f_hstar",
+   "span": "span6",
+   "texts": [
+    "6 · Who fills the rooms: hotel guests by hotel class",
+    "Monthly guest counts split by hotel star rating, straight from the DSEC hotel survey. The 5-star tier dominates the stack, so capacity that ignores it is capacity aimed at a minority of the hotel base.",
+    "<div"
+   ]
+  },
+  {
+   "fig_ids": [
+    "f_hhist"
+   ],
+   "fig_id": "f_hhist",
+   "span": "span6",
+   "texts": [
+    "7 · The long occupancy record, 2014-2026",
+    "The full DSEC monthly occupancy series: the pandemic collapse, the 2023-2026 climb, and how far the market now sits above the 2019 mean before the buses are planned for it.",
+    "<div"
+   ]
+  },
+  {
+   "fig_ids": [
+    "f_zone"
+   ],
+   "fig_id": "f_zone",
+   "span": "span6",
+   "texts": [
+    "8 · Supply-demand mismatch across the three zones",
+    "Demand share is compared with the share of scheduled departures and of bus stops. A zone where the demand bar is taller than the supply bars is under-supplied.",
+    "<div"
+   ]
+  },
+  {
+   "fig_ids": [
+    "f_dep"
+   ],
+   "fig_id": "f_dep",
+   "span": "span6",
+   "texts": [
+    "9 · Visitor headcount carried per scheduled departure",
+    "The cleanest single measure of load: how many visitor-hours of demand sit behind each scheduled departure in the zone. Hover for the supply/demand ratio.",
+    "<div"
+   ]
+  },
+  {
+   "fig_ids": [
+    "f_hour"
+   ],
+   "fig_id": "f_hour",
+   "span": "span12",
+   "texts": [
+    "10 · Demand and scheduled supply by hour of day",
+    "The red line is the visitor demand share for the current filter; the blue line is the scheduled departure share. Bars are the gap in percentage points - red bars are hours where demand runs ahead of supply.",
+    "<div"
+   ]
+  },
+  {
+   "fig_ids": [
+    "f_map"
+   ],
+   "fig_id": "f_map",
+   "span": "span7",
+   "texts": [
+    "11 · The 24 DSEC statistical districts",
+    "The Year / Zone / District filters above drive this map (colours are recomputed for the selected year); pick a Zone or a district with the top filters to spotlight it. Click a district here to filter views 8, 9, 10 and 12.",
+    "Headcount share (%)",
+    "Headcount per km² per month",
+    "2026 share shift (pp)",
+    "Headcount per departure",
+    "<div"
+   ]
+  },
+  {
+   "fig_ids": [
+    "f_heat"
+   ],
+   "fig_id": "f_heat",
+   "span": "span5",
+   "texts": [
+    "12 · District by hour-of-day profile",
+    "Each row is rescaled to that district's own daily total, so a small district and Cotai can be read side by side. Click a row to filter.",
+    "<div"
+   ]
+  },
+  {
+   "fig_ids": [
+    "f_season"
+   ],
+   "fig_id": "f_season",
+   "span": "span6",
+   "texts": [
+    "13 · Seasonality of arrivals, 2023-2025",
+    "Index on the 2023-2025 monthly mean; red bars are the flagged peak months. Capacity planning that ignores this shape under-supplies the peaks.",
+    "<div"
+   ]
+  },
+  {
+   "fig_ids": [
+    "f_golden"
+   ],
+   "fig_id": "f_golden",
+   "span": "span6",
+   "texts": [
+    "14 · Golden Week daily intensity",
+    "Daily arrivals inside the 1st October Golden Week expressed as a multiple of that month's average day. The shape of the peak is what the bus schedule has to absorb.",
+    "<div"
+   ]
+  },
+  {
+   "fig_ids": [
+    "f_shift_zone",
+    "f_shift_hour"
+   ],
+   "fig_id": "f_shift_zone",
+   "span": "span12",
+   "texts": [
+    "15 · What shifted in 2026",
+    "2026 year-to-date against the 2023-2025 baseline: the demand keeps tilting towards Cotai, and the hour-of-day shape barely moves.",
+    "<div"
+   ]
+  }
+ ],
+ "figures": [
+  {
+   "fig_id": "f_long",
+   "height": 330,
+   "margin": {
+    "l": 58,
+    "r": 18,
+    "t": 30,
+    "b": 52
+   },
+   "traces": [
+    {
+     "type": "scatter",
+     "name": "2015-2019 (pre-pandemic)",
+     "line": {
+      "line_color": "#1B4965",
+      "dash": null
+     },
+     "mode": "lines",
+     "x_len": 60,
+     "y_len": 60
+    },
+    {
+     "type": "scatter",
+     "name": "2020-2022 (pandemic, red dashed)",
+     "line": {
+      "line_color": "#EE6C4D",
+      "dash": "dash"
+     },
+     "mode": "lines",
+     "x_len": 36,
+     "y_len": 36
+    },
+    {
+     "type": "scatter",
+     "name": "2023-2026 (recovery)",
+     "line": {
+      "line_color": "#2E86AB",
+      "dash": null
+     },
+     "marker": {
+      "marker_color": null
+     },
+     "mode": "lines+markers",
+     "x_len": 45,
+     "y_len": 45
+    }
+   ],
+   "xaxis": {},
+   "yaxis": {
+    "title": {
+     "text": "Visitor arrivals (million / month)"
+    }
+   }
+  },
+  {
+   "fig_id": "f_month",
+   "height": 330,
+   "margin": {
+    "l": 58,
+    "r": 58,
+    "t": 30,
+    "b": 40
+   },
+   "traces": [
+    {
+     "type": "bar",
+     "name": "Visitor arrivals (M, left)",
+     "marker": {
+      "marker_color": "#62B6CB"
+     },
+     "x_len": 45,
+     "y_len": 45
+    },
+    {
+     "type": "scatter",
+     "name": "Bus passenger trips (M, right)",
+     "line": {
+      "line_color": "#1B4965",
+      "dash": null
+     },
+     "marker": {
+      "marker_color": null
+     },
+     "mode": "lines+markers",
+     "x_len": 45,
+     "y_len": 45
+    },
+    {
+     "type": "scatter",
+     "name": "Trips per visitor (right)",
+     "line": {
+      "line_color": "#EE6C4D",
+      "dash": "dot"
+     },
+     "mode": "lines",
+     "x_len": 45,
+     "y_len": 45
+    }
+   ],
+   "xaxis": {},
+   "yaxis": {
+    "title": {
+     "text": "Visitor arrivals (million)"
+    },
+    "range": [
+     0,
+     5.28412614
+    ]
+   },
+   "yaxis2": {
+    "title": {
+     "text": "Bus passenger trips (million)"
+    }
+   }
+  },
+  {
+   "fig_id": "f_quarter",
+   "height": 330,
+   "margin": {
+    "l": 58,
+    "r": 18,
+    "t": 30,
+    "b": 46
+   },
+   "traces": [
+    {
+     "type": "bar",
+     "name": "Bus trips per visitor",
+     "marker": {
+      "marker_color": [
+       "#2E86AB",
+       "#2E86AB",
+       "#2E86AB",
+       "#2E86AB",
+       "#2E86AB",
+       "#2E86AB",
+       "#2E86AB",
+       "#2E86AB",
+       "#2E86AB",
+       "#2E86AB",
+       "#2E86AB",
+       "#2E86AB",
+       "#8D99AE",
+       "#8D99AE",
+       "#8D99AE"
+      ]
+     },
+     "x_len": 15,
+     "y_len": 15
+    },
+    {
+     "type": "scatter",
+     "name": null,
+     "line": {
+      "line_color": "#1B4965",
+      "dash": null
+     },
+     "marker": {
+      "marker_color": null
+     },
+     "mode": "lines+markers",
+     "x_len": 15,
+     "y_len": 15
+    }
+   ],
+   "xaxis": {},
+   "yaxis": {
+    "title": {
+     "text": "Bus trips per visitor"
+    }
+   }
+  },
+  {
+   "fig_id": "f_hocc",
+   "height": 356,
+   "margin": {
+    "l": 58,
+    "r": 26,
+    "t": 40,
+    "b": 52
+   },
+   "traces": [
+    {
+     "type": "bar",
+     "name": "Visitor arrivals (million, left)",
+     "marker": {
+      "marker_color": "#62B6CB"
+     },
+     "x_len": 45,
+     "y_len": 45
+    },
+    {
+     "type": "scatter",
+     "name": "Hotel occupancy rate (%, right)",
+     "line": {
+      "line_color": "#EE6C4D",
+      "dash": null
+     },
+     "marker": {
+      "marker_color": "#EE6C4D"
+     },
+     "mode": "lines+markers",
+     "x_len": 45,
+     "y_len": 45
+    }
+   ],
+   "xaxis": {},
+   "yaxis": {
+    "title": {
+     "text": "Visitor arrivals (million)"
+    },
+    "range": [
+     0,
+     5.46324906
+    ]
+   },
+   "yaxis2": {
+    "title": {
+     "text": "Hotel occupancy rate (%)"
+    },
+    "range": [
+     40,
+     100
+    ]
+   }
+  },
+  {
+   "fig_id": "f_hrel",
+   "height": 356,
+   "margin": {
+    "l": 58,
+    "r": 26,
+    "t": 40,
+    "b": 52
+   },
+   "traces": [
+    {
+     "type": "scatter",
+     "name": "2023",
+     "marker": {
+      "marker_color": "#62B6CB"
+     },
+     "mode": "markers",
+     "x_len": 12,
+     "y_len": 12,
+     "customdata_len": 12
+    },
+    {
+     "type": "scatter",
+     "name": "2024",
+     "marker": {
+      "marker_color": "#2E86AB"
+     },
+     "mode": "markers",
+     "x_len": 12,
+     "y_len": 12,
+     "customdata_len": 12
+    },
+    {
+     "type": "scatter",
+     "name": "2025",
+     "marker": {
+      "marker_color": "#1B4965"
+     },
+     "mode": "markers",
+     "x_len": 12,
+     "y_len": 12,
+     "customdata_len": 12
+    },
+    {
+     "type": "scatter",
+     "name": "2026",
+     "marker": {
+      "marker_color": "#F4A259"
+     },
+     "mode": "markers",
+     "x_len": 9,
+     "y_len": 9,
+     "customdata_len": 9
+    }
+   ],
+   "xaxis": {
+    "title": {
+     "text": "Hotel occupancy rate (%)"
+    }
+   },
+   "yaxis": {
+    "title": {
+     "text": "Bus trips per visitor"
+    }
+   }
+  },
+  {
+   "fig_id": "f_hstar",
+   "height": 356,
+   "margin": {
+    "l": 58,
+    "r": 26,
+    "t": 40,
+    "b": 52
+   },
+   "traces": [
+    {
+     "type": "bar",
+     "name": "2-Star hotels",
+     "marker": {
+      "marker_color": "#62B6CB"
+     },
+     "x_len": 45,
+     "y_len": 45
+    },
+    {
+     "type": "bar",
+     "name": "3-Star hotels",
+     "marker": {
+      "marker_color": "#2E86AB"
+     },
+     "x_len": 45,
+     "y_len": 45
+    },
+    {
+     "type": "bar",
+     "name": "4-Star hotels",
+     "marker": {
+      "marker_color": "#1B4965"
+     },
+     "x_len": 45,
+     "y_len": 45
+    },
+    {
+     "type": "bar",
+     "name": "5-Star hotels",
+     "marker": {
+      "marker_color": "#F4A259"
+     },
+     "x_len": 45,
+     "y_len": 45
+    }
+   ],
+   "xaxis": {},
+   "yaxis": {
+    "title": {
+     "text": "Hotel guests per month"
+    }
+   }
+  },
+  {
+   "fig_id": "f_hhist",
+   "height": 356,
+   "margin": {
+    "l": 58,
+    "r": 26,
+    "t": 40,
+    "b": 52
+   },
+   "traces": [
+    {
+     "type": "scatter",
+     "name": "Hotel occupancy rate",
+     "line": {
+      "line_color": "#1B4965",
+      "dash": null
+     },
+     "mode": "lines",
+     "x_len": 153,
+     "y_len": 153
+    }
+   ],
+   "xaxis": {},
+   "yaxis": {
+    "title": {
+     "text": "Occupancy rate (%)"
+    },
+    "range": [
+     0,
+     100
+    ]
+   }
+  },
+  {
+   "fig_id": "f_zone",
+   "height": 330,
+   "margin": {
+    "l": 58,
+    "r": 18,
+    "t": 30,
+    "b": 46
+   },
+   "traces": [
+    {
+     "type": "bar",
+     "name": "Visitor demand",
+     "marker": {
+      "marker_color": "#EE6C4D"
+     },
+     "x_len": 3,
+     "y_len": 3
+    },
+    {
+     "type": "bar",
+     "name": "Scheduled departures",
+     "marker": {
+      "marker_color": "#2E86AB"
+     },
+     "x_len": 3,
+     "y_len": 3
+    },
+    {
+     "type": "bar",
+     "name": "Bus stops",
+     "marker": {
+      "marker_color": "#62B6CB"
+     },
+     "x_len": 3,
+     "y_len": 3
+    }
+   ],
+   "xaxis": {},
+   "yaxis": {
+    "title": {
+     "text": "Share of city total (%)"
+    },
+    "range": [
+     0,
+     80
+    ]
+   }
+  },
+  {
+   "fig_id": "f_dep",
+   "height": 330,
+   "margin": {
+    "l": 120,
+    "r": 40,
+    "t": 30,
+    "b": 46
+   },
+   "traces": [
+    {
+     "type": "bar",
+     "name": null,
+     "marker": {
+      "marker_color": [
+       "#2E86AB",
+       "#EE6C4D",
+       "#3E8914"
+      ]
+     },
+     "x_len": 3,
+     "y_len": 3,
+     "customdata_len": 3
+    }
+   ],
+   "xaxis": {
+    "title": {
+     "text": "Visitor headcount per scheduled departure (2026 H1)"
+    },
+    "range": [
+     0,
+     250
+    ]
+   },
+   "yaxis": {
+    "autorange": "reversed"
+   }
+  },
+  {
+   "fig_id": "f_hour",
+   "height": 360,
+   "margin": {
+    "l": 58,
+    "r": 58,
+    "t": 30,
+    "b": 46
+   },
+   "traces": [
+    {
+     "type": "scatter",
+     "name": "Visitor demand share (all periods)",
+     "line": {
+      "line_color": "#8D99AE",
+      "dash": "dot"
+     },
+     "mode": "lines",
+     "x_len": 24,
+     "y_len": 24
+    },
+    {
+     "type": "scatter",
+     "name": "Visitor demand share (filtered)",
+     "line": {
+      "line_color": "#EE6C4D",
+      "dash": null
+     },
+     "mode": "lines",
+     "x_len": 24,
+     "y_len": 24
+    },
+    {
+     "type": "scatter",
+     "name": "Scheduled departures (weekday)",
+     "line": {
+      "line_color": "#2E86AB",
+      "dash": null
+     },
+     "mode": "lines",
+     "x_len": 24,
+     "y_len": 24
+    },
+    {
+     "type": "scatter",
+     "name": "Scheduled departures (weekend)",
+     "line": {
+      "line_color": "#62B6CB",
+      "dash": "dash"
+     },
+     "mode": "lines",
+     "x_len": 24,
+     "y_len": 24
+    },
+    {
+     "type": "bar",
+     "name": "Gap vs weekday supply (pp)",
+     "marker": {
+      "marker_color": [
+       "#EE6C4D",
+       "#EE6C4D",
+       "#EE6C4D",
+       "#EE6C4D",
+       "#EE6C4D",
+       "#EE6C4D",
+       "#3E8914",
+       "#3E8914",
+       "#3E8914",
+       "#3E8914",
+       "#3E8914",
+       "#3E8914",
+       "#EE6C4D",
+       "#EE6C4D",
+       "#EE6C4D",
+       "#3E8914",
+       "#3E8914",
+       "#3E8914",
+       "#3E8914",
+       "#3E8914",
+       "#EE6C4D",
+       "#EE6C4D",
+       "#EE6C4D",
+       "#EE6C4D"
+      ]
+     },
+     "x_len": 24,
+     "y_len": 24
+    }
+   ],
+   "xaxis": {
+    "title": {
+     "text": "Hour of day"
+    }
+   },
+   "yaxis": {
+    "title": {
+     "text": "Share of daily total (%)"
+    }
+   },
+   "yaxis2": {
+    "title": {
+     "text": "Gap (percentage points)"
+    },
+    "range": [
+     -8,
+     8
+    ]
+   }
+  },
+  {
+   "fig_id": "f_map",
+   "height": 470,
+   "margin": {
+    "l": 6,
+    "r": 6,
+    "t": 6,
+    "b": 6
+   },
+   "traces": [
+    {
+     "type": "choropleth",
+     "name": null,
+     "colorscale": {
+      "colorscale": "#08306B",
+      "marker_color": null
+     },
+     "marker": {
+      "marker_color": null
+     },
+     "z_len": 24,
+     "locations_len": 24,
+     "customdata_len": 24
+    }
+   ]
+  },
+  {
+   "fig_id": "f_heat",
+   "height": 470,
+   "margin": {
+    "l": 150,
+    "r": 10,
+    "t": 10,
+    "b": 44
+   },
+   "traces": [
+    {
+     "type": "heatmap",
+     "name": null,
+     "colorscale": {
+      "colorscale": "rgb(128,0,38)",
+      "marker_color": null
+     },
+     "x_len": 24,
+     "y_len": 24,
+     "z_len": 24
+    }
+   ],
+   "xaxis": {
+    "title": {
+     "text": "Hour of day"
+    }
+   },
+   "yaxis": {
+    "autorange": "reversed"
+   }
+  },
+  {
+   "fig_id": "f_season",
+   "height": 330,
+   "margin": {
+    "l": 58,
+    "r": 18,
+    "t": 30,
+    "b": 46
+   },
+   "traces": [
+    {
+     "type": "bar",
+     "name": "Seasonal index (2023-2025 mean = 100)",
+     "marker": {
+      "marker_color": [
+       "#62B6CB",
+       "#62B6CB",
+       "#62B6CB",
+       "#62B6CB",
+       "#62B6CB",
+       "#62B6CB",
+       "#EE6C4D",
+       "#EE6C4D",
+       "#62B6CB",
+       "#EE6C4D",
+       "#62B6CB",
+       "#EE6C4D"
+      ]
+     },
+     "x_len": 12,
+     "y_len": 12
+    }
+   ],
+   "xaxis": {
+    "title": {
+     "text": "Month of year"
+    }
+   },
+   "yaxis": {
+    "title": {
+     "text": "Seasonal index"
+    },
+    "range": [
+     80,
+     120
+    ]
+   }
+  },
+  {
+   "fig_id": "f_golden",
+   "height": 330,
+   "margin": {
+    "l": 58,
+    "r": 18,
+    "t": 30,
+    "b": 46
+   },
+   "traces": [
+    {
+     "type": "scatter",
+     "name": "2019",
+     "line": {
+      "line_color": "#8D99AE",
+      "dash": null
+     },
+     "marker": {
+      "marker_color": null
+     },
+     "mode": "lines+markers",
+     "x_len": 7,
+     "y_len": 7,
+     "customdata_len": 7
+    },
+    {
+     "type": "scatter",
+     "name": "2023",
+     "line": {
+      "line_color": "#62B6CB",
+      "dash": null
+     },
+     "marker": {
+      "marker_color": null
+     },
+     "mode": "lines+markers",
+     "x_len": 8,
+     "y_len": 8,
+     "customdata_len": 8
+    },
+    {
+     "type": "scatter",
+     "name": "2024",
+     "line": {
+      "line_color": "#2E86AB",
+      "dash": null
+     },
+     "marker": {
+      "marker_color": null
+     },
+     "mode": "lines+markers",
+     "x_len": 7,
+     "y_len": 7,
+     "customdata_len": 7
+    },
+    {
+     "type": "scatter",
+     "name": "2025",
+     "line": {
+      "line_color": "#1B4965",
+      "dash": null
+     },
+     "marker": {
+      "marker_color": null
+     },
+     "mode": "lines+markers",
+     "x_len": 8,
+     "y_len": 8,
+     "customdata_len": 8
+    },
+    {
+     "type": "scatter",
+     "name": "2026 Spring Festival (partial year)",
+     "line": {
+      "line_color": "#F4A259",
+      "dash": "dot"
+     },
+     "marker": {
+      "marker_color": null
+     },
+     "mode": "lines+markers",
+     "x_len": 9,
+     "y_len": 9,
+     "customdata_len": 9
+    }
+   ],
+   "xaxis": {
+    "title": {
+     "text": "Day of Golden Week"
+    }
+   },
+   "yaxis": {
+    "title": {
+     "text": "Daily arrivals / month average"
+    }
+   }
+  },
+  {
+   "fig_id": "f_shift_zone",
+   "height": 300,
+   "margin": {
+    "l": 58,
+    "r": 22,
+    "t": 30,
+    "b": 46
+   },
+   "traces": [
+    {
+     "type": "bar",
+     "name": "Zone share shift (pp)",
+     "marker": {
+      "marker_color": [
+       "#3E8914",
+       "#EE6C4D",
+       "#3E8914"
+      ]
+     },
+     "x_len": 3,
+     "y_len": 3
+    }
+   ],
+   "xaxis": {
+    "title": {
+     "text": "Zone"
+    }
+   },
+   "yaxis": {
+    "title": {
+     "text": "Share shift, 2026 vs baseline (pp)"
+    },
+    "range": [
+     -2.6,
+     2.9
+    ]
+   }
+  },
+  {
+   "fig_id": "f_shift_hour",
+   "height": 340,
+   "margin": {
+    "l": 58,
+    "r": 22,
+    "t": 30,
+    "b": 46
+   },
+   "traces": [
+    {
+     "type": "bar",
+     "name": "Hour share shift (pp)",
+     "marker": {
+      "marker_color": [
+       "#EE6C4D",
+       "#EE6C4D",
+       "#EE6C4D",
+       "#EE6C4D",
+       "#EE6C4D",
+       "#EE6C4D",
+       "#EE6C4D",
+       "#EE6C4D",
+       "#EE6C4D",
+       "#EE6C4D",
+       "#EE6C4D",
+       "#3E8914",
+       "#3E8914",
+       "#3E8914",
+       "#3E8914",
+       "#3E8914",
+       "#3E8914",
+       "#3E8914",
+       "#3E8914",
+       "#3E8914",
+       "#3E8914",
+       "#3E8914",
+       "#EE6C4D",
+       "#EE6C4D"
+      ]
+     },
+     "x_len": 24,
+     "y_len": 24
+    }
+   ],
+   "xaxis": {
+    "title": {
+     "text": "Hour of day"
+    }
+   },
+   "yaxis": {
+    "title": {
+     "text": "Share shift (pp)"
+    }
+   }
+  }
+ ],
+ "plotly_config": {
+  "responsive": true,
+  "displaylogo": false,
+  "modeBarButtonsToRemove": [
+   "select2d",
+   "lasso2d",
+   "autoScale2d",
+   "toggleSpikelines"
+  ],
+  "toImageButtonOptions": {
+   "format": "png",
+   "filename": "cisc7204-team01-chart",
+   "scale": 2
+  }
+ },
+ "interactions_js": {
+  "fillSelects": "build Year/Zone/District options",
+  "filteredRows": "row subset by year/zone/district from panel P",
+  "hourProfile": "24-hour demand share (v/total*100)",
+  "heatFromRows": "per-district hour share (row-normalised %, districts sorted by total)",
+  "refreshHotel": "re-slice f_hocc / f_hrel / f_hstar by year",
+  "applyMap": "rebuild choropleth z for share/density/delta/perdep",
+  "highlightZone": "zone highlight (bar opacity) + chips",
+  "updateHHI": "HHI + equivalent districts + top-3 share",
+  "togglePlay": "auto-cycle years, 1.7 s interval",
+  "pickDistrict/pickZone": "click map/heat/bar to filter"
+ }
+}

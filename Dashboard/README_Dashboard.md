@@ -38,10 +38,10 @@ Open the HTML directly:
 start "" "CISC7204_ClassE_Team01_Dashboard.html"
 ```
 
-Rebuild after a data refresh (Windows, Anaconda Python):
+Rebuild after a data refresh:
 
 ```
-C:\Users\lenovo\anaconda3\python.exe build_dashboard.py
+python build_dashboard.py
 ```
 
 Requirements: `pandas`, `numpy`, `plotly` (tested with pandas 3.0.3, plotly 6.7.0).

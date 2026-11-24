@@ -1,0 +1,140 @@
+/* Dash control overrides - keeps the port pixel-close to the static HTML page.
+   The static page uses native <select> elements; dcc.Dropdown is a react-select
+   widget, so its internals are restyled to match the original select box. */
+
+.dash-dd {
+  min-width: 170px;
+  font-size: 13px;
+  font-family: inherit;
+}
+
+/* a native <select> grows to its longest option; the district list is the long
+   one in the static page (567px wide, which pushes the scope text onto a second
+   filter row). Pin it here so the filter bar keeps the same height. */
+#selDistrict.dash-dd {
+  width: 567px;
+  min-width: 567px;
+}
+
+.dash-dd .Select-control,
+.dash-dd .Select__control {
+  min-height: 34px;
+  height: 34px;
+  border: 1px solid var(--line);
+  background: #fff;
+  border-radius: 9px;
+  box-shadow: none;
+  cursor: pointer;
+  font-size: 13px;
+  color: var(--ink);
+  font-family: inherit;
+  padding: 0 28px 0 10px;
+}
+
+.dash-dd .Select-control:hover,
+.dash-dd .Select__control:hover {
+  border-color: var(--sky);
+  box-shadow: none;
+}
+
+.dash-dd .is-focused:not(.is-open) > .Select-control,
+.dash-dd .Select__control--is-focused {
+  border-color: var(--sky);
+  box-shadow: 0 0 0 1px var(--sky);
+}
+
+.dash-dd .Select-value,
+.dash-dd .Select-value-label,
+.dash-dd .Select__single-value,
+.dash-dd .Select__value-container {
+  line-height: 32px;
+  font-size: 13px;
+  color: var(--ink);
+  padding: 0;
+}
+
+.dash-dd .Select-placeholder,
+.dash-dd .Select__placeholder {
+  line-height: 32px;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.dash-dd .Select-arrow,
+.dash-dd .Select__indicator {
+  border-color: #5B6B7C transparent transparent;
+  color: #5B6B7C;
+}
+
+.dash-dd .Select-menu-outer,
+.dash-dd .Select__menu {
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  box-shadow: 0 8px 20px rgba(18, 38, 58, .14);
+  font-size: 13px;
+  z-index: 60;
+  margin-top: 4px;
+}
+
+.dash-dd .VirtualizedSelectOption,
+.dash-dd .Select__option {
+  padding: 6px 11px;
+  font-size: 13px;
+  color: var(--ink);
+}
+
+.dash-dd .VirtualizedSelectFocusedOption,
+.dash-dd .Select__option--is-focused {
+  background: #EAF2F9;
+  color: var(--ink);
+}
+
+.dash-dd .Select__option--is-selected {
+  background: var(--navy);
+  color: #fff;
+}
+
+/* the map-metric dropdown lives inside the card head of Fig 11 */
+.card .head .dash-dd {
+  min-width: 210px;
+  font-size: 12px;
+}
+
+.card .head .dash-dd .Select-control,
+.card .head .dash-dd .Select__control {
+  height: 30px;
+  min-height: 30px;
+}
+
+.card .head .dash-dd .Select-value,
+.card .head .dash-dd .Select__single-value,
+.card .head .dash-dd .Select-value-label,
+.card .head .dash-dd .Select__value-container,
+.card .head .dash-dd .Select-placeholder,
+.card .head .dash-dd .Select__placeholder {
+  line-height: 28px;
+  font-size: 12px;
+}
+
+/* graphs keep the flow height the static figures were built with */
+.plot,
+.plot .dash-graph,
+.plot .js-plotly-plot {
+  width: 100%;
+}
+
+.plot .dash-graph,
+.plot .js-plotly-plot {
+  height: 100%;
+}
+
+.plot .js-plotly-plot .plot-container,
+.plot .js-plotly-plot .svg-container {
+  height: 100% !important;
+  width: 100% !important;
+}
+
+/* the replicated body is dropped into the Dash root without extra box */
+#page-root {
+  display: contents;
+}
