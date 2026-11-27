@@ -4557,12 +4557,18 @@ function refreshLinked(){
                                          : ((D[+state.district] || {}).en || String(state.district));
   const nDist = new Set(rowsUI.map(i=>P.d[i])).size;
   const isDefault = state.year==="all" && state.zone==="all" && state.district==="all";
+  const hvSel = clampHour(state.hour);
+  const hintTxt = hvSel >= 0
+     ? (isDefault
+        ? "Hour slice " + pad2(hvSel) + ":00 &rarr; re-drawn: Fig 8, 9, 10, 11, 12 and the HHI card"
+        : "Filter active &rarr; re-drawn: Fig 4, 5, 6, 8, 9, 10, 11, 12 &middot; hour slice " + pad2(hvSel) + ":00")
+     : (isDefault ? "No filter applied - showing the whole panel"
+        : "Filter active &rarr; re-drawn: Fig 4, 5, 6, 8, 9, 10, 11, 12");
   el("scopeText").innerHTML = `<b>${yearTxt}</b> &middot; <b>${distTxt}</b><br>
      ${(total/1e6).toFixed(2)}M visitor headcount rows &middot; ${(total/all*100).toFixed(1)}% of the full panel
      &middot; ${nDist} district${nDist===1?"":"s"} in scope
      ${state.district!=="all" ? "&middot; share of city total "+D[+state.district].share.toFixed(2)+"%":""}
-     <br><span class="scopeHint">${isDefault ? "No filter applied - showing the whole panel"
-        : "Filter active &rarr; re-drawn: Fig 4, 5, 6, 8, 9, 10, 11, 12"}</span>`;
+     <br><span class="scopeHint">${hintTxt}</span>`;
 
   applyMap();
   highlightZone();
