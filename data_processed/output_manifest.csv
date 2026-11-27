@@ -21,7 +21,6 @@ match_event_segment_crowding.csv,processed,2.9
 match_gateways.csv,processed,0.6
 match_hourly_profile.csv,processed,0.9
 match_zone_supply_demand.csv,processed,0.3
-mgto_district_hour_master_2023_01_2026_09.csv,processed,1969.0
 mgto_quarter_district_2023Q1_2026Q3.csv,processed,13.4
 mgto_quarter_hour_2023Q1_2026Q3.csv,processed,7.4
 monthly_detail_2023_01_2026_09.csv,processed,7.4
