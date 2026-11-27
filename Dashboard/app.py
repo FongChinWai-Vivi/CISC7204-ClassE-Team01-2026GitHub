@@ -229,8 +229,13 @@ def year_share(year):
     return [v / allv * 100 for v in tot]
 
 
-def hhi_texts(year, zone, district):
-    """Right-hand KPI card: concentration index of the districts in scope."""
+def hhi_texts(year, zone, district, rows=None, hour=None):
+    """Right-hand KPI card: concentration index of the districts in scope.
+
+    With an hour selected the index is recomputed on that hour's headcount, so the
+    card answers "how concentrated is demand at 14:00", not "over the whole day".
+    """
+    hour = _clamp_hour(hour)
     kpi_hhi = KPI0["hhi"]
     default_v = "{:,}".format(int(round(kpi_hhi)))
     default_s = "equivalent of %.2f equal districts \u00b7 top 3 = %.1f%%" % (
@@ -240,12 +245,17 @@ def hhi_texts(year, zone, district):
         _as_year(year) is None
         and zone in (None, "", "all")
         and district in (None, "", "all")
+        and hour < 0
     )
     if is_default:
         return default_v, default_s
 
     mask = scope_mask(zone, district)
-    raw = [v if mask[i] else 0.0 for i, v in enumerate(year_share(year))]
+    if hour >= 0 and rows is not None:
+        base = hour_share(rows, hour)
+    else:
+        base = year_share(year)
+    raw = [v if mask[i] else 0.0 for i, v in enumerate(base)]
     total = sum(raw)
     if not total > 0:
         return default_v, default_s
@@ -254,6 +264,8 @@ def hhi_texts(year, zone, district):
     top3 = sum(sorted(pr, reverse=True)[:3]) * 100
     value = "{:,}".format(int(round(hhi)))
     sub = "equivalent of %.2f equal districts \u00b7 top 3 = %.1f%%" % (10000 / hhi, top3)
+    if hour >= 0:
+        sub = "at %02d:00 \u00b7 " % hour + sub
     if _as_year(year) is not None:
         sub += " \u00b7 %s only" % year
     return value, sub
@@ -286,14 +298,212 @@ def _clone(fig_id):
     return copy.deepcopy(FIGS[fig_id])
 
 
-def rebuild_hour(rows):
+# --------------------------------------------------------------------------
+# Hour-of-day slice
+# --------------------------------------------------------------------------
+HOUR_ALL = -1                    # far-left notch of the slider: no hour slice
+HOUR_DEFAULT = HOUR_ALL
+HOUR_ACCENT = "#B2182B"
+HOUR_TOPK = 3                    # districts that lead at the selected hour
+GAP_AHEAD = "#EE6C4D"            # demand ahead of the scheduled supply
+GAP_SLACK = "#3E8914"            # supply ahead of the demand
+
+_SUPPLY = PAYLOAD.get("hourMatch") or {}
+SUP_WD = _SUPPLY.get("supply_share_weekday_pct") or [0.0] * 24
+SUP_WE = _SUPPLY.get("supply_share_weekend_pct") or [0.0] * 24
+_ZONE_MATCH = PAYLOAD.get("zoneMatch") or {}
+
+
+def _clamp_hour(hour):
+    """Slider value -> -1 (all day) or an int in 0..23."""
+    if hour is None:
+        return HOUR_ALL
+    try:
+        value = int(hour)
+    except (TypeError, ValueError):
+        return HOUR_ALL
+    return max(HOUR_ALL, min(23, value))
+
+
+def hour_rows(rows, hour):
+    """Panel rows inside the selected hour; the all-day notch keeps every row."""
+    hour = _clamp_hour(hour)
+    if hour < 0:
+        return rows
+    ph = P["h"]
+    return [i for i in rows if ph[i] == hour]
+
+
+def _hour_head(rows):
+    """Per-district headcount inside `rows`, plus the scope total."""
+    head, total = {}, 0.0
+    pd, pv = P["d"], P["v"]
+    for i in rows:
+        d = pd[i]
+        head[d] = head.get(d, 0.0) + pv[i]
+        total += pv[i]
+    return head, total
+
+
+def hour_share(rows, hour=None):
+    """Share (%) each district takes inside the selected hour's demand."""
+    head, total = _hour_head(hour_rows(rows, hour))
+    out = [0.0] * len(D)
+    if total > 0:
+        for d, v in head.items():
+            out[d] = v / total * 100
+    return out
+
+
+def hour_rank(rows, hour):
+    """1-based rank of the selected hour among the 24 hours of the scope."""
+    hour = _clamp_hour(hour)
+    if hour < 0:
+        return 0
+    profile = hour_profile(rows)
+    order = sorted(range(24), key=lambda i: (-profile[i], i))
+    return order.index(hour) + 1
+
+
+def hour_leaders(rows, hour, k=HOUR_TOPK):
+    """Districts carrying the most demand at the selected hour."""
+    head, _total = _hour_head(hour_rows(rows, hour))
+    order = sorted(head, key=lambda d: (-head[d], D[d]["en"]))
+    return order[:k]
+
+
+def hour_focus_profile(rows, hour):
+    """Demand curve of the districts that lead at `hour` - the re-cut Fig 10 line."""
+    hour = _clamp_hour(hour)
+    if hour < 0:
+        return hour_profile(rows)
+    leaders = set(hour_leaders(rows, hour))
+    sub = [i for i in rows if P["d"][i] in leaders] if leaders else []
+    return hour_profile(sub) if sub else hour_profile(rows)
+
+
+def hour_gap_profile(rows, hour):
+    """Scheduled weekday supply minus demand, in percentage points."""
+    demand = hour_focus_profile(rows, hour)
+    return [round(SUP_WD[i] - demand[i], 3) for i in range(24)]
+
+
+def rebuild_hour(rows, hour=None):
+    """Fig 10 demand against the scheduled supply.
+
+    All day (hour < 0): the 24-hour curve of the current filter; the gap bars are
+    rebuilt from those same rows so both series always agree.
+    Hour focus (0..23): the demand curve is re-cut to the districts that lead at
+    that hour, the hour is zoomed in, accented, and the annotation carries that
+    hour's own share, rank and gap.
+    """
+    hour = _clamp_hour(hour)
     fig = _clone("f_hour")
-    if len(fig["data"]) > 1:
-        fig["data"][1]["y"] = hour_profile(rows)
+    data = fig["data"]
+    demand = hour_focus_profile(rows, hour)
+    gap = hour_gap_profile(rows, hour)
+    if len(data) > 1:
+        data[1]["y"] = demand
+        if hour >= 0:
+            data[1]["name"] = "Visitor demand share (leaders at %02d:00)" % hour
+    bar_i = next((i for i, t in enumerate(data) if t.get("type") == "bar"), None)
+    if bar_i is not None:
+        data[bar_i]["y"] = gap
+        marker = dict(data[bar_i].get("marker") or {})
+        marker["color"] = [GAP_AHEAD if v < 0 else GAP_SLACK for v in gap]
+        data[bar_i]["marker"] = marker
+    if hour < 0:
+        return fig
+
+    for i in range(len(data)):
+        if i in (1, bar_i):
+            continue
+        data[i]["opacity"] = 0.25
+
+    share = hour_profile(rows)
+    _head, total = _hour_head(hour_rows(rows, hour))
+    layout = fig["layout"]
+    layout["shapes"] = [{
+        "type": "line", "xref": "x", "yref": "paper",
+        "x0": hour, "x1": hour, "y0": 0, "y1": 1,
+        "line": {"color": HOUR_ACCENT, "width": 2, "dash": "dot"},
+    }]
+    layout["annotations"] = [{
+        "xref": "paper", "yref": "paper", "x": 0.0, "y": 1.10,
+        "xanchor": "left", "yanchor": "bottom", "showarrow": False, "align": "left",
+        "font": {"size": 10, "color": HOUR_ACCENT},
+        "text": ("%02d:00 slice &middot; %.2f%% of the day (rank %d/24) &middot; "
+                 "%.2fM headcount &middot; gap %+.2f pp"
+                 % (hour, share[hour], hour_rank(rows, hour), total / 1e6, gap[hour])),
+    }]
+    xaxis = dict(layout.get("xaxis") or {})
+    xaxis["range"] = [max(-0.6, hour - 2.6), min(23.6, hour + 2.6)]
+    layout["xaxis"] = xaxis
     return fig
 
 
-def rebuild_heat(rows):
+def _hour_ranking(rows, hour):
+    """Fig 12 in hour focus: districts ranked by their share of that hour."""
+    head, total = _hour_head(hour_rows(rows, hour))
+    dists = sorted(head, key=lambda d: (-head[d], D[d]["en"]))
+    share = [round((head[d] / total * 100) if total > 0 else 0.0, 3) for d in dists]
+    top = max(share) if share else 1.0
+    fig = _clone("f_heat")
+    fig["data"] = [{
+        "type": "bar",
+        "orientation": "h",
+        "x": share,
+        "y": [D[d]["en"] for d in dists],
+        "marker": {
+            "color": share,
+            "colorscale": "YlOrRd",
+            "cmin": 0,
+            "cmax": top if top > 0 else 1,
+            "showscale": True,
+            "colorbar": {
+                "title": {"text": "%% of the<br>%02d:00 demand" % hour,
+                          "font": {"size": 10, "color": "#0E2136"}},
+                "tickfont": {"size": 10, "color": "#0E2136"},
+                "thickness": 10,
+                "len": 0.8,
+            },
+        },
+        "text": ["%.1f" % v for v in share],
+        "textposition": "outside",
+        "textfont": {"size": 9, "color": "#0E2136"},
+        "cliponaxis": False,
+        "hovertemplate": "%%{y}<br>%%{x:.2f}%% of the %02d:00 demand<extra></extra>" % hour,
+    }]
+    layout = fig["layout"]
+    layout["margin"] = {"l": 150, "r": 46, "t": 36, "b": 44}
+    layout["height"] = 470
+    layout["bargap"] = 0.22
+    layout["title"] = {
+        "text": "District ranking at %02d:00 (share of that hour's demand)" % hour,
+        "font": {"size": 11, "color": HOUR_ACCENT},
+        "x": 0, "xanchor": "left", "y": 1.0, "yanchor": "top",
+    }
+    layout["shapes"] = []
+    layout["annotations"] = []
+    xaxis = dict(layout.get("xaxis") or {})
+    xaxis["title"] = {"text": "share of that hour's demand (%)",
+                      "font": {"size": 10, "color": "#0E2136"}}
+    xaxis["tickfont"] = {"size": 9, "color": "#0E2136"}
+    xaxis["range"] = [0, (top * 1.18) if top > 0 else 1]
+    layout["xaxis"] = xaxis
+    yaxis = dict(layout.get("yaxis") or {})
+    yaxis["autorange"] = "reversed"
+    yaxis["tickfont"] = {"size": 9, "color": "#0E2136"}
+    yaxis["title"] = {"text": ""}
+    layout["yaxis"] = yaxis
+    return fig
+
+
+def rebuild_heat(rows, hour=None):
+    """Fig 12 - district by hour matrix, or the one-hour district ranking."""
+    hour = _clamp_hour(hour)
+    if hour >= 0:
+        return _hour_ranking(rows, hour)
     fig = _clone("f_heat")
     y, z, _dists = heat_from_rows(rows)
     zmax = max([4.0] + [v for row in z for v in row]) if z else 4.0
@@ -317,6 +527,9 @@ def rebuild_heat(rows):
     layout = fig["layout"]
     layout["margin"] = {"l": 150, "r": 10, "t": 10, "b": 44}
     layout["height"] = 470
+    layout["title"] = {"text": ""}
+    layout["shapes"] = []
+    layout["annotations"] = []
     yaxis = dict(layout.get("yaxis") or {})
     yaxis["tickfont"] = {"size": 9, "color": "#0E2136"}
     yaxis["autorange"] = "reversed"
@@ -324,20 +537,67 @@ def rebuild_heat(rows):
     return fig
 
 
-def rebuild_map(year, zone, district, metric):
+def hour_summary(rows, hour):
+    """The sentence under the slider - it states what the slice is doing."""
+    hour = _clamp_hour(hour)
+    share = hour_profile(rows)
+    if sum(share) <= 0:
+        return "No demand rows in scope for this hour."
+    peak = max(range(24), key=lambda i: share[i])
+    if hour < 0:
+        gap = [SUP_WD[i] - share[i] for i in range(24)]
+        worst = min(range(24), key=lambda i: gap[i])
+        return ("All-day view: the whole day is plotted. Demand peaks at %02d:00 "
+                "(%.2f%% of the daily total) and runs furthest ahead of the scheduled "
+                "supply at %02d:00 (%+.2f pp). Move the slider off 'All day' to slice "
+                "Fig 8, 9, 11, 12 and the HHI card into one hour."
+                % (peak, share[peak], worst, gap[worst]))
+    head, total = _hour_head(hour_rows(rows, hour))
+    leaders = []
+    for d in hour_leaders(rows, hour):
+        pct = (head.get(d, 0.0) / total * 100) if total > 0 else 0.0
+        leaders.append("%s (%.1f%%)" % (D[d]["en"], pct))
+    return ("%02d:00 slice: %.2f%% of the scope's daily demand, rank %d of 24 hours, "
+            "%.2fM headcount; the scheduled supply is at %.2f%% so the gap is %+.2f pp. "
+            "Leading districts at this hour: %s. Fig 8, 9, 11, 12 and the HHI card are "
+            "re-cut to this hour - slide back to 'All day' to restore the full day."
+            % (hour, share[hour], hour_rank(rows, hour), total / 1e6, SUP_WD[hour],
+               SUP_WD[hour] - share[hour], "; ".join(leaders) or "n/a"))
+
+
+def rebuild_map(year, zone, district, metric, rows=None, hour=None):
+    """Fig 11 choropleth. With an hour selected every metric is re-cut to that hour."""
     fig = _clone("f_map")
     trace = fig["data"][0]
     m = METRIC.get(metric) or METRIC["share"]
     scope = scope_mask(zone, district)
     shares = year_share(year)
+    hour = _clamp_hour(hour)
+    hour_mode = hour >= 0 and rows is not None
 
-    if metric == "share":
-        raw = list(shares)
-    elif metric == "density":
-        raw = [d["density"] * (shares[i] / d["share"]) if d["share"] > 0 else d["density"]
-               for i, d in enumerate(D)]
+    if hour_mode:
+        h_share = hour_share(rows, hour)
+        head, _hour_total = _hour_head(hour_rows(rows, hour))
+        density, delta, perdep = [], [], []
+        for i, d in enumerate(D):
+            ratio = (h_share[i] / d["share"]) if d["share"] > 0 else 0.0
+            density.append(d["density"] * ratio)
+            delta.append(h_share[i] - d["share"])
+            dep = (d["hits"] / d["perdep"]) if d["perdep"] else 0.0
+            perdep.append((head.get(i, 0.0) / dep) if dep else 0.0)
+        share_col = h_share
     else:
-        raw = [d[m["key"]] for d in D]
+        h_share = None
+        head = {}
+        density = [d["density"] * (shares[i] / d["share"]) if d["share"] > 0 else d["density"]
+                   for i, d in enumerate(D)]
+        delta = [d["delta"] for d in D]
+        perdep = [d["perdep"] for d in D]
+        share_col = shares
+
+    by_metric = {"share": share_col, "density": density,
+                 "delta": delta, "perdep": perdep}
+    raw = list(by_metric.get(metric if metric in METRIC else "share"))
 
     z = []
     for i, v in enumerate(raw):
@@ -355,13 +615,32 @@ def rebuild_map(year, zone, district, metric):
     trace["colorscale"] = m["scale"]
     trace.setdefault("colorbar", {})
     trace["colorbar"].setdefault("title", {})
-    trace["colorbar"]["title"]["text"] = m["title"]
-    trace["hovertemplate"] = hover_template(metric if metric in METRIC else "share")
-    trace["customdata"] = [
-        [d["hits"], d["stops"], d["peak"], d["night"], d["wdep"], d["density"],
-         d["delta"], d["perdep"], d["en"], round(shares[i], 3)]
-        for i, d in enumerate(D)
-    ]
+    if hour_mode:
+        if metric == "delta":
+            title = "Share shift vs<br>day avg (%02d:00)" % hour
+        else:
+            title = m["title"] + "<br>at %02d:00" % hour
+    else:
+        title = m["title"]
+    trace["colorbar"]["title"]["text"] = title
+    tpl = hover_template(metric if metric in METRIC else "share")
+    if hour_mode:
+        tpl = tpl.replace("Total headcount:", "Headcount at %02d:00:" % hour)
+        tpl = tpl.replace("Headcount share:", "Headcount share at %02d:00:" % hour)
+    trace["hovertemplate"] = tpl
+    if hour_mode:
+        trace["customdata"] = [
+            [round(head.get(i, 0.0), 0), d["stops"], d["peak"], d["night"], d["wdep"],
+             round(density[i], 1), round(delta[i], 2), round(perdep[i], 1), d["en"],
+             round(share_col[i], 3)]
+            for i, d in enumerate(D)
+        ]
+    else:
+        trace["customdata"] = [
+            [d["hits"], d["stops"], d["peak"], d["night"], d["wdep"], d["density"],
+             d["delta"], d["perdep"], d["en"], round(shares[i], 3)]
+            for i, d in enumerate(D)
+        ]
 
     if metric == "delta":
         trace["zmin"] = -ab
@@ -382,8 +661,14 @@ def rebuild_map(year, zone, district, metric):
     return fig
 
 
-def rebuild_zone_charts(year, zone, district):
-    """Fig 8 / 9 dim the zones that are outside the current scope."""
+def rebuild_zone_charts(year, zone, district, rows=None, hour=None):
+    """Fig 8 / 9 - zone scope, plus a real one-hour re-cut of the demand side.
+
+    All day: the zones outside the current scope are dimmed (view-layer only).
+    Hour focus: the demand bars of Fig 8 become that hour's zone split and the
+    headcount-per-departure bars of Fig 9 are recomputed for the hour.
+    """
+    hour = _clamp_hour(hour)
     fig_zone = _clone("f_zone")
     fig_dep = _clone("f_dep")
     active = zone not in (None, "", "all") and district in (None, "", "all")
@@ -395,6 +680,51 @@ def rebuild_zone_charts(year, zone, district):
     for trace in fig_dep["data"]:
         trace.setdefault("marker", {})
         trace["marker"]["opacity"] = list(opacity)
+
+    if hour < 0 or rows is None:
+        return fig_zone, fig_dep
+
+    head, total = _hour_head(hour_rows(rows, hour))
+    zone_head = [0.0] * len(ZONES)
+    for d, v in head.items():
+        z = D[d]["zone"]
+        if z in ZONES:
+            zone_head[ZONES.index(z)] += v
+    share = [(v / total * 100) if total > 0 else 0.0 for v in zone_head]
+
+    zd = fig_zone["data"]
+    if zd:
+        zd[0]["y"] = [round(v, 2) for v in share]
+        zd[0]["text"] = ["%.1f%%" % v for v in share]
+        zd[0]["name"] = "Visitor demand (%02d:00)" % hour
+    if len(zd) > 1:
+        zd[1]["name"] = "Scheduled departures (daily avg)"
+    if len(zd) > 2:
+        zd[2]["name"] = "Bus stops (daily avg)"
+    layout = fig_zone["layout"]
+    layout["title"] = {"text": "Zone split at %02d:00" % hour,
+                       "font": {"size": 11, "color": HOUR_ACCENT},
+                       "x": 0, "xanchor": "left"}
+
+    deps = _ZONE_MATCH.get("daily_bus_departures") or [0.0] * len(ZONES)
+    supply_share = _ZONE_MATCH.get("departures_share_pct") or [0.0] * len(ZONES)
+    per_dep, custom = [], []
+    for i, v in enumerate(zone_head):
+        dep = deps[i] if i < len(deps) else 0.0
+        per_dep.append(round((v / dep), 2) if dep else 0.0)
+        sup = supply_share[i] if i < len(supply_share) else 0.0
+        ratio = (share[i] / sup) if sup else 0.0
+        custom.append([round(ratio, 3), dep, round((ratio - 1) * 100, 2)])
+    dd = fig_dep["data"]
+    if dd:
+        dd[0]["x"] = per_dep
+        if "text" in dd[0]:
+            dd[0]["text"] = ["{:,.0f}".format(v) for v in per_dep]
+        dd[0]["customdata"] = custom
+    layout = fig_dep["layout"]
+    layout["title"] = {"text": "Headcount per daily departure at %02d:00" % hour,
+                       "font": {"size": 11, "color": HOUR_ACCENT},
+                       "x": 0, "xanchor": "left"}
     return fig_zone, fig_dep
 
 
@@ -433,19 +763,20 @@ def rebuild_hotel(year):
 # --------------------------------------------------------------------------
 # One shot state computation (used both for the first paint and callbacks)
 # --------------------------------------------------------------------------
-def compute_view(year, zone, district, metric):
+def compute_view(year, zone, district, metric, hour=None):
     year = "all" if year in (None, "") else year
     zone = "all" if zone in (None, "") else zone
     district = "all" if district in (None, "") else district
     metric = metric if metric in METRIC else "share"
+    hour = _clamp_hour(HOUR_DEFAULT if hour is None else hour)
 
     rows_ui = filtered_rows(year, zone, district)
     rows = rows_ui  # no legend highlight state is kept in the Dash port
 
-    hour_fig = rebuild_hour(rows)
-    heat_fig = rebuild_heat(rows)
-    map_fig = rebuild_map(year, zone, district, metric)
-    zone_fig, dep_fig = rebuild_zone_charts(year, zone, district)
+    hour_fig = rebuild_hour(rows, hour)
+    heat_fig = rebuild_heat(rows, hour)
+    map_fig = rebuild_map(year, zone, district, metric, rows, hour)
+    zone_fig, dep_fig = rebuild_zone_charts(year, zone, district, rows, hour)
     occ_fig, rel_fig, star_fig = rebuild_hotel(year)
 
     total = sum(P["v"][i] for i in rows_ui)
@@ -463,11 +794,20 @@ def compute_view(year, zone, district, metric):
     )
     if district != "all" and int(district) < len(D):
         share_line += " \u00b7 share of city total %.2f%%" % D[int(district)]["share"]
-    hint = ("No filter applied - showing the whole panel" if is_default
-            else "Filter active \u2192 re-drawn: Fig 4, 5, 6, 8, 9, 10, 11, 12")
+    hour_txt = "All day" if hour < 0 else "%02d:00" % hour
+    if hour >= 0:
+        hint = ("Hour slice %s \u2192 re-drawn: Fig 8, 9, 10, 11, 12 and the HHI card "
+                "(slide the hour of day control to 'All day' for the full-day view)" % hour_txt)
+    elif is_default:
+        hint = "No filter applied - showing the whole panel"
+    else:
+        hint = "Filter active \u2192 re-drawn: Fig 4, 5, 6, 8, 9, 10, 11, 12"
 
-    scope_children = [
-        html.B(year_txt), " \u00b7 ", html.B(dist_txt), html.Br(),
+    first_line = [html.B(year_txt), " \u00b7 ", html.B(dist_txt)]
+    if hour >= 0:
+        first_line += [" \u00b7 ", html.B(hour_txt), " slice"]
+    scope_children = first_line + [
+        html.Br(),
         share_line, html.Br(),
         html.Span(" " + hint, className="scopeHint"),
     ]
@@ -482,8 +822,11 @@ def compute_view(year, zone, district, metric):
     chip_txt = " \u00b7 ".join(chip_parts)
     chip_style = {"display": "inline-block"} if chip_txt else {"display": "none"}
 
-    hhi_v, hhi_s = hhi_texts(year, zone, district)
-    heat_count = "%d row%s / %s" % (n_dist, "" if n_dist == 1 else "s", year_txt)
+    hhi_v, hhi_s = hhi_texts(year, zone, district, rows, hour)
+    if hour >= 0:
+        heat_count = "%d bar%s / %02d:00" % (n_dist, "" if n_dist == 1 else "s", hour)
+    else:
+        heat_count = "%d row%s / %s" % (n_dist, "" if n_dist == 1 else "s", year_txt)
 
     return {
         "figures": {
@@ -502,6 +845,8 @@ def compute_view(year, zone, district, metric):
         "chip_txt": chip_txt,
         "chip_style": chip_style,
         "heat_count": heat_count,
+        "hour_text": hour_summary(rows, hour),
+        "hour_value": "All day" if hour < 0 else "%02d:00" % hour,
     }
 
 
@@ -595,6 +940,21 @@ def _special_component(tag, attrs, chip_box):
     if eid == "heatCount":
         return html.Span(INITIAL["heat_count"], id="heatCount",
                          className=attrs.get("class", "chip"))
+    if eid == "selHour":
+        return dcc.Slider(
+            id="selHour", min=HOUR_ALL, max=23, step=1, value=HOUR_DEFAULT,
+            marks={HOUR_ALL: "All day", 0: "0", 6: "6", 12: "12", 18: "18", 23: "23"},
+            tooltip={"placement": "bottom", "always_visible": False},
+            className="hour-slider",
+            updatemode="drag",
+            included=True,
+        )
+    if eid == "hourValue":
+        return html.Span(INITIAL["hour_value"], id="hourValue",
+                         className=attrs.get("class", "hourval"))
+    if eid == "hourText":
+        return html.P(INITIAL["hour_text"], id="hourText",
+                      className=attrs.get("class", "sub"))
     if eid == "hoverChip":
         return html.Span("", id="hoverChip", className=attrs.get("class", "chip"),
                          style={"display": "none"})
@@ -737,13 +1097,16 @@ def no_change():
     Output({"type": "chip", "index": ALL}, "children"),
     Output({"type": "chip", "index": ALL}, "style"),
     Output("heatCount", "children"),
+    Output("hourText", "children"),
+    Output("hourValue", "children"),
     Input("selYear", "value"),
     Input("selZone", "value"),
     Input("selDistrict", "value"),
     Input("selMetric", "value"),
+    Input("selHour", "value"),
 )
-def update_linked(year, zone, district, metric):
-    view = compute_view(year, zone, district, metric)
+def update_linked(year, zone, district, metric, hour):
+    view = compute_view(year, zone, district, metric, hour)
     figs = view["figures"]
     chips = [view["chip_txt"]] * CHIP_COUNT
     chip_styles = [view["chip_style"]] * CHIP_COUNT
@@ -754,6 +1117,7 @@ def update_linked(year, zone, district, metric):
         view["chip_txt"], view["chip_style"],
         chips, chip_styles,
         view["heat_count"],
+        view["hour_text"], view["hour_value"],
     )
 
 
@@ -838,6 +1202,7 @@ def drive_play(clicks, ticks, year, interval_disabled):
     Output("selZone", "value", allow_duplicate=True),
     Output("selDistrict", "value", allow_duplicate=True),
     Output("selMetric", "value", allow_duplicate=True),
+    Output("selHour", "value", allow_duplicate=True),
     Output("playTick", "disabled", allow_duplicate=True),
     Output("btnPlay", "children", allow_duplicate=True),
     Output("btnPlay", "className", allow_duplicate=True),
@@ -846,8 +1211,8 @@ def drive_play(clicks, ticks, year, interval_disabled):
 )
 def reset_all(clicks):
     if not clicks:
-        return (no_change(),) * 7
-    return "all", "all", "all", "share", True, "\u25b6 Play years", "btn"
+        return (no_change(),) * 8
+    return "all", "all", "all", "share", HOUR_DEFAULT, True, "\u25b6 Play years", "btn"
 
 
 

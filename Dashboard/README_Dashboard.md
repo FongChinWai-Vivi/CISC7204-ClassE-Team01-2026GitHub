@@ -100,6 +100,7 @@ figure is bottom-aligned inside its card, so a card can never end in dead white 
 | `Zone` | Spotlights the selected zone (Figs 8 and 9 fade the other two bars), keeps only its districts coloured in Fig 11, and restricts Figs 10 and 12 to those districts. |
 | `District` | Keeps only that district in Fig 11, drops Fig 12 to a single row, and redraws Fig 10 for that district alone. |
 | `Map metric` | Switches Fig 11 between arrival share, hits per km2, 2026 share shift and load per departure; the colour scale, mid-point and colour-bar ticks change with it. The year share is recomputed for the selected year. |
+| `Hour of day` slider (`All day` = -1, then 0-23) | Re-cuts the scope to that single hour instead of only decorating it: Fig 10 keeps the in-scope curve but swaps the gap bars to that hour and zooms the x-axis onto it, Fig 12 leaves the heatmap mode and becomes a ranking of the districts by their share of that hour, Fig 8 re-computes the zone split of that hour, Fig 9 re-computes headcount per departure for that hour, Fig 11 re-colours every district for that hour, and the HHI card is recomputed for that hour (2,229 city-wide all day, 1,693 at 14:00). Sliding back to `All day` restores the full-day heatmap, the full-day zone split and the original HHI. |
 | Click a district on the map | Same as picking that district - Figs 8, 9, 10 and 12 re-render for the clicked district. |
 | `Play years` (`Auto-cycle` button) | Animates the Year filter: `All -> 2023 -> 2024 -> 2025 -> 2026` at 1.7 s per step. Every linked view re-renders at each step, so the drift of the yellow bars in Fig 12 and of the district shading in Fig 11 can be watched rather than inferred, and the hotel block shrinks to that year's twelve months. A second click pauses. |
 | Click a bar in Fig 8 or Fig 9 | The zone bars double as controls: clicking one applies that zone filter (the other two bars fade, Fig 11 keeps only that zone's districts, Fig 12 narrows to 6 rows, Fig 10 is recomputed). |
@@ -164,9 +165,9 @@ was driven programmatically rather than eyeballed:
 | --- | --- |
 | `Play years` | Year went `All -> 2024 -> 2025` in two ticks, the button flipped to `Pause`, the filter bar entered its playing state, and a second click restored `Play years`. |
 | Click the `Taipa & Cotai` bar (Fig 8) and the same bar in Fig 9 | Zone filter applied, Fig 12 dropped from 24 rows to 6, and the HHI card moved `2,229 -> 6,514`. |
-| Click `北安及大潭山區` on the map | District filter applied, Fig 12 dropped to a single row, scope line read `1 district in scope`. |
+| Click `Pac On & Taipa Grande` on the map | District filter applied, Fig 12 dropped to a single row, scope line read `1 district in scope`. |
 | Hover a Fig 12 row (`COTAI Reclamation Area`) | Fig 10 demand curve switched to that district (00:00 share `3.663% -> 4.010%`) and the title badge appeared; unhover restored the in-scope curve. |
-| Hover `沙梨頭及大三巴區` on the map | Same preview behaviour (00:00 share `2.853%`) without changing the active filter. |
+| Hover `Patane & São Paulo` on the map | Same preview behaviour (00:00 share `2.853%`) without changing the active filter. |
 | Keyboard `Right` / `Left` / `Esc` | Year went `All -> 2023 -> All`, and `Esc` returned all three filters to default (HHI back to `2,229`). |
 | The map during `Play years` | The map keeps one fixed whole-Macao framing for all four years - its computed `transform` stayed `none` and `transition-duration` `0s` at every tick, so only the district colours change as the years advance. |
 | Click the `2024` legend entry (Fig 11) | Nothing was hidden; the badge read `highlight - 2024 (year)` and the 9 year-bearing figures dimmed every other year to `0.12` while the 5 year-less figures stayed fully lit. A second click, and `Esc`, both restored the snapshot opacities exactly. |
@@ -182,4 +183,4 @@ Fig 7 carried 153 months; setting `Year = 2024` re-sliced Figs 4 and 6 to 12 poi
 populated in Fig 5, and returning to `All` restored 45 / 45. The PNGs in
 `preview/figs/` predate this animation layer, so they show the earlier, filter-only control set; the
 `preview/hotel_*.png` crops were taken from the current build.
-*（内容由AI生成，仅供参考）*
+*(AI-generated content, for reference only.)*

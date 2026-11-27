@@ -73,3 +73,6 @@
     .kpis{grid-template-columns:repeat(2,minmax(0,1fr))}
     .span7,.span5,.span6,.span8,.span4,.span12{grid-column:span 12}
   }
+
+.field input[type=range]{width:158px;margin-top:10px;accent-color:#B2182B}
+.hourval{font-size:12px;font-weight:700;color:#B2182B}

@@ -679,6 +679,8 @@ HTML = r"""<!DOCTYPE html>
              box-shadow:0 4px 16px rgba(18,38,58,.07)}
   .field{display:flex;flex-direction:column;gap:4px}
   .field label{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#2C3E55;font-weight:700}
+.field input[type=range]{width:158px;margin-top:10px;accent-color:#B2182B}
+.hourval{font-size:12px;font-weight:700;color:#B2182B}
   select{appearance:none;border:1px solid var(--line);background:#fff;border-radius:9px;padding:7px 30px 7px 11px;
          font-size:13px;color:var(--ink);font-family:inherit;cursor:pointer;min-width:170px;
          background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'><path d='M2 4l4 4 4-4' fill='none' stroke='%235B6B7C' stroke-width='1.6'/></svg>");
@@ -752,6 +754,7 @@ HTML = r"""<!DOCTYPE html>
     <div class="field"><label for="selDistrict">District</label><select id="selDistrict"></select></div>
     <div class="field"><label for="btnPlay">Auto-cycle</label><button class="btn" id="btnPlay" title="Animate the year filter">&#9654; Play years</button></div>
     <div class="field"><label>&nbsp;</label><button class="btn" id="btnReset">Reset filters</button></div>
+    <div class="field"><label for="selHour">Hour slice</label><input type="range" id="selHour" min="-1" max="23" step="1" value="-1" list="hourTicks" title="Hour-of-day slice: -1 = All day, 0-23 = slice Fig 8, 9, 10, 11, 12 and the HHI card into that hour"/><datalist id="hourTicks"><option value="-1" label="All"></option><option value="0"></option><option value="6"></option><option value="12"></option><option value="18"></option><option value="23"></option></datalist><span class="hourval" id="hourValue">All day</span></div>
     <div class="chip" id="hiChip" style="display:none"></div>
     <div class="scope" id="scopeText"></div>
   </div>
@@ -816,6 +819,7 @@ HTML = r"""<!DOCTYPE html>
     <div class="card span12">
       <h3>10 &middot; Demand and scheduled supply by hour of day<span class="chip" id="hoverChip" style="display:none"></span><span class="chip" data-chip="1"></span></h3>
       <p class="sub">The red line is the visitor demand share for the current filter; the blue line is the scheduled departure share. Bars are the gap in percentage points - red bars are hours where demand runs ahead of supply.</p>
+      <p class="sub" id="hourText">All-day view: the whole day is plotted. Slide to any hour to slice Fig 8, 9, 10, 11, 12 and the HHI card into that hour; slide back to <b>All day</b> to restore the full day.</p>
       <div id="f_hour" class="plot"></div>
     </div>
 
@@ -889,8 +893,35 @@ const D = PAYLOAD.districts;
 const P = PAYLOAD.panel;
 const el = id => document.getElementById(id);
 
+// plotly.py serialises numpy vectors as {dtype, bdata}; decode them into plain arrays
+// so an hour slice can be restored and re-cut without touching the base figure objects
+function numArr(v){
+  if(v === null || v === undefined) return v;
+  if(Array.isArray(v)) return v.slice();
+  if(typeof v === "object" && v.bdata){
+    const bin = atob(v.bdata);
+    const bytes = new Uint8Array(bin.length);
+    for(let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+    const map = {f8:Float64Array, f4:Float32Array, i4:Int32Array, i2:Int16Array,
+                 i1:Int8Array, u4:Uint32Array, u2:Uint16Array, u1:Uint8Array};
+    const T = map[v.dtype || "f8"] || Float64Array;
+    const n = Math.floor(bytes.byteLength / T.BYTES_PER_ELEMENT);
+    return Array.from(new T(bytes.buffer, 0, n));
+  }
+  return v;
+}
+
+// all-day originals, snapshotted before the first draw so every hour slice can be undone
+const ZONE_Y0 = FIGS.f_zone.data.map(t => numArr(t.y));
+const ZONE_N0 = FIGS.f_zone.data.map(t => t.name);
+const DEP_X0 = numArr(FIGS.f_dep.data[0].x);
+const DEP_T0 = numArr(FIGS.f_dep.data[0].text);
+const DEP_C0 = JSON.parse(JSON.stringify(FIGS.f_dep.data[0].customdata));
+const HOUR_Y0 = FIGS.f_hour.data.map(t => (t.y ? numArr(t.y) : null));
+
 // ---------------- filter state ----------------
-const state = {year:"all", zone:"all", district:"all", metric:"share", supply:"weekday"};
+// hour = -1 -> no slice (the whole day); 0..23 -> that single hour of the day
+const state = {year:"all", zone:"all", district:"all", metric:"share", supply:"weekday", hour:-1};
 
 function fillSelects(){
   const y = el("selYear");
@@ -975,6 +1006,293 @@ function refreshHotel(){
   Plotly.restyle("f_hstar", {x:xs, y:ys}, H.cls.map(function(_, i){ return i; }));
 }
 
+function pad2(n){ return (n < 10 ? "0" : "") + n; }
+
+// ---------------- hour-of-day slice ----------------
+// The slider re-cuts the demand side of the dashboard to one hour of the day.
+// hour = -1 ("All day") keeps the 24-hour view; 0..23 keeps only the panel rows of
+// that hour, so Fig 8 (zone split), 9 (headcount per departure), 10 (demand curve),
+// 11 (map metric), 12 (district ranking) and the HHI card all answer the same hour.
+const HOUR_ALL = -1;
+const HOUR_TOPK = 3;
+const GAP_AHEAD = "#EE6C4D";
+const GAP_SLACK = "#3E8914";
+const SUP_WD = (PAYLOAD.hourMatch || {}).supply_share_weekday_pct || new Array(24).fill(0);
+const SUP_WE = (PAYLOAD.hourMatch || {}).supply_share_weekend_pct || new Array(24).fill(0);
+const ZMATCH = PAYLOAD.zoneMatch || {};
+const ZONES = PAYLOAD.zones || [];
+
+function clampHour(v){
+  const n = Math.round(+v);
+  if(!isFinite(n)) return HOUR_ALL;
+  return Math.max(HOUR_ALL, Math.min(23, n));
+}
+
+// panel row indices that fall inside the selected hour (all-day keeps every row)
+function hourRows(rows, hour){
+  const hv = clampHour(hour);
+  if(hv < 0) return rows;
+  const out = [];
+  for(let i = 0; i < rows.length; i++){ if(P.h[rows[i]] === hv) out.push(rows[i]); }
+  return out;
+}
+
+// district -> headcount inside `rows`, plus the scope total
+function hourHead(rows){
+  const head = new Map();
+  let total = 0;
+  for(let i = 0; i < rows.length; i++){
+    const r = rows[i], v = P.v[r];
+    head.set(P.d[r], (head.get(P.d[r]) || 0) + v);
+    total += v;
+  }
+  return {head: head, total: total};
+}
+
+// share (%) each district holds inside the selected hour's demand
+function hourShare(rows, hour){
+  const a = new Array(D.length).fill(0);
+  const hh = hourHead(hourRows(rows, hour));
+  if(hh.total > 0) hh.head.forEach((v, d) => { a[d] = v / hh.total * 100; });
+  return a;
+}
+
+// 1-based rank of the selected hour among the 24 hours of the scope
+function hourRank(rows, hour){
+  const hv = clampHour(hour);
+  if(hv < 0) return 0;
+  const prof = hourProfile(rows);
+  const order = Array.from({length:24}, (_, i) => i).sort((a, b) => (prof[b] - prof[a]) || (a - b));
+  return order.indexOf(hv) + 1;
+}
+
+function hourLeaders(rows, hour, k){
+  const hh = hourHead(hourRows(rows, hour));
+  const arr = [...hh.head.entries()].sort((a, b) =>
+    (b[1] - a[1]) || (D[a[0]].en < D[b[0]].en ? -1 : 1));
+  return arr.slice(0, k || HOUR_TOPK).map(e => e[0]);
+}
+
+// demand curve of the districts that lead at `hour` (the re-cut Fig 10 line)
+function hourLeadersProfile(rows, hour){
+  const hv = clampHour(hour);
+  if(hv < 0) return hourProfile(rows);
+  const keep = new Set(hourLeaders(rows, hv, HOUR_TOPK));
+  const sub = rows.filter(i => keep.has(P.d[i]));
+  return sub.length ? hourProfile(sub) : hourProfile(rows);
+}
+
+function hourGapProfile(rows, hour){
+  const demand = hourLeadersProfile(rows, hour);
+  return demand.map((v, i) => +(SUP_WD[i] - v).toFixed(3));
+}
+
+// Fig 12 in hour focus: districts ranked by their share of that hour
+function hourRankingFig(rows, hour){
+  const hh = hourHead(hourRows(rows, hour));
+  const dists = [...hh.head.keys()].sort((a, b) =>
+    (hh.head.get(b) - hh.head.get(a)) || (D[a].en < D[b].en ? -1 : 1));
+  const share = dists.map(d => hh.total > 0 ? +(hh.head.get(d) / hh.total * 100).toFixed(3) : 0);
+  const top = share.length ? Math.max(...share) : 1;
+  return {
+    data: [{
+      type:"bar", orientation:"h", x:share, y:dists.map(d => D[d].en),
+      marker:{color:share, colorscale:"YlOrRd", cmin:0, cmax:top > 0 ? top : 1,
+              showscale:true,
+              colorbar:{title:{text:"% of the<br>" + pad2(hour) + ":00 demand", font:{size:10, color:"#0E2136"}},
+                        tickfont:{size:10, color:"#0E2136"}, thickness:10, len:0.8}},
+      text:share.map(v => v.toFixed(1)), textposition:"outside",
+      textfont:{size:9, color:"#0E2136"}, cliponaxis:false,
+      hovertemplate:"%{y}<br>%{x:.2f}% of the " + pad2(hour) + ":00 demand<extra></extra>"
+    }],
+    layout: Object.assign({}, FIGS.f_heat.layout, {
+      margin:{l:150, r:46, t:36, b:44}, height:470, bargap:0.22,
+      title:{text:"District ranking at " + pad2(hour) + ":00 (share of that hour's demand)",
+             font:{size:11, color:"#B2182B"}, x:0, xanchor:"left", y:1.0, yanchor:"top"},
+      shapes:[], annotations:[],
+      xaxis:Object.assign({}, FIGS.f_heat.layout.xaxis, {
+        title:{text:"share of that hour's demand (%)", font:{size:10, color:"#0E2136"}},
+        tickfont:{size:9, color:"#0E2136"}, range:[0, top > 0 ? top * 1.18 : 1]}),
+      yaxis:Object.assign({}, FIGS.f_heat.layout.yaxis, {
+        autorange:"reversed", tickfont:{size:9, color:"#0E2136"}, title:{text:""}})
+    })
+  };
+}
+
+// Fig 12 all day: the district-by-hour matrix of the current scope
+function heatmapFig(rows){
+  const heat = heatFromRows(rows);
+  const zmax = Math.max(4, ...heat.z.flat());
+  return {
+    data: [{
+      type:"heatmap", z:heat.z, x:Array.from({length:24}, (_, i) => i), y:heat.y,
+      colorscale:"YlOrRd", zmin:0, zmax:+zmax.toFixed(2),
+      colorbar:{title:{text:"% of that<br>district's day", font:{size:10, color:"#0E2136"}},
+                tickfont:{size:10, color:"#0E2136"}, thickness:10, len:0.8},
+      hovertemplate:"%{y}<br>%{x}:00<br>%{z:.2f}% of the district's headcount<extra></extra>"
+    }],
+    layout: Object.assign({}, FIGS.f_heat.layout, {
+      margin:{l:150, r:10, t:10, b:44}, height:470,
+      yaxis:Object.assign({}, FIGS.f_heat.layout.yaxis,
+        {tickfont:{size:9, color:"#0E2136"}, autorange:"reversed"})
+    })
+  };
+}
+
+// repaint every figure the hour touches. rowsHi = rows after the legend highlight.
+function paintHourSlice(rowsHi){
+  const hv = clampHour(state.hour);
+  state.hour = hv;
+  const hh = hv >= 0 ? hourHead(hourRows(rowsHi, hv)) : {head:new Map(), total:0};
+  const hShare = hourShare(rowsHi, hv);
+
+  // ---- Fig 10: demand curve + gap bars ----
+  const gdH = el("f_hour");
+  if(gdH){
+    const bi = gdH.data.findIndex(t => t.type === "bar");
+    const demand = hourLeadersProfile(rowsHi, hv);
+    const gap = hourGapProfile(rowsHi, hv);
+    Plotly.restyle(gdH, {
+      y:[demand],
+      name:[hv < 0 ? (FIGS.f_hour.data[1].name || "Visitor demand share (filtered)")
+                   : "Visitor demand share (leaders at " + pad2(hv) + ":00)"]
+    }, [1]);
+    if(bi >= 0){
+      Plotly.restyle(gdH, {
+        y:[gap],
+        "marker.color":[gap.map(v => v < 0 ? GAP_AHEAD : GAP_SLACK)]
+      }, [bi]);
+    }
+    Plotly.restyle(gdH, "opacity", gdH.data.map((t, i) =>
+      (hv < 0 || i === 1 || i === bi) ? 1 : 0.25));
+    if(hv < 0){
+      Plotly.relayout(gdH, {shapes:[], annotations:[], "xaxis.range":null, "xaxis.autorange":true});
+    } else {
+      const share = hourProfile(rowsHi);
+      Plotly.relayout(gdH, {
+        shapes:[{type:"line", xref:"x", yref:"paper", x0:hv, x1:hv, y0:0, y1:1,
+                 line:{color:"#B2182B", width:2, dash:"dot"}}],
+        annotations:[{xref:"paper", yref:"paper", x:0, y:1.10, xanchor:"left",
+                      yanchor:"bottom", showarrow:false, align:"left",
+                      font:{size:10, color:"#B2182B"},
+                      text:pad2(hv) + ":00 slice &middot; " + (share[hv] || 0).toFixed(2) +
+                           "% of the day (rank " + hourRank(rowsHi, hv) + "/24) &middot; " +
+                           (hh.total / 1e6).toFixed(2) + "M headcount &middot; gap " +
+                           (gap[hv] >= 0 ? "+" : "") + gap[hv].toFixed(2) + " pp"}],
+        "xaxis.range":[Math.max(-0.6, hv - 2.6), Math.min(23.6, hv + 2.6)]
+      });
+    }
+  }
+
+  // ---- Fig 12: heatmap all day, ranked bars in hour focus ----
+  const gdT = el("f_heat");
+  if(gdT){
+    if(hv < 0){
+      const f = heatmapFig(rowsHi);
+      Plotly.react(gdT, f.data, f.layout, CONFIG);
+    } else {
+      const f = hourRankingFig(rowsHi, hv);
+      Plotly.react(gdT, f.data, f.layout, CONFIG);
+    }
+    bindHeatHover();
+  }
+
+  // ---- Fig 8 / 9: zone split and headcount per departure ----
+  const gdZ = el("f_zone");
+  if(gdZ){
+    if(hv < 0){
+      Plotly.restyle(gdZ, {y:ZONE_Y0, name:ZONE_N0}, [0, 1, 2]);
+      Plotly.relayout(gdZ, {title:null});
+    } else {
+      const zoneHead = new Array(ZONES.length).fill(0);
+      hh.head.forEach((v, d) => {
+        const zi = ZONES.indexOf(D[d].zone);
+        if(zi >= 0) zoneHead[zi] += v;
+      });
+      const zs = zoneHead.map(v => hh.total > 0 ? +(v / hh.total * 100).toFixed(2) : 0);
+      const ztxt = zs.map(v => v.toFixed(1) + "%");
+      // trace 0 = visitor demand (hour dependent) gets all three zone shares;
+      // traces 1-2 are daily supply, only their captions are re-labelled
+      Plotly.restyle(gdZ, {
+        y:[zs],
+        text:[ztxt],
+        name:["Visitor demand (" + pad2(hv) + ":00)"]
+      }, [0]);
+      Plotly.restyle(gdZ, {name:[ZONE_N0[1], ZONE_N0[2]]}, [1, 2]);
+      Plotly.relayout(gdZ, {title:{text:"Zone split at " + pad2(hv) + ":00",
+                                   font:{size:11, color:"#B2182B"}, x:0, xanchor:"left"}});
+    }
+  }
+  const gdP = el("f_dep");
+  if(gdP){
+    if(hv < 0){
+      Plotly.restyle(gdP, {x:[DEP_X0], text:[DEP_T0], customdata:[DEP_C0]}, [0]);
+      Plotly.relayout(gdP, {title:null});
+    } else {
+      const deps = ZMATCH.daily_bus_departures || [];
+      const supply = ZMATCH.departures_share_pct || [];
+      const xs = [], tx = [], cd = [];
+      ZONES.forEach((z, i) => {
+        const dep = deps[i] || 0;
+        const v = dep > 0 ? zoneHeadFor(hh, z) / dep : 0;
+        xs.push(+v.toFixed(2));
+        tx.push(Math.round(v).toLocaleString("en-US"));
+        const pick = supply[i] || 0;
+        const ratio = pick > 0 ? zoneShareOf(hh, z) / pick : 0;
+        cd.push([+ratio.toFixed(3), dep, +((ratio - 1) * 100).toFixed(2)]);
+      });
+      Plotly.restyle(gdP, {x:[xs], text:[tx], customdata:[cd]}, [0]);
+      Plotly.relayout(gdP, {title:{text:"Headcount per daily departure at " + pad2(hv) + ":00",
+                                   font:{size:11, color:"#B2182B"}, x:0, xanchor:"left"}});
+    }
+  }
+
+  // ---- slider label + the sentence under the chart ----
+  const hvEl = el("hourValue");
+  if(hvEl) hvEl.textContent = hv < 0 ? "All day" : pad2(hv) + ":00";
+  const tEl = el("hourText");
+  if(tEl){
+    const share = hourProfile(rowsHi);
+    if(hv < 0){
+      let peak = 0;
+      for(let i = 1; i < 24; i++){ if(share[i] > share[peak]) peak = i; }
+      const gap = share.map((v, i) => SUP_WD[i] - v);
+      let worst = 0;
+      for(let i = 1; i < 24; i++){ if(gap[i] < gap[worst]) worst = i; }
+      tEl.innerHTML = "All-day view: the whole day is plotted. Demand peaks at <b>" + pad2(peak) +
+        ":00</b> (" + (share[peak] || 0).toFixed(2) + "% of the daily total) and runs furthest ahead of the " +
+        "scheduled supply at <b>" + pad2(worst) + ":00</b> (" + (gap[worst] >= 0 ? "+" : "") +
+        gap[worst].toFixed(2) + " pp). Move the slider off 'All day' to slice Fig 8, 9, 10, 11, 12 " +
+        "and the HHI card into one hour.";
+    } else {
+      const lead = hourLeaders(rowsHi, hv, HOUR_TOPK).map(d =>
+        D[d].en + " (" + (hh.total > 0 ? (hh.head.get(d) / hh.total * 100).toFixed(1) : "0.0") + "%)");
+      tEl.innerHTML = "<b>" + pad2(hv) + ":00 slice</b>: " + (share[hv] || 0).toFixed(2) +
+        "% of the scope's daily demand, rank " + hourRank(rowsHi, hv) + " of 24 hours, " +
+        (hh.total / 1e6).toFixed(2) + "M headcount; the scheduled supply is at " +
+        SUP_WD[hv].toFixed(2) + "% so the gap is " + (SUP_WD[hv] - share[hv] >= 0 ? "+" : "") +
+        (SUP_WD[hv] - share[hv]).toFixed(2) + " pp. Leading districts at this hour: " +
+        (lead.join("; ") || "n/a") + ". Fig 8, 9, 10, 11, 12 and the HHI card are re-cut to this hour " +
+        "&mdash; slide back to 'All day' to restore the full day.";
+    }
+  }
+}
+
+function zoneHeadFor(hh, z){
+  let v = 0;
+  hh.head.forEach((h, d) => { if(D[d].zone === z) v += h; });
+  return v;
+}
+function zoneShareOf(hh, z){
+  return hh.total > 0 ? zoneHeadFor(hh, z) / hh.total * 100 : 0;
+}
+
+// kept as the single entry point for the slider / Reset button
+function applyHourFocus(){
+  state.hour = clampHour(state.hour);
+  refreshLinked();
+}
+
 function refreshLinked(){
   const rowsUI = filteredRows();
   refreshHotel();
@@ -983,20 +1301,9 @@ function refreshLinked(){
   // overrides the year selector instead of intersecting with it (otherwise the curve goes empty)
   const rows = HI.kind === "year" ? filteredRows(true) : rowsUI;
   const rowsHi = hiScopedRows(rows);
-  const share = hourProfile(rowsHi);
-  Plotly.restyle("f_hour", {y:[share]}, [1]);
-
-  const heat = heatFromRows(rowsHi);
-  const zmax = Math.max(4, ...heat.z.flat());
-  Plotly.react("f_heat", [{
-    type:"heatmap", z:heat.z, x:Array.from({length:24},(_,i)=>i), y:heat.y,
-    colorscale:"YlOrRd", zmin:0, zmax:+zmax.toFixed(2),
-    colorbar:{title:{text:"% of that<br>district's day", font:{size:10, color:"#0E2136"}}, tickfont:{size:10, color:"#0E2136"}, thickness:10, len:0.8},
-    hovertemplate:"%{y}<br>%{x}:00<br>%{z:.2f}% of the district's headcount<extra></extra>"
-  }], Object.assign({}, FIGS.f_heat.layout, {
-    margin:{l:150,r:10,t:10,b:44}, height:470,
-    yaxis:Object.assign({}, FIGS.f_heat.layout.yaxis, {tickfont:{size:9, color:"#0E2136"}, autorange:"reversed"})
-  }), CONFIG);
+  // every hour-linked figure is repainted from the same rows, so the whole board
+  // answers the same hour slice (Fig 8, 9, 10, 11, 12 + the HHI card)
+  paintHourSlice(rowsHi);
 
   const total = rowsUI.reduce((s,i)=>s+P.v[i],0);
   const all = P.v.reduce((a,b)=>a+b,0);
@@ -1015,7 +1322,12 @@ function refreshLinked(){
   applyMap();
   highlightZone();
   el("f_heat").__rows = rows.length;
-  el("heatCount").textContent = nDist + " row" + (nDist===1?"":"s") + " / " + yearTxt;
+  const hvNow = clampHour(state.hour);
+  const nBars = hvNow < 0 ? nDist
+                          : hourHead(hourRows(hiScopedRows(rows), hvNow)).head.size;
+  el("heatCount").textContent = hvNow < 0
+    ? nBars + " row" + (nBars===1?"":"s") + " / " + yearTxt
+    : nBars + " bar" + (nBars===1?"":"s") + " / " + pad2(hvNow) + ":00";
 
   // echo the active filter on every card the filter touches, so a small numeric
   // change is still obviously a response to the click
@@ -1087,10 +1399,27 @@ function applyMap(){
   if(HI.kind === "zone"){
     D.forEach(function(x, i){ if(x.zone !== HI.name) scope[i] = false; });
   }
-  const shares = yearShare();
+  // hour slice: the map answers "who carries the demand at HH:00", not the daily average
+  const hv = clampHour(state.hour);
+  const hourMode = hv >= 0;
+  let shares;
+  let hh = {head:new Map(), total:0};
+  if(hourMode){
+    const hRows = hourRows(hiScopedRows(HI.kind === "year" ? filteredRows(true) : filteredRows()), hv);
+    hh = hourHead(hRows);
+    shares = new Array(D.length).fill(0);
+    if(hh.total > 0) hh.head.forEach((v, d) => { shares[d] = v / hh.total * 100; });
+  } else {
+    shares = yearShare();
+  }
   let raw;
   if(state.metric==="share") raw = shares.slice();
   else if(state.metric==="density") raw = D.map((x,i)=> x.share>0 ? x.density*(shares[i]/x.share) : x.density);
+  else if(hourMode && state.metric==="delta") raw = D.map((x,i)=> shares[i] - x.share);
+  else if(hourMode && state.metric==="perdep") raw = D.map((x,i)=>{
+    const dep = x.perdep ? x.hits / x.perdep : 0;
+    return dep > 0 ? (hh.head.get(i) || 0) / dep : 0;
+  });
   else raw = D.map(x=>x[m.key]);
 
   // districts outside the current zone / district filter are drawn as null -> plain basemap grey
@@ -1100,13 +1429,28 @@ function applyMap(){
   const mx = Math.max(...pick(ins));
   const ab = Math.max(...pick(ins).map(Math.abs));
 
+  let title = m.title, tpl = hoverTemplate(m);
+  let cd = D.map((x,i)=>[x.hits, x.stops, x.peak, x.night, x.wdep, x.density,
+                         x.delta, x.perdep, x.en, +shares[i].toFixed(3)]);
+  if(hourMode){
+    title = (state.metric==="delta")
+      ? "Share shift vs<br>day avg (" + pad2(hv) + ":00)"
+      : m.title + "<br>at " + pad2(hv) + ":00";
+    tpl = tpl.replace("Total headcount:", "Headcount at " + pad2(hv) + ":00:")
+             .replace("Headcount share:", "Headcount share at " + pad2(hv) + ":");
+    // keep the hover honest: density / delta / per-departure come from the hour slice
+    cd = D.map((x,i)=>[Math.round(hh.head.get(i)||0), x.stops, x.peak, x.night, x.wdep,
+                       state.metric==="density" ? +raw[i].toFixed(1) : +x.density.toFixed(1),
+                       state.metric==="delta" ? +raw[i].toFixed(2) : +x.delta.toFixed(2),
+                       state.metric==="perdep" ? +raw[i].toFixed(1) : +x.perdep.toFixed(1),
+                       x.en, +shares[i].toFixed(3)]);
+  }
   const update = {
     z:[z],
     colorscale:[m.scale],
-    "colorbar.title.text":[m.title],
-    hovertemplate:[hoverTemplate(m)],
-    customdata:[D.map((x,i)=>[x.hits, x.stops, x.peak, x.night, x.wdep, x.density,
-                              x.delta, x.perdep, x.en, +shares[i].toFixed(3)])]
+    "colorbar.title.text":[title],
+    hovertemplate:[tpl],
+    customdata:[cd]
   };
   if(state.metric==="delta"){
     update.zmin=[-ab]; update.zmax=[ab]; update.zmid=[0];
@@ -1417,8 +1761,9 @@ function pickZone(z){
 
 function resetAll(){
   stopPlay();
-  state.year = "all"; state.zone = "all"; state.district = "all";
+  state.year = "all"; state.zone = "all"; state.district = "all"; state.hour = -1;
   el("selYear").value = "all"; el("selZone").value = "all"; el("selDistrict").value = "all";
+  el("selHour").value = -1;
   HI.kind = null; HI.name = null;
   refreshLinked();
 }
@@ -1428,18 +1773,26 @@ const KPI0 = { v: (el("kpiHhiV") || {}).innerHTML, s: (el("kpiHhiS") || {}).inne
 function updateHHI(){
   const vEl = el("kpiHhiV"), sEl = el("kpiHhiS");
   if(!vEl) return;
-  const isDefault = state.year === "all" && state.zone === "all" && state.district === "all";
+  const hv = clampHour(state.hour);
+  const isDefault = state.year === "all" && state.zone === "all" && state.district === "all" && hv < 0;
   if(isDefault){ vEl.innerHTML = KPI0.v; if(sEl) sEl.innerHTML = KPI0.s; return; }
   const scope = scopeMask();
-  const raw = yearShare().map(function(v,i){ return scope[i] ? v : 0; });
+  // hour slice: concentration of that single hour instead of the daily average
+  const base = hv >= 0
+    ? hourShare(hiScopedRows(HI.kind === "year" ? filteredRows(true) : filteredRows()), hv)
+    : yearShare();
+  const raw = base.map(function(v,i){ return scope[i] ? v : 0; });
   const tot = raw.reduce(function(a,b){ return a + b; }, 0);
   if(!(tot > 0)) return;
   const pr = raw.map(function(v){ return v / tot; });
   const hhi = pr.reduce(function(a,b){ return a + b * b; }, 0) * 10000;
   const top3 = pr.slice().sort(function(a,b){ return b - a; }).slice(0,3).reduce(function(a,b){ return a + b; }, 0) * 100;
   vEl.innerHTML = Math.round(hhi).toLocaleString("en-US");
-  if(sEl) sEl.innerHTML = "equivalent of " + (10000 / hhi).toFixed(2) + " equal districts &middot; top 3 = " +
-    top3.toFixed(1) + "%" + (state.year !== "all" ? " &middot; " + state.year + " only" : "");
+  let sub = "equivalent of " + (10000 / hhi).toFixed(2) + " equal districts &middot; top 3 = " +
+    top3.toFixed(1) + "%";
+  if(hv >= 0) sub = "at " + pad2(hv) + ":00 &middot; " + sub;
+  if(state.year !== "all") sub += " &middot; " + state.year + " only";
+  if(sEl) sEl.innerHTML = sub;
 }
 
 // ---------------- wiring ----------------
@@ -1508,6 +1861,7 @@ el("selDistrict").addEventListener("change", e=>{
 el("selMetric").addEventListener("change", e=>{ state.metric = e.target.value; applyMap(); });
 el("btnReset").addEventListener("click", resetAll);
 el("btnPlay").addEventListener("click", togglePlay);
+el("selHour").addEventListener("input", e=>{ state.hour = clampHour(e.target.value); applyHourFocus(); });
 document.addEventListener("keydown", e=>{
   const t = e.target && e.target.tagName;
   if(t === "SELECT" || t === "INPUT" || t === "TEXTAREA") return;

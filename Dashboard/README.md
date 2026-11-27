@@ -1,171 +1,119 @@
----
-AIGC:
-    Label: "1"
-    ContentProducer: 001191440300708461136T1XGW3
-    ProduceID: 8aaebaa239fa14c1cf5eb03fd99189ca_b7197a35e6de11f184bd52540072b1e8
-    ReservedCode1: nCbvzQ3+ZIOdoGG9BUrw08z0RyYgpB+k+lo94JkZo2c2z0YRwU/e34oDnoMG93MDvnWEHiHWNBBoDmwQb5bkVXpTsjIQRSleDSfXEZdPqctIX8oRRWjxqkSLXxa5i2tRHnQtSVWKEINK/X3/7rSbZzHe1myIh/8IWoHpaf2oSZmjN36yx7dJAwachJU=
-    ContentPropagator: 001191440300708461136T1XGW3
-    PropagateID: 8aaebaa239fa14c1cf5eb03fd99189ca_b7197a35e6de11f184bd52540072b1e8
-    ReservedCode2: nCbvzQ3+ZIOdoGG9BUrw08z0RyYgpB+k+lo94JkZo2c2z0YRwU/e34oDnoMG93MDvnWEHiHWNBBoDmwQb5bkVXpTsjIQRSleDSfXEZdPqctIX8oRRWjxqkSLXxa5i2tRHnQtSVWKEINK/X3/7rSbZzHe1myIh/8IWoHpaf2oSZmjN36yx7dJAwachJU=
----
-
 # Dashboard (Plotly Dash, aligned 1:1 with the static HTML)
 
-CISC7204 Class E Team 01 — Macau visitor-arrival / hotel-occupancy / bus-ridership dashboard.
-
-本文件夹同时保留「静态 HTML」与「Dash 可执行版」两条交付线，两者版面、内容、图表顺序完全一致：
-
-| 文件 | 状态 | 说明 |
+## 1. Correspondence with the static HTML
+| Asset | Path | Origin and role |
 |---|---|---|
-| `CISC7204_ClassE_Team01_Dashboard.html` | **未改动** | 6.12 MB 预渲染静态版，作为 Dash 版的唯一版面基准 |
-| `build_dashboard.py` | **未改动** | 生成静态 HTML 的构建脚本 |
-| `README_Dashboard.md` | **未改动** | 静态 HTML 版的说明 |
-| `app.py` | 本轮重写 | Dash 应用，863 行，版面对齐静态 HTML |
-| `README.md` | 本轮重写 | 本文件 |
+| Page skeleton | data/dash/body_template.html | Extracted from the body of the static HTML: header → sticky filterbar → 6 KPI cards → 16 chart cards → footer |
+| Plotly JSON for the 16 charts | data/dash/figures.json (1.1 MB) | Extracted directly from the Plotly figures inlined in the static HTML; injected unchanged on the Dash first screen |
+| Data required by the callbacks | data/dash/payload.json (639 KB) | Chinese/English names, zone, share and density for the 24 districts; district × month × hour panel rows; hotel series; KPI constants |
+| Styling | assets/dashboard.css | Original CSS (--navy:#1B4965, --blue:#2E86AB, --sky:#62B6CB, --red:#EE6C4D, --gold:#F4A259, --green:#3E8914, --purple:#7B2CBF, --ink:#0E2136) |
+| Structural baseline | preview/html_structure.json / preview/html_structure.md | Page-structure inventory |
 
----
+On start-up, `app.py` reads the three JSON/HTML assets above and maps the body tags through TAG_MAP, so the DOM hierarchy, class names and copy match the static page. The 8 static charts are rendered on the first screen from the original JSON in figures.json; the 8 linked charts are recomputed server-side from the current filters.
 
-## 1. 与静态 HTML 的对应关系
-
-Dash 版不是"另做一套"，而是把静态 HTML 拆成三份可编程资产，再原样在 Dash 里重建：
-
-| 资产 | 路径 | 来源与作用 |
+### 1.1 Controls
+| Control | Default | Role |
 |---|---|---|
-| 页面骨架 | `data/dash/body_template.html` (10.8 KB) | 从静态 HTML 的 `<body>` 抽出：header → sticky filterbar → 6 张 KPI 卡 → 16 张图卡 → footer，含全部文案与 class |
-| 16 张图的 Plotly JSON | `data/dash/figures.json` (1.1 MB) | 从静态 HTML 中内联的 Plotly figure 直接抽出，Dash 首屏原样注入，保证与静态版同一套 trace / 轴 / 配色 |
-| 回调所需数据 | `data/dash/payload.json` (639 KB) | 24 个区的中英名/分区/份额/密度、区×月×小时面板行、酒店序列、KPI 常量 |
-| 样式 | `assets/dashboard.css` | 静态 HTML 的原始 CSS（`--navy:#1B4965`、`--blue:#2E86AB`、`--sky:#62B6CB`、`--red:#EE6C4D`、`--gold:#F4A259`、`--green:#3E8914`、`--purple:#7B2CBF`、`--ink:#0E2136`） |
-| 结构基准 | `preview/html_structure.json` / `preview/html_structure.md` | 解析出的页面结构清单：标题、版面顺序、控件选项、KPI 文案、16 图卡片表、JS→Dash 映射 |
+| selYear | Year | All years (2023-2026), 2023–2026 (5 items) |
+| selZone | Zone | All zones, Macau Peninsula, Taipa & Cotai, Coloane (4 items) |
+| selDistrict | District | All districts + 24 districts (25 items, values indexed 0-23) |
+| selMetric | Map metric | Headcount share (%), Headcount per km² per month, 2026 share shift (pp), Headcount per departure (4 items) |
+| btnPlay | ▶ Play years | — | Cycles 2023→2026 in step with dcc.Interval(1700 ms) |
+| btnReset | Reset filters | — | Restores the 4 dropdowns and the playback state |
 
-`app.py` 启动时读取上述三份 JSON/HTML，用 `TAG_MAP` 把 body 的每个 HTML 标签映射成对应的 `dash.html` 组件（`class`/`style`/`id` 全部保留），因此 DOM 层级、class 名、文案与静态版一致；**8 张静态图**（`f_long`、`f_month`、`f_quarter`、`f_hhist`、`f_season`、`f_shift_zone`、`f_shift_hour`、`f_golden`）在首屏即用 `figures.json` 的原始 JSON 渲染，**8 张联动图**（`f_hour`、`f_heat`、`f_map`、`f_zone`、`f_dep`、`f_hocc`、`f_hrel`、`f_hstar`）在服务端按筛选重算。
+No control was added to or removed from the HTML; there is no month-range slider and no 24-district multi-select.
 
-> `data/dash/` 下的三份资产与 `preview/html_structure.*` 是一次性从静态 HTML 抽取的产物（抽取脚本不随仓库交付）；静态 HTML 若重新构建，需按 `preview/html_structure.md` 描述的结构重新抽取这三份资产。
-
-### 1.1 控件（对应 HTML 的 4 个 `<select>` + 2 个按钮）
-
-| Dash id | 原 HTML 元素 | 选项 | 默认 | 作用 |
-|---|---|---|---|---|
-| `selYear` | Year | All years (2023-2026)、2023–2026（5 项） | all | 重算酒店 2 图 + 地图 + HHI + scope 文案 |
-| `selZone` | Zone | All zones、Macau Peninsula、Taipa & Cotai、Coloane（4 项） | all | 过滤区→图的散点不透明度 + 高亮 chip |
-| `selDistrict` | District | All districts + 24 个区（25 项，值为 0–23 索引） | all | 过滤小时图/热图/HHI |
-| `selMetric` | Map metric | Headcount share (%)、Headcount per km² per month、2026 share shift (pp)、Headcount per departure（4 项） | share | 重建 choropleth 的 z、色阶与色条刻度 |
-| `btnPlay` | ▶ Play years | — | — | 配合 `dcc.Interval(1700 ms)` 轮播 2023→2026 |
-| `btnReset` | Reset filters | — | — | 4 个下拉 + 播放状态全部复位 |
-
-HTML 里没有新增控件，也没有删减控件；没有月份范围滑块、没有 24 区多选——这两项属于上一版自设布局，本轮已全部移除。
-
-### 1.2 KPI（6 张，与 HTML 一致）
-
-| # | 文本 | Dash 中是否重算 |
+### 1.2 KPIs (6 cards, identical to the HTML)
+| # | Text | Static or dynamic |
 |---|---|---|
-| 1 | 103.2M Visitor arrivals | 静态 |
-| 2 | 42.5M Visitor-guests | 静态 |
-| 3 | 9.96 → 5.83 Bus trips per visitor | 静态 |
-| 4 | 2,229 District concentration (HHI) | **动态**（`kpiHhiV` / `kpiHhiS`） |
-| 5 | 85.7% Occupancy rate | 静态 |
-| 6 | 0.51 Taipa & Cotai demand/supply | 静态 |
+| 1 | 103.2M Visitor arrivals | Static |
+| 2 | 42.5M Visitor-guests | Static |
+| 3 | 9.96 → 5.83 Bus trips per visitor | Static |
+| 4 | 2,229 District concentration (HHI) | **Dynamic** (kpiHhiV / kpiHhiS) |
+| 5 | 85.7% Occupancy rate | Static |
+| 6 | 0.51 Taipa & Cotai demand/supply | Static |
 
-### 1.3 16 张图 1:1 对照
+### 1.3 One-to-one mapping of the 16 charts
+| fig id | Card span | HTML title | Trace composition | Height | Dash implementation |
+|---|---|---|---|---|---|
+| f_long | span12 | 1·Long-run monthly visitor arrivals, 2015-2026 | 3 scatter | 330 | Static JSON |
+| f_month | span7 | 2·Arrivals and bus passenger trips, monthly | bar+scatter | 330 | Static JSON |
+| f_quarter | span5 | 3·Bus trips per visitor, quarterly | bar+scatter | 330 | Static JSON |
+| f_hocc | span7 | 4·Visitor arrivals and the hotel occupancy rate | bar+scatter | 356 | Dynamic |
+| f_hrel | span5 | 5·Occupancy against bus trips per visitor | 4 scatter | 356 | Dynamic |
+| f_hstar | span6 | 6·Who fills the rooms: hotel guests by hotel class | 4 bar | 356 | Dynamic |
+| f_hhist | span6 | 7·The long occupancy record, 2014-2026 | 1 scatter | 356 | Static JSON |
+| f_zone | span6 | 8·Supply-demand mismatch across the three zones | 3 bar | 330 | Dynamic + click linkage |
+| f_dep | span6 | 9·Visitor headcount carried per scheduled departure | 1 bar | 330 | Dynamic + click linkage |
+| f_hour | span12 | 10·Demand and scheduled supply by hour of day | 5 trace | 360 | Dynamic |
+| f_map | span7 | 11·The 24 DSEC statistical districts | choropleth | 470 | Dynamic |
+| f_heat | span5 | 12·District by hour-of-day profile | heatmap | 470 | Dynamic + row click linkage |
+| f_season | span6 | 13·Seasonality of arrivals, 2023-2025 | 1 bar | 330 | Static JSON |
+| f_golden | span6 | 14·Golden Week daily intensity | 5 scatter | 330 | Static JSON |
+| f_shift_zone | span12 | 15·What shifted in 2026 | 1 bar | 300 | Static JSON |
+| f_shift_hour | span12 | 15·What shifted in 2026 | 1 bar | 340 | Static JSON |
 
-| # | fig id | 卡片跨度 | HTML 标题（截断） | trace 构成 | 高度 | Dash 实现 |
-|---|---|---|---|---|---|---|
-| 1 | `f_long` | span12 | 1·Long-run monthly visitor arrivals, 2015-2026 | 3 scatter（pre-pandemic / pandemic dashed red / recovery） | 330 | 静态 JSON |
-| 2 | `f_month` | span7 | 2·Arrivals and bus passenger trips, monthly | bar + scatter + scatter（双轴） | 330 | 静态 JSON |
-| 3 | `f_quarter` | span5 | 3·Bus trips per visitor, quarterly | bar + scatter（趋势线） | 330 | 静态 JSON |
-| 4 | `f_hocc` | span7 | 4·Visitor arrivals and the hotel occupancy rate | bar + scatter（双轴） | 356 | 动态（年份切换重切序列） |
-| 5 | `f_hrel` | span5 | 5·Occupancy against bus trips per visitor | 4 scatter（2023–2026 按年份着色） | 356 | 动态 |
-| 6 | `f_hstar` | span6 | 6·Who fills the rooms: hotel guests by hotel class | 4 bar（2/3/4/5 星堆叠） | 356 | 动态（年份切换重切） |
-| 7 | `f_hhist` | span6 | 7·The long occupancy record, 2014-2026 | 1 scatter | 356 | 静态 JSON |
-| 8 | `f_zone` | span6 | 8·Supply-demand mismatch across the three zones | 3 bar（需求/班次/站点份额） | 330 | 动态 + 点击联动 |
-| 9 | `f_dep` | span6 | 9·Visitor headcount carried per scheduled departure | 1 bar | 330 | 动态 + 点击联动 |
-| 10 | `f_hour` | span12 | 10·Demand and scheduled supply by hour of day | 5 trace（2 需求线 + 2 班次线 + 缺口 bar） | 360 | 动态 |
-| 11 | `f_map` | span7 | 11·The 24 DSEC statistical districts | choropleth（24 区 GeoJSON） | 470 | 动态（metric 重建 z/色阶） |
-| 12 | `f_heat` | span5 | 12·District by hour-of-day profile | heatmap（行归一化 100%） | 470 | 动态 + 点击行联动 |
-| 13 | `f_season` | span6 | 13·Seasonality of arrivals, 2023-2025 | 1 bar（峰值月红色） | 330 | 静态 JSON |
-| 14 | `f_golden` | span6 | 14·Golden Week daily intensity | 5 scatter（2019/2023–2026） | 330 | 静态 JSON |
-| 15 | `f_shift_zone` | span12 | 15·What shifted in 2026（分区份额） | 1 bar | 300 | 静态 JSON |
-| 16 | `f_shift_hour` | span12 | 15·What shifted in 2026（小时份额） | 1 bar | 340 | 静态 JSON |
-
----
-
-## 2. 依赖与运行
-
-环境：Windows 11、`C:\Users\07viv\anaconda3\python.exe`（Python 3.12.3）、dash 4.4.1、plotly 5.22.0、pandas 2.2.2、numpy 1.26.4。
+## 2. Dependencies and running the app
+Environment: Windows 11, `C:\Users\07viv\anaconda3\python.exe` (Python 3.12.3), dash 4.4.1, plotly 5.22.0, pandas 2.2.2, numpy 1.26.4.
 
 ```powershell
 cd "C:\Users\07viv\Desktop\CISC7204-Team01\Dashboard"
 & "C:\Users\07viv\anaconda3\python.exe" app.py
 ```
 
-打开 <http://127.0.0.1:8050>。入口参数 `app.run(debug=False, host="127.0.0.1", port=8050)`：
+Then open http://127.0.0.1:8050. The entry call is `app.run(debug=False, host="127.0.0.1", port=8050)`:
+- debug=False, so no second process is spawned;
+- if port 8050 is already in use, stop the holder first with Stop-Process -Id <pid> (find it with Get-NetTCPConnection -LocalPort 8050);
+- all paths resolve from `__file__`, so `python app.py` runs from any working directory;
+- **no network access at run time**: plotly.js is served locally by Dash from `_/_dash-component-suites/plotly/package_data/plotly.min.js`, and the CSS comes from `assets/dashboard.css`.
 
-- `debug=False`，不会 spawn 第二个进程；
-- 若 8050 已被占用，先 `Stop-Process -Id <pid>`（查进程：`Get-NetTCPConnection -LocalPort 8050`）；
-- 全部路径基于 `__file__` 解析，`python app.py` 在任何工作目录下均可运行；
-- 运行时**不访问网络**：plotly.js 由 Dash 从 `/_dash-component-suites/plotly/package_data/plotly.min.js` 本地提供，CSS 走 `assets/dashboard.css`。
-
-`app.py` 还对 `app.index_string` 做了覆盖，去掉 Dash 默认外层的 `<footer>` 包装，否则整页高度会多出 43 px、与静态版对不齐。
-
----
-
-## 3. 回调清单（5 个）
-
-| # | 回调 | 输出 | 输入 |
+## 3. Callback inventory (5)
+| # | Callback | Outputs | Inputs |
 |---|---|---|---|
-| 1 | `update_linked` | `f_hour`、`f_heat`、`f_map`、`f_zone`、`f_dep`、`f_hocc`、`f_hrel`、`f_hstar`、`kpiHhiV`、`kpiHhiS`、`scopeText`、`hiChip`(children+style)、`heatCount`（共 14 个输出） | `selYear.value`、`selZone.value`、`selDistrict.value`、`selMetric.value` |
-| 2 | `pick_district` | `selDistrict.value` | `f_map.clickData`、`f_heat.clickData` |
-| 3 | `pick_zone` | `selZone.value`、`selDistrict.value` | `f_zone.clickData`、`f_dep.clickData` |
-| 4 | `drive_play` | `selYear.value`、`playTick.disabled`、`btnPlay.children`、`btnPlay.className` | `btnPlay.n_clicks`、`playTick.n_intervals` |
-| 5 | `reset_all` | 4 个下拉 value + `playTick.disabled` + `btnPlay.children` + `btnPlay.className` | `btnReset.n_clicks` |
+| 1 | update_linked | f_hour, f_heat, f_map, f_zone, f_dep, f_hocc, f_hrel, f_hstar, kpiHhiV, kpiHhiS, scopeText, hiChip (children + style), the filter chips (children + style), heatCount, hourText, hourValue (18 outputs in total) | selYear.value, selZone.value, selDistrict.value, selMetric.value, selHour.value |
+| 2 | pick_district | selDistrict.value | f_map.clickData, f_heat.clickData |
+| 3 | pick_zone | selZone.value, selDistrict.value | f_zone.clickData, f_dep.clickData |
+| 4 | drive_play | selYear.value, playTick.disabled, btnPlay.children, btnPlay.className | btnPlay.n_clicks, playTick.n_intervals |
+| 5 | reset_all | the 4 dropdown values + playTick.disabled + btnPlay.children + btnPlay.className | btnReset.n_clicks |
 
-复用的纯函数：`filtered_rows`、`hour_profile`、`heat_from_rows`、`scope_mask`、`year_share`、`hhi_texts`、`rebuild_hour`、`rebuild_heat`、`rebuild_map`、`rebuild_zone_charts`、`rebuild_hotel`、`compute_view`。
+Reused pure functions: filtered_rows, hour_profile, heat_from_rows, scope_mask, year_share, hhi_texts, rebuild_hour, rebuild_heat, rebuild_map, rebuild_zone_charts, rebuild_hotel, compute_view.
 
-> 注意：`PLAY_SEQ` 里必须是 **int** 年份（与 `selYear` 的 options 值同类型）。若输出字符串 `"2025"`，Dash 的 dropdown 找不到匹配项，按钮照常播放但年份标签会显示为空白——这一点在联调中实际踩到并已修正。
+> Note: the entries in PLAY_SEQ must be int years. With the string "2025", the Dash dropdown finds no matching option, so the button keeps advancing while the year label renders blank - this was hit during integration testing and has been fixed.
 
----
+## 4. Verification results
+Both builds were captured with headless Chrome (CDP, 1600 px wide, captureBeyondViewport):
+- Static HTML baseline: preview/html_reference.png (1600 × 5104)
+- Dash running build: preview/dash_preview.png (1600 × 5104)
+- Playback-state capture: preview/dash_play_state.png
 
-## 4. 验证结果
-
-用 headless Chrome（CDP，1600 px 宽，`captureBeyondViewport`）分别截取两版整页：
-
-- 静态 HTML 基准：`preview/html_reference.png`（1600 × 5104）
-- Dash 实际运行：`preview/dash_preview.png`（1600 × 5104）
-- 播放态截图（附加证据）：`preview/dash_play_state.png`
-
-| 检查项 | 结果 |
+| Check | Result |
 |---|---|
-| 页面标题 | 两版完全一致（Visualizing the Relationship Between Visitor Arrivals, Hotel Occupancy, and Bus Ridership in Macao） |
-| 整页尺寸 | 均为 1600 × 5104，逐像素对齐 |
-| 整页像素差（灰度阈值 24） | **0.263%** |
-| 16 张图 bbox / 轴标题 / trace 数量 | 全部一致 |
-| 静态图（8 张） | 直接使用 HTML 内联的 Plotly JSON，**0.00% 差异** |
-| 联动图 | `f_long` 0.50%、`f_month` 0.78%、`f_hocc` 0.59%、`f_hrel` 0.25%、`f_hstar` 0.52%、`f_zone` 0.57%、`f_hour` 0.79%、`f_golden` 0.65%（差异集中在图例文字与抗锯齿边缘） |
-| Year 切换 | 选 2024 → `scopeText` 变 `2024 · all 24 districts 33.74M ...`，酒店 3 图与地图重算 |
-| Zone 点击联动 | 点 `f_zone` 第一根柱 → `selZone` 变 Macau Peninsula、`scopeText` 变 `2023-2026 · Macau Peninsula districts 58.14M ...` |
-| District 过滤 | 选 Cotai → HHI 10,000（单一区，等价区数 1.00） |
-| Play 轮播 | 点击后按钮变 `❚❚ Pause`，Year 标签 2023→2024→2025 逐格前进，再次点击暂停 |
-| Reset | 4 个下拉全部回到 All，页面回到初始态（高度回到 5104） |
-| 外部依赖 | HTML 中无 `cdn.plot.ly` / unpkg / jsdelivr 引用；plotly.js 本地加载 |
+| Page title | Identical in both builds (Visualizing the Relationship Between Visitor Arrivals, Hotel Occupancy, and Bus Ridership in Macao) |
+| Full-page size | Both 1600 × 5104, aligned pixel by pixel |
+| Full-page pixel difference (grayscale threshold 24) | **0.263%** |
+| 16 charts: bounding boxes / axis titles / trace counts | All identical |
+| Static charts (8) | Taken directly from the Plotly JSON inlined in the HTML, 0.00% difference |
+| Linked charts | f_long 0.50%, f_month 0.78%, f_hocc 0.59%, f_hrel 0.25%, f_hstar 0.52%, f_zone 0.57%, f_hour 0.79%, f_golden 0.65% |
+| Year switch | Selecting 2024 makes scopeText read 2024 · all 24 districts 33.74M ... | the 3 hotel charts and the map are recomputed |
+| Zone click linkage | Clicking the first bar of f_zone sets selZone to Macau Peninsula and scopeText to 2023-2026 · Macau Peninsula districts 58.14M ... | |
+| District filter | Selecting Cotai gives HHI 10,000 (a single district, equivalent to 1.00 districts) |
+| Play cycle | On click the button becomes ❚❚ Pause and the year label advances 2023→2024→2025 step by step; clicking again pauses |
+| Reset | All 4 dropdowns return to All and the page returns to its initial state (height back to 5104) |
+| External dependencies | No cdn.plot.ly / unpkg / jsdelivr reference in the HTML; plotly.js loads locally |
 
-### 残留差异（已知）
+### Residual differences (known)
+1. The 8 linked charts differ by 0.25%–0.79% at legend text and curve edges, at anti-aliasing level (same JSON structure, same font family, different sub-pixel rendering);
+2. In the playback state the page is 5109 px tall (5 px more than the default state), because the button label toggles between ▶ Play years and ❚❚ Pause and the text width inside the filterbar changes the line wrap;
+3. In the static build f_golden / f_season / f_hour / f_shift_hour are computed in the browser by JS; in Dash they are rebuilt server-side from payload.json. The values match what the HTML shows on the first screen, but they no longer come from the same browser-side code path.
 
-1. 8 张联动图的图例文字与曲线边缘存在 0.25%–0.79% 的抗锯齿级差异（同一份 JSON 结构、同一套字体族，渲染子像素不同），肉眼不可辨；
-2. 播放态下整页高度为 5109 px（比默认态多 5 px），原因是按钮文案在 `▶ Play years` / `❚❚ Pause` 之间切换时 filterbar 内文本宽度变化引起的换行差异，不影响图表布局；
-3. 静态版中由 JS 现算的 `f_golden` / `f_season` / `f_hour` / `f_shift_hour` 在 Dash 里改由服务端重建，数值取自 `payload.json`，与 HTML 首屏展示值一致，但不再是"浏览器端算出来"的同一条代码路径。
+## 5. Known limitations
+- Development server: app.run() is the Flask/Werkzeug dev server, with no WSGI/HTTPS configuration; local use only.
+- No caching: every filter change recomputes 8 charts and serialises the whole response; the payload.json panel is stored row-compressed (four columns y/d/h/v) but there is no dcc.Store-level cache.
+- Start-up cost: about 1.8 MB of JSON (payload + figures) is read at import time and the body template is parsed, giving a cold start of about 3–5 s.
+- State lives in the browser: a refresh returns to the default All/All/All/share and no session is persisted.
+- Map granularity: 24 DSEC statistical-district polygons with no street-level detail; the colour scale uses fixed bins per metric.
+- No automated tests: verification was a one-off headless Chrome script plus pixel comparison, and the script is not shipped with the repository.
+- Encoding: all files are UTF-8; on a legacy Windows code page, console output of Chinese district names may be garbled, while the browser rendering is correct.
 
----
-
-## 5. 已知限制
-
-- **开发服务器**：`app.run()` 为 Flask/Werkzeug dev server，无 WSGI/HTTPS 配置，仅本机使用。
-- **无缓存**：每次筛选重算 8 张图并整份序列化返回；`payload.json` 的面板已按行压缩（`y/d/h/v` 四列），但仍无 `dcc.Store` 级缓存。
-- **启动成本**：导入时读取约 1.8 MB JSON（payload + figures）并解析 body 模板，冷启动约 3–5 s。
-- **状态在浏览器侧**：刷新即回到默认 All/All/All/share，不做会话持久化。
-- **地图粒度**：24 个 DSEC 统计区多边形，无街道级细节；色阶按 metric 固定分档。
-- **无自动化测试**：验证为一次性 headless Chrome 脚本 + 像素比对，脚本不随仓库交付。
-- **编码**：全部文件 UTF-8；Windows 旧代码页控制台打印中文区名可能乱码，浏览器渲染正常。
-
----
-
-*本 README 描述的是本轮重写后的 Dash 版（`app.py`，863 行，5 个回调、4 个下拉 + 2 个按钮、16 张图、6 张 KPI 卡），与静态 HTML 逐图对齐。*
-*（内容由AI生成，仅供参考）*
+*This README describes the rewritten Dash build (app.py, 863 lines, 5 callbacks, 4 dropdowns + 2 buttons, 16 charts, 6 KPI cards), which matches the static HTML chart by chart.*
+*(AI-generated content, for reference only.)*

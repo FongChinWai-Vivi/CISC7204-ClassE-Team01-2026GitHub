@@ -74,13 +74,13 @@ access to retrieve it again.
 | --- | --- |
 | `scripts/build_panels.py` | Builds the three integrated panels from raw / intermediate files |
 | `notebooks/cisc7204_proposal_figures_colour.ipynb` | Proposal-figure notebook: draws Figures 1-6 into `figures/` |
-| `figures/fig1_general_trend.png` ... `fig6_workplan.png` | The six figure files embedded in the proposal, in proposal order |
+| `figures/pipe_fig1_general_trend.png` ... `pipe_fig6_workplan.png` | The six figure files embedded in the proposal, in proposal order |
 | `notebooks/cisc7204_pipeline_M3_vivi.ipynb` | Main analysis pipeline: cleaning, panels, matching layer, Figures 1-13 (Sections 7 and 14) and the 24-district map with its interactive twin (Section 15) |
 | `scripts/build_period_analysis.py` | Legacy: first wrote the monthly / quarterly / annual tables and the optional blocks. Section 14 of the notebook now derives them itself and rewrites the same CSVs |
-| `figures/fig7_*.png` ... `fig13_*.png` | The seven extra figures drawn by Section 14 - **not** embedded in the proposal |
+| `figures/pipe_fig7_*.png` ... `pipe_fig13_*.png` | The seven extra figures drawn by Section 14 - **not** embedded in the proposal |
 | `scripts/build_district_map.py` | Legacy: first built the 24-district geometry layer, its indicators and Figure 14. Section 15 of the notebook now builds all three from the panel it already holds |
 | `data/geo/stats_zones/` | Source statistical-district polygons (GeoJSON, WGS84), one file per district |
-| `figures/fig14_district_choropleth.png` | The three-panel district map, drawn and displayed by Section 15 of the notebook - **not** embedded in the proposal |
+| `figures/pipe_fig14_district_choropleth.png` | The three-panel district map, drawn and displayed by Section 15 of the notebook - **not** embedded in the proposal |
 | `figures/archive/` | Superseded figures kept for traceability - **not** used by the proposal |
 | `data/mgtodataplus/` | MGTO *Macao Tourism Data Plus* district x hour downloads (year-to-date workbooks) |
 | `data/dsec_timeseries/` | DSEC key-indicator JSON snapshots used for the arrivals series |
@@ -97,6 +97,20 @@ access to retrieve it again.
 began with `fig1_` and `fig2_`. They were moved into `archive/` and prefixed `legacy_`
 so that the `fig1_...` / `fig2_...` prefixes in `figures/` map one-to-one onto Figure 1
 and Figure 2 of the proposal.
+
+**Figure-name prefixes (convention since 2026-11-26).** Every file in `figures/` starts
+with the notebook that produces it, so the origin of a chart can be read off its name
+without opening the register:
+
+- `pipe_...` - drawn by `notebooks/cisc7204_pipeline_M3_vivi.ipynb` (14 files;
+  `pipe_fig1`-`pipe_fig6` are also re-emitted by the proposal notebook
+  `cisc7204_proposal_figures_colour.ipynb`, which writes the same `pipe_` names);
+- `viz_...` - drawn by `notebooks/CISC7204_ClassE_Team01_Visualization_updated.ipynb`
+  (16 files), with the grayscale twins in `figures/grayscale/` carrying the matching
+  `viz_..._gray.png` name;
+- `legacy_...` - superseded drawings in `figures/archive/`.
+
+The suffix after the prefix keeps each notebook's own figure label unchanged.
 
 ---
 
@@ -140,12 +154,12 @@ produced by `build_panels.py` (see the gap note in section 6):
 
 | Code cell (M3 pipeline) | Figure file | Reads | What it shows |
 | --- | --- | --- | --- |
-| code cell 19 | `figures/fig1_general_trend.png` | `demand_monthly_arrivals.csv` | Monthly arrivals 2015-01 to 2026-09, pandemic years in red dashed and left blank, 36-month estimation window shaded |
-| code cell 20 | `figures/fig2_zone_mismatch.png` | `match_zone_supply_demand.csv` | Three shares per zone (demand, departures, stops), January-July 2026 |
-| code cell 21 | `figures/fig3_hourly_profile.png` | `match_hourly_profile.csv` | Hour-of-day demand share against weekday and weekend departure shares, undersupplied hours shaded |
-| code cell 22 | `figures/fig4_correlation.png` | `monthly_panel_2023_01_2026_09.csv`, `quarterly_panel_2023Q1_2026Q3.csv` | (a) monthly scatter with `r` printed, n = 36; (b) bus trips per arrival by quarter, n = 12 |
-| code cell 23 | `figures/fig5_district_hour_heatmap.png` | `demand_district_hour_panel_2023_2026.csv` | The ten busiest districts by hour, each row rescaled to its own daily total, 2023-2025 |
-| code cell 24 | `figures/fig6_workplan.png` | hard-coded work plan | The four-week delivery plan, bar length = duration, red outline = critical chain |
+| code cell 19 | `figures/pipe_fig1_general_trend.png` | `demand_monthly_arrivals.csv` | Monthly arrivals 2015-01 to 2026-09, pandemic years in red dashed and left blank, 36-month estimation window shaded |
+| code cell 20 | `figures/pipe_fig2_zone_mismatch.png` | `match_zone_supply_demand.csv` | Three shares per zone (demand, departures, stops), January-July 2026 |
+| code cell 21 | `figures/pipe_fig3_hourly_profile.png` | `match_hourly_profile.csv` | Hour-of-day demand share against weekday and weekend departure shares, undersupplied hours shaded |
+| code cell 22 | `figures/pipe_fig4_correlation.png` | `monthly_panel_2023_01_2026_09.csv`, `quarterly_panel_2023Q1_2026Q3.csv` | (a) monthly scatter with `r` printed, n = 36; (b) bus trips per arrival by quarter, n = 12 |
+| code cell 23 | `figures/pipe_fig5_district_hour_heatmap.png` | `demand_district_hour_panel_2023_2026.csv` | The ten busiest districts by hour, each row rescaled to its own daily total, 2023-2025 |
+| code cell 24 | `figures/pipe_fig6_workplan.png` | hard-coded work plan | The four-week delivery plan, bar length = duration, red outline = critical chain |
 
 Figure numbers in the proposal caption correspond one-to-one to these files. The cell
 numbers above are counted over **code cells only** in
@@ -235,7 +249,7 @@ asserts is real at the finest geography the demand data supports.
 
 **Boundaries.** Macao Online Map statistical-district polygons (`webmap.gis.gov.mo`), redistributed as GeoJSON
 by `ioloas/macau-map-data` and `ngsiolei/macau-map-data` under `stats-zones/`, WGS84, downloaded 6 November 2026.
-The two repositories are merged because `路氹填海區` (43.96% of all headcount) is only in the second one; the
+The two repositories are merged because `COTAI Reclamation Area` (43.96% of all headcount) is only in the second one; the
 University of Macau Hengqin campus polygon that also ships there is dropped, since it is not one of the 24 DSEC
 districts and holds no MGTO observations.
 
@@ -254,7 +268,7 @@ jupyter nbconvert --to notebook --execute --inplace notebooks/cisc7204_pipeline_
 | `data_processed/macau_stats_zones.geojson` | 24 features | merged, coordinate-rounded layer read by Section 15 |
 | `data_processed/district_map_metrics.csv` | 24 rows | headcount stock, share, 2026 shift, area, density, stops, weekday departures, per-departure load, peak hour, night share |
 | `data_processed/stop_district_assignment.csv` | 586 rows | every bus stop resolved to a district by point-in-polygon - 567 matched, 19 outside every polygon |
-| `figures/fig14_district_choropleth.png` | Figure 14 | three static panels: level, 2026 shift, density |
+| `figures/pipe_fig14_district_choropleth.png` | Figure 14 | three static panels: level, 2026 shift, density |
 | `reports/district_map_interactive.html` | Figure 15 | standalone Bokeh map: metric selector, hover row, supply-versus-demand tab |
 
 Four rules govern every number on that map.
@@ -310,5 +324,5 @@ reference list.
 
 Raw downloads are never overwritten; cleaning decisions are recorded in the data
 dictionaries handed in with the report.
-*（内容由AI生成，仅供参考）*
-*（内容由AI生成，仅供参考）*
+*(AI-generated content, for reference only.)*
+*(AI-generated content, for reference only.)*

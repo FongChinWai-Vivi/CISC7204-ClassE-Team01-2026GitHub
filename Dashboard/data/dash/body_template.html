@@ -28,6 +28,7 @@
     <div class="field"><label for="selDistrict">District</label><select id="selDistrict"></select></div>
     <div class="field"><label for="btnPlay">Auto-cycle</label><button class="btn" id="btnPlay" title="Animate the year filter">&#9654; Play years</button></div>
     <div class="field"><label>&nbsp;</label><button class="btn" id="btnReset">Reset filters</button></div>
+    <div class="field"><label for="selHour">Hour of day</label><input type="range" id="selHour" min="0" max="23" step="1" value="12" title="Hour-of-day selector: the district-by-hour heatmap and the demand-supply chart follow this slider"/><span class="hourval" id="hourValue">12:00</span></div>
     <div class="chip" id="hiChip" style="display:none"></div>
     <div class="scope" id="scopeText"></div>
   </div>
@@ -105,6 +106,7 @@
     <div class="card span12">
       <h3>10 &middot; Demand and scheduled supply by hour of day<span class="chip" id="hoverChip" style="display:none"></span><span class="chip" data-chip="1"></span></h3>
       <p class="sub">The red line is the visitor demand share for the current filter; the blue line is the scheduled departure share. Bars are the gap in percentage points - red bars are hours where demand runs ahead of supply.</p>
+      <p class="sub" id="hourText">Hour focus: 12:00 - the heatmap column and the bars of this chart follow the hour-of-day slider.</p>
       <div id="f_hour" class="plot"></div>
     </div>
 

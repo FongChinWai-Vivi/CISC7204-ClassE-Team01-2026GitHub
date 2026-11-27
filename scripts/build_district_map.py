@@ -15,7 +15,7 @@ Inputs
 Outputs
   data_processed/macau_stats_zones.geojson        the 24 data districts only, coordinate-rounded layer
   data_processed/district_map_metrics.csv         24 rows of map indicators (area/density on DSEC areas)
-  figures/fig14_district_choropleth.png           three-panel static map
+  figures/pipe_fig14_district_choropleth.png           three-panel static map
   reports/district_map_interactive.html           interactive Bokeh map
 
 Area policy: polygon area is taken from the DSEC publication (zone_area_official.csv), not from the
@@ -341,11 +341,24 @@ def label_points(geom):
 
 
 CTX_LABEL = {
-    "澳門大學新校區": "澳門大學新校區\nUniversity of Macau\n(Hengqin Campus)",
-    "新城A區及港珠澳大橋澳門口岸管理區": "新城A區及港珠澳大橋\n澳門口岸管理區\nZone A & HZMB Macao Port",
+    "澳門大學新校區": "University of Macau\n(Hengqin Campus)",
+    "新城A區及港珠澳大橋澳門口岸管理區": "Zone A & HZMB\nMacao Port area",
 }
 CTX_FACE = "#e6e6e6"
 CTX_EDGE = "#7d8288"
+
+
+def wrap_en(name, width=18):
+    words, lines, cur = name.split(), [], ""
+    for w in words:
+        cand = (cur + " " + w).strip()
+        if len(cand) <= width or not cur:
+            cur = cand
+        else:
+            lines.append(cur); cur = w
+    if cur:
+        lines.append(cur)
+    return "\n".join(lines[:3])
 
 
 def plot_static(zones, metrics, ctx=None):
@@ -353,19 +366,21 @@ def plot_static(zones, metrics, ctx=None):
     geo = {z["district_cn"]: z["feature"]["geometry"] for z in zones}
     ctx_geo = {z["district_cn"]: z["feature"]["geometry"] for z in ctx}
     mm = metrics.set_index("district_cn")
+    en = {z["district_cn"]: (z["feature"]["properties"].get("district_en") or z["district_cn"])
+          for z in list(zones) + list(ctx)}
 
     fig, axes = plt.subplots(1, 3, figsize=(15.6, 5.0))
 
     panels = [
-        dict(ax=axes[0], col="hits_total", title="(a) 全期分區人流總量（2023-01 → 2026-09）",
-             cmap="YlOrRd", norm=PowerNorm(gamma=0.45), label="人流命中數（人次）", fmt="{:,.0f}"),
-        dict(ax=axes[1], col="delta_pp", title="(b) 2026 年 1–9 月 對 2023–2025 佔比變化",
+        dict(ax=axes[0], col="hits_total", title="(a) Total head-count by district, Jan 2023 - Sep 2026",
+             cmap="YlOrRd", norm=PowerNorm(gamma=0.45), label="Head-count (visits)", fmt="{:,.0f}"),
+        dict(ax=axes[1], col="delta_pp", title="(b) Share change, Jan-Sep 2026 vs 2023-2025 average",
              cmap="RdBu_r", norm=TwoSlopeNorm(vcenter=0.0,
                                              vmin=-max(abs(mm["delta_pp"]).max(), 0.3),
                                              vmax=max(abs(mm["delta_pp"]).max(), 0.3)),
-             label="佔比變化（百分點）", fmt="{:+.2f} pp"),
-        dict(ax=axes[2], col="hits_per_km2_month", title="(c) 月均人流密度（人次 / 平方公里 / 月）",
-             cmap="YlGnBu", norm=PowerNorm(gamma=0.45), label="人次 / km² / 月", fmt="{:,.0f}"),
+             label="Share change (percentage points)", fmt="{:+.2f} pp"),
+        dict(ax=axes[2], col="hits_per_km2_month", title="(c) Monthly head-count density (visits / km2 / month)",
+             cmap="YlGnBu", norm=PowerNorm(gamma=0.45), label="Visits / km2 / month", fmt="{:,.0f}"),
     ]
 
     for p in panels:
@@ -384,9 +399,7 @@ def plot_static(zones, metrics, ctx=None):
                        hatch="////", zorder=3)
         for name, geom in geo.items():
             cx, cy = label_points(geom)
-            short = name.replace("區", "").replace("及", "·")
-            if len(short) > 6:
-                short = short[:6]
+            short = wrap_en(en.get(name, name), 18)
             ax.text(cx, cy, short, ha="center", va="center", fontsize=4.6, zorder=5,
                     path_effects=[pe.withStroke(linewidth=1.4, foreground="white")])
         for name, geom in ctx_geo.items():
@@ -404,16 +417,16 @@ def plot_static(zones, metrics, ctx=None):
         for s in ax.spines.values():
             s.set_visible(False)
 
-    axes[0].text(0.02, 0.02, "統計分區邊界：Macao Online Map (webmap.gis.gov.mo)，WGS84；灰底斜紋 = 無 MGTO 分區人流紀錄的上下文區",
+    axes[0].text(0.02, 0.02, "District boundaries: Macao Online Map (webmap.gis.gov.mo), WGS84; grey hatching = context zone without an MGTO visitor record",
                  transform=axes[0].transAxes, fontsize=5.2, color="#666")
     axes[0].legend(handles=[Patch(facecolor=CTX_FACE, edgecolor=CTX_EDGE, hatch="////",
                                   label="Context zone (no visitor record)")],
                    loc="upper left", fontsize=5.2, frameon=False, handlelength=1.4)
 
-    fig.suptitle("Figure 14 — 澳門 24 個統計分區的旅遊人流分佈與 2026 年結構位移"
-                 "（另附 2 個無數據上下文區，不參與色標）", fontsize=10.0, y=0.985)
+    fig.suptitle("Head-count across the 24 statistical districts and the 2026 structural shift",
+                 fontsize=10.0, y=0.985)
     fig.tight_layout(rect=(0, 0, 1, 0.96))
-    out = os.path.join(FIGD, "fig14_district_choropleth.png")
+    out = os.path.join(FIGD, "pipe_fig14_district_choropleth.png")
     fig.savefig(out, dpi=200, bbox_inches="tight")
     plt.close(fig)
     print(f"[figure] {out}")
