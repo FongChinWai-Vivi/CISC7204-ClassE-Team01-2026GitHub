@@ -26,7 +26,7 @@ Inputs (all read-only):
         DSAT monthly bus statistics (daily average trips, buses in service).
 
 Outputs (overwritten):
-  data_processed/mgto_district_hour_master_2023_01_2026_09.csv   25,920 rows
+  data_processed/demand_district_hour_panel_2023_2026.csv       25,920 rows
   data_processed/monthly_panel_2023_01_2026_09.csv               45 rows
   data_processed/quarterly_panel_2023Q1_2026Q3.csv               15 rows
 
@@ -235,7 +235,7 @@ def build_quarterly(panel: pd.DataFrame) -> pd.DataFrame:
 def main() -> int:
     master = build_mgto_master()
     master.to_csv(
-        os.path.join(PROC, "mgto_district_hour_master_2023_01_2026_09.csv"),
+        os.path.join(PROC, "demand_district_hour_panel_2023_2026.csv"),
         index=False,
         encoding="utf-8-sig",
         lineterminator="\r\n",

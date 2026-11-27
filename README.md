@@ -61,7 +61,10 @@ beforehand. `scripts/build_period_analysis.py` and `scripts/build_district_map.p
 legacy artefacts kept only so the CSVs and the PNG already committed can be traced back to
 the code that first wrote them — the notebook regenerates all of them.
 
-Requirements: Python 3.11 or newer, `pandas`, `numpy`, `matplotlib`, `seaborn`,
+Requirements: the delivered run used **Python 3.12.3** (Anaconda 2024.06), the version
+pinned in `requirements.txt` and reported in section 10.2 of the final report. Python
+3.11 or newer is expected to work: none of the code uses features added after 3.11.
+Packages: `pandas`, `numpy`, `matplotlib`, `seaborn`,
 `scipy`, `openpyxl`, plus Jupyter for step 2. The committed inputs support an offline
 run; if the local district-polygon snapshot is removed, the M3 notebook may need network
 access to retrieve it again.
@@ -106,8 +109,9 @@ without opening the register:
   `pipe_fig1`-`pipe_fig6` are also re-emitted by the proposal notebook
   `cisc7204_proposal_figures_colour.ipynb`, which writes the same `pipe_` names);
 - `viz_...` - drawn by `notebooks/CISC7204_ClassE_Team01_Visualization_updated.ipynb`
-  (16 files), with the grayscale twins in `figures/grayscale/` carrying the matching
-  `viz_..._gray.png` name;
+  (16 files). A luminance-converted copy of each was kept in `figures/grayscale/` for
+  print checks; that folder has been moved out of the repository, so the delivered tree
+  holds only the colour figures the report cites;
 - `legacy_...` - superseded drawings in `figures/archive/`.
 
 The suffix after the prefix keeps each notebook's own figure label unchanged.
@@ -131,7 +135,7 @@ Outputs (overwritten on every run):
 
 | Output | Shape | Columns |
 | --- | --- | --- |
-| `data_processed/mgto_district_hour_master_2023_01_2026_09.csv` | 25,920 rows | `year, month, hour, district, headcount` - 24 districts x 24 hours x 45 months (2023-01 to 2026-09) |
+| `data_processed/demand_district_hour_panel_2023_2026.csv` | 25,920 rows | `year, month, hour, district, headcount` - 24 districts x 24 hours x 45 months (2023-01 to 2026-09) |
 | `data_processed/monthly_panel_2023_01_2026_09.csv` | 45 rows | `month, year, month_no, quarter, visitor_arrivals, hotel_occ_pct, hotel_guests, hotel_rooms, bus_daily_avg_trips_wan, bus_monthly_trips, buses_in_service, mgto_district_headcount, district_hits_per_arrival` |
 | `data_processed/quarterly_panel_2023Q1_2026Q3.csv` | 15 rows | `quarter, months_in_data, visitor_arrivals_sum, hotel_occ_avg_pct, hotel_guests_sum, hotel_rooms_avg, bus_daily_avg_trips_wan_mean, bus_monthly_trips_sum, buses_in_service_max, mgto_district_headcount_sum, bus_trips_per_arrival, district_hits_per_arrival` |
 
@@ -139,14 +143,29 @@ The 36-month estimation window (2023-01 to 2025-12) is a **filter applied to the
 files**, not a separate file: the panels carry the whole published span so that the
 window and the pandemic exclusion can be audited from the data itself.
 
-Three further panels in `data_processed/` are read by the notebook but are **not**
+The district-hour table exists under **one** name in `data_processed/`, namely
+`demand_district_hour_panel_2023_2026.csv`. An earlier build wrote the same 25,920-row
+table a second time as `mgto_district_hour_master_2023_01_2026_09.csv`; that alias has
+been removed so that the file cited in the report, the file rebuilt by
+`scripts/build_panels.py` and the copy inside `Dashboard/data/` all carry the same
+name and the same content.
+
+Two further panels in `data_processed/` are read by the notebook but are **not**
 produced by `build_panels.py` (see the gap note in section 6):
 
 | Panel | Shape | Role |
 | --- | --- | --- |
-| `demand_district_hour_panel_2023_2026.csv` | 24,768 rows | District x hour panel with the zone mapping (`zone` = Macau Peninsula / Taipa & Cotai / Coloane); covers 2023-01 to 2026-07 |
-| `match_zone_supply_demand.csv` | 3 rows | Zone-level demand, departure and stop shares, plus the demand-per-departure and supply-to-demand ratios |
-| `match_hourly_profile.csv` | 24 rows | Hour-of-day demand share and weekday / weekend departure shares, with the gap in percentage points |
+| `match_zone_supply_demand.csv` | 3 rows | Zone-level demand, departure and stop shares, plus the demand-per-departure and supply-to-demand ratios (window 2026-01 to 2026-07) |
+| `match_hourly_profile.csv` | 24 rows | Hour-of-day demand share and weekday / weekend departure shares, with the gap in percentage points (same window) |
+
+One earlier naming conflict is worth recording, because two different row counts once
+circulated under the same file name. An earlier build cut the district x hour panel at
+**24,768 rows** (24 districts x 24 hours x 43 months, 2023-01 to 2026-07) and carried the
+zone mapping in a separate step. The delivered file
+`data_processed/demand_district_hour_panel_2023_2026.csv` is the **25,920-row** version
+(24 districts x 24 hours x 45 months, 2023-01 to 2026-09) and already contains the `zone`
+column, so the zone mapping no longer needs a second table. Figures that describe a
+2026-01 to 2026-07 window filter this file in code; they do not read a different panel.
 
 ---
 
