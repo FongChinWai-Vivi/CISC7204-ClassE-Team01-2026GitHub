@@ -1,4 +1,4 @@
-﻿# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 """
 CISC7204 Class E Team 01 - Interactive Dashboard builder
 ========================================================
@@ -11,8 +11,10 @@ and writes ONE self-contained, offline HTML dashboard:
 No server, no network, no Python needed to open the result - plotly.js is
 inlined and every number is computed from the CSVs in data/ at build time.
 
-Run:
-    C:\\Users\\lenovo\\anaconda3\\python.exe build_dashboard.py
+Run from this folder (the page is written next to this script, so no machine path is
+stored anywhere):
+
+    python build_dashboard.py
 """
 
 import json

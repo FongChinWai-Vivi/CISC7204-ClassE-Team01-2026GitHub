@@ -54,11 +54,11 @@ No control was added to or removed from the HTML; there is no month-range slider
 | f_shift_hour | span12 | 15·What shifted in 2026 | 1 bar | 340 | Static JSON |
 
 ## 2. Dependencies and running the app
-Environment: Windows 11, `C:\Users\07viv\anaconda3\python.exe` (Python 3.12.3), dash 4.4.1, plotly 5.22.0, pandas 2.2.2, numpy 1.26.4.
+Environment: Windows 11, Python 3.11.8 (the interpreter the repository was last verified on), dash 4.5.1, plotly 7.2.0, pandas 3.1.1, numpy 2.4.6. Any interpreter that satisfies `requirements.txt` at the repository root works; the folder is run in place, so no machine path is hard-coded.
 
 ```powershell
-cd "C:\Users\07viv\Desktop\CISC7204-Team01\Dashboard"
-& "C:\Users\07viv\anaconda3\python.exe" app.py
+cd Dashboard
+python app.py
 ```
 
 Then open http://127.0.0.1:8050. The entry call is `app.run(debug=False, host="127.0.0.1", port=8050)`:

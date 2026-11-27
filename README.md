@@ -34,24 +34,70 @@ analysis notebook; the two `Visualization_*` notebooks are retained as individua
 
 ## 1. Reproduce the whole chain
 
-Run from the repository root, in this order.
+Run from the repository root, in this order. Steps 1-3 rebuild the input series, step 4 rebuilds the
+three integrated panels, step 5 checks the rebuild against the delivered panel, steps 6-7 rebuild the
+supporting tables and what the dashboard reads, step 8 redraws the figures and step 9 exports the report.
 
 ```bash
-# Step 1 - (optional, legacy) rebuild the three integrated panels from the raw / intermediate files.
-#          The M3 notebook rebuilds the same panels in its own cells, so this is only needed
-#          if the committed files in data_processed/ are removed.
+# Step 1 - gate: every raw source is present, and the delivered panels still have their row counts
+python scripts/data_cleaning/01_ingest.py
+
+# Step 2 - clean the three module series to 45 complete months (2023-01..2026-09)
+python scripts/data_cleaning/02_clean_series.py
+
+# Step 3 - rebuild the arrivals series (225 months) and the three hotel tables from the DSEC extracts
+python scripts/build_arrivals.py
+python scripts/build_hotel_tables.py
+
+# Step 4 - rebuild the three integrated panels from the raw / intermediate files.
+#          The current files are copied to data_processed/_backup/<stamp>/ and hashed first.
 python scripts/build_panels.py
 
-# Step 2 - rebuild the six figures from data_processed/
+# Step 5 - re-derive the monthly panel and compare it series by series with the delivered panel
+python scripts/data_cleaning/03_panel_build.py
+
+# Step 6 - optional: the monthly / quarterly / annual tables of Section 14
+#          (legacy helper - the M3 notebook now derives and rewrites the same CSVs)
+python scripts/build_period_analysis.py
+
+# Step 7 - copy the panels the dashboard reads: MD5 compared, copied only when different
+python scripts/sync_dashboard_data.py
+python scripts/sync_dashboard_data.py --check      # read-only verification, writes nothing
+
+# Step 8 - redraw the six proposal figures from data_processed/
 jupyter nbconvert --to notebook --execute notebooks/cisc7204_proposal_figures_colour.ipynb \
         --output cisc7204_proposal_figures_colour.ipynb
 
-# Step 3 - open Proposal/CISC7204_ClassE_Team01_Proposal.docx and export to PDF
+# Step 9 - open reports/cisc7204-Class_E-Team_01-FinalReport.docx and export to PDF
 #          (Word: File > Export > Create PDF/XPS, or LibreOffice --convert-to pdf)
 ```
 
-Step 1 is byte-for-byte reproducible: re-running it overwrites the three panels with
-files identical to the ones committed here (checked with `md5sum` on 2026-11-05).
+`python scripts/data_cleaning/run_all.py` runs steps 1, 2, 3, 5 and 7 as one gated sequence and stops at the
+first failure. Step 4 is deliberately not in that sequence: it overwrites the three integrated panels, so it
+is run directly and only when those files have to be rebuilt.
+
+**Which steps need the raw downloads again, and which run from the repository alone.**
+
+| Step | What it reads | Runs from the repository alone |
+| --- | --- | --- |
+| 1-2 | the MGTO workbooks, the DSEC and DSAT extracts in `data/`, `Dataset/`, `Monthly_Bus_Database/` | no |
+| 3 | three DSEC key-indicator JSON snapshots and the 2026-09 supplement, all committed | **yes** |
+| 4 | the four year-end MGTO year-to-date workbooks (all 45 downloads are gated by step 1, but only the last file of each year is parsed) plus the cleaned series | no |
+| 5 | the intermediate panels in `data_processed/` | **yes** |
+| 6 | the panels in `data_processed/` | **yes** |
+| 7 | the panels in `data_processed/` | **yes** |
+| 8 | `data_processed/` and the committed district polygons; no download | **yes** |
+
+Step 4 is byte-for-byte reproducible: re-running it overwrites the three panels with files identical to the
+ones committed here (checked with `md5sum` on 2026-11-05, and re-checked on 2026-11-27 from the `manifest.csv`
+the script now writes). The previous versions are copied to `data_processed/_backup/<stamp>/` before the
+write, so an interrupted or wrong rebuild can be rolled back without touching git.
+
+Step 5 compares nine numeric series against the delivered monthly panel and fails on any series that differs
+by more than 0.5 per cent, on an undefined relative difference, and on a non-zero value where the delivered
+panel has a zero baseline. It prints a note that `mgto_district_headcount` is a self-reference - both sides
+are a monthly sum of the district x hour panel, so it proves the aggregation is repeatable and says nothing
+about the extraction behind it.
 
 **The M3 pipeline is one file and needs no helper script.**
 `notebooks/cisc7204_pipeline_M3_vivi.ipynb` builds every panel, the matching layers, the
@@ -59,15 +105,17 @@ period tables, the 24-district geometry and all sixteen figures inside its own c
 displays each figure in the notebook. Run it top to bottom; nothing has to be executed
 beforehand. `scripts/build_period_analysis.py` and `scripts/build_district_map.py` are
 legacy artefacts kept only so the CSVs and the PNG already committed can be traced back to
-the code that first wrote them — the notebook regenerates all of them.
+the code that first wrote them - the notebook regenerates all of them.
 
-Requirements: the delivered run used **Python 3.12.3** (Anaconda 2024.06), the version
-pinned in `requirements.txt` and reported in section 10.2 of the final report. Python
-3.11 or newer is expected to work: none of the code uses features added after 3.11.
-Packages: `pandas`, `numpy`, `matplotlib`, `seaborn`,
-`scipy`, `openpyxl`, plus Jupyter for step 2. The committed inputs support an offline
-run; if the local district-polygon snapshot is removed, the M3 notebook may need network
-access to retrieve it again.
+Requirements: the delivered run used **Python 3.11.8**, the interpreter that produced the files
+committed here and the timings quoted in section 10.2 of the final report. `requirements.txt` states the
+versions as lower bounds rather than pins and records, as a comment, the exact versions that run was
+verified with (pandas 3.1.1, numpy 2.4.6, scipy 1.17.1, openpyxl 3.1.5, matplotlib 3.11.2, plotly 7.2.0,
+dash 4.5.1, python-docx 1.2.0). The code avoids anything newer than pandas 2.2 / numpy 1.26, so those are
+the lower bounds and Python 3.11 or newer works. Packages: `pandas`, `numpy`, `scipy`, `openpyxl`,
+`matplotlib`, `seaborn`, `plotly`, `dash`, `bokeh`, `python-docx`, plus Jupyter for step 8. The committed
+inputs support an offline run; if the local district-polygon snapshot is removed, the M3 notebook may need
+network access to retrieve it again.
 
 ---
 
@@ -75,15 +123,20 @@ access to retrieve it again.
 
 | Path | What it is |
 | --- | --- |
-| `scripts/build_panels.py` | Builds the three integrated panels from raw / intermediate files |
+| `scripts/data_cleaning/run_all.py` | Runs the cleaning chain (01 -> 02 -> build_arrivals -> build_hotel_tables -> 03 -> sync) and stops at the first failure |
+| `scripts/data_cleaning/README.md` | The same chain written out step by step, with the input and output of every script |
+| `scripts/build_arrivals.py` | Rebuilds `data_processed/demand_monthly_arrivals.csv` (225 rows) from the DSEC JSON snapshots and the 2026-09 supplement; `--check` compares without writing |
+| `scripts/build_hotel_tables.py` | Rebuilds the three hotel tables in `Dashboard/data/` from the DSEC extracts in `Dataset/`; `--check` compares without writing |
+| `scripts/build_panels.py` | Builds the three integrated panels from raw / intermediate files, snapshotting the previous versions first |
+| `scripts/sync_dashboard_data.py` | Copies the panels from `data_processed/` into `Dashboard/data/`, MD5 compared; `--check` verifies only |
 | `notebooks/cisc7204_proposal_figures_colour.ipynb` | Proposal-figure notebook: draws Figures 1-6 into `figures/` |
-| `figures/pipe_fig1_general_trend.png` ... `pipe_fig6_workplan.png` | The six figure files embedded in the proposal, in proposal order |
+| `figures/fig1_general_trend.png` ... `fig6_workplan.png` | The six figure files embedded in the proposal, in proposal order |
 | `notebooks/cisc7204_pipeline_M3_vivi.ipynb` | Main analysis pipeline: cleaning, panels, matching layer, Figures 1-13 (Sections 7 and 14) and the 24-district map with its interactive twin (Section 15) |
 | `scripts/build_period_analysis.py` | Legacy: first wrote the monthly / quarterly / annual tables and the optional blocks. Section 14 of the notebook now derives them itself and rewrites the same CSVs |
-| `figures/pipe_fig7_*.png` ... `pipe_fig13_*.png` | The seven extra figures drawn by Section 14 - **not** embedded in the proposal |
+| `figures/fig7_*.png` ... `fig13_*.png` | The seven extra figures drawn by Section 14 - **not** embedded in the proposal |
 | `scripts/build_district_map.py` | Legacy: first built the 24-district geometry layer, its indicators and Figure 14. Section 15 of the notebook now builds all three from the panel it already holds |
 | `data/geo/stats_zones/` | Source statistical-district polygons (GeoJSON, WGS84), one file per district |
-| `figures/pipe_fig14_district_choropleth.png` | The three-panel district map, drawn and displayed by Section 15 of the notebook - **not** embedded in the proposal |
+| `figures/fig14_district_choropleth.png` | The three-panel district map, drawn and displayed by Section 15 of the notebook - **not** embedded in the proposal |
 | `figures/archive/` | Superseded figures kept for traceability - **not** used by the proposal |
 | `data/mgtodataplus/` | MGTO *Macao Tourism Data Plus* district x hour downloads (year-to-date workbooks) |
 | `data/dsec_timeseries/` | DSEC key-indicator JSON snapshots used for the arrivals series |
@@ -101,20 +154,23 @@ began with `fig1_` and `fig2_`. They were moved into `archive/` and prefixed `le
 so that the `fig1_...` / `fig2_...` prefixes in `figures/` map one-to-one onto Figure 1
 and Figure 2 of the proposal.
 
-**Figure-name prefixes (convention since 2026-11-26).** Every file in `figures/` starts
-with the notebook that produces it, so the origin of a chart can be read off its name
-without opening the register:
+**Figure names (convention since 2026-11-27).** Every file in `figures/` carries the
+number it has in the report, so a chart can be matched to its caption without opening the
+register, and re-running a notebook overwrites the file the report cites instead of leaving
+an unreferenced copy beside it:
 
-- `pipe_...` - drawn by `notebooks/cisc7204_pipeline_M3_vivi.ipynb` (14 files;
-  `pipe_fig1`-`pipe_fig6` are also re-emitted by the proposal notebook
-  `cisc7204_proposal_figures_colour.ipynb`, which writes the same `pipe_` names);
+- `fig1_...` to `fig14_...` - drawn by `notebooks/cisc7204_pipeline_M3_vivi.ipynb` (14
+  files; `fig1`-`fig6` are also re-emitted under the same names by the proposal notebook
+  `cisc7204_proposal_figures_colour.ipynb`);
 - `viz_...` - drawn by `notebooks/CISC7204_ClassE_Team01_Visualization_updated.ipynb`
   (16 files). A luminance-converted copy of each was kept in `figures/grayscale/` for
   print checks; that folder has been moved out of the repository, so the delivered tree
   holds only the colour figures the report cites;
 - `legacy_...` - superseded drawings in `figures/archive/`.
 
-The suffix after the prefix keeps each notebook's own figure label unchanged.
+An earlier build prefixed the pipeline figures with `pipe_` (`pipe_fig14_district_choropleth.png`
+and the rest). Those names are gone: `build_district_map.py` and the notebooks write
+`fig14_district_choropleth.png`, which is the file the report and the tables in this README cite.
 
 ---
 
@@ -151,7 +207,7 @@ been removed so that the file cited in the report, the file rebuilt by
 name and the same content.
 
 Two further panels in `data_processed/` are read by the notebook but are **not**
-produced by `build_panels.py` (see the gap note in section 6):
+produced by `build_panels.py` - they are the matching layers, and the gap note is in section 8:
 
 | Panel | Shape | Role |
 | --- | --- | --- |
@@ -173,12 +229,12 @@ column, so the zone mapping no longer needs a second table. Figures that describ
 
 | Code cell (M3 pipeline) | Figure file | Reads | What it shows |
 | --- | --- | --- | --- |
-| code cell 19 | `figures/pipe_fig1_general_trend.png` | `demand_monthly_arrivals.csv` | Monthly arrivals 2015-01 to 2026-09, pandemic years in red dashed and left blank, 36-month estimation window shaded |
-| code cell 20 | `figures/pipe_fig2_zone_mismatch.png` | `match_zone_supply_demand.csv` | Three shares per zone (demand, departures, stops), January-July 2026 |
-| code cell 21 | `figures/pipe_fig3_hourly_profile.png` | `match_hourly_profile.csv` | Hour-of-day demand share against weekday and weekend departure shares, undersupplied hours shaded |
-| code cell 22 | `figures/pipe_fig4_correlation.png` | `monthly_panel_2023_01_2026_09.csv`, `quarterly_panel_2023Q1_2026Q3.csv` | (a) monthly scatter with `r` printed, n = 36; (b) bus trips per arrival by quarter, n = 12 |
-| code cell 23 | `figures/pipe_fig5_district_hour_heatmap.png` | `demand_district_hour_panel_2023_2026.csv` | The ten busiest districts by hour, each row rescaled to its own daily total, 2023-2025 |
-| code cell 24 | `figures/pipe_fig6_workplan.png` | hard-coded work plan | The four-week delivery plan, bar length = duration, red outline = critical chain |
+| code cell 19 | `figures/fig1_general_trend.png` | `demand_monthly_arrivals.csv` | Monthly arrivals 2015-01 to 2026-09, pandemic years in red dashed and left blank, 36-month estimation window shaded |
+| code cell 20 | `figures/fig2_zone_mismatch.png` | `match_zone_supply_demand.csv` | Three shares per zone (demand, departures, stops), January-July 2026 |
+| code cell 21 | `figures/fig3_hourly_profile.png` | `match_hourly_profile.csv` | Hour-of-day demand share against weekday and weekend departure shares, undersupplied hours shaded |
+| code cell 22 | `figures/fig4_correlation.png` | `monthly_panel_2023_01_2026_09.csv`, `quarterly_panel_2023Q1_2026Q3.csv` | (a) monthly scatter with `r` printed, n = 36; (b) bus trips per arrival by quarter, n = 12 |
+| code cell 23 | `figures/fig5_district_hour_heatmap.png` | `demand_district_hour_panel_2023_2026.csv` | The ten busiest districts by hour, each row rescaled to its own daily total, 2023-2025 |
+| code cell 24 | `figures/fig6_workplan.png` | hard-coded work plan | The four-week delivery plan, bar length = duration, red outline = critical chain |
 
 Figure numbers in the proposal caption correspond one-to-one to these files. The cell
 numbers above are counted over **code cells only** in
@@ -287,7 +343,7 @@ jupyter nbconvert --to notebook --execute --inplace notebooks/cisc7204_pipeline_
 | `data_processed/macau_stats_zones.geojson` | 24 features | merged, coordinate-rounded layer read by Section 15 |
 | `data_processed/district_map_metrics.csv` | 24 rows | headcount stock, share, 2026 shift, area, density, stops, weekday departures, per-departure load, peak hour, night share |
 | `data_processed/stop_district_assignment.csv` | 586 rows | every bus stop resolved to a district by point-in-polygon - 567 matched, 19 outside every polygon |
-| `figures/pipe_fig14_district_choropleth.png` | Figure 14 | three static panels: level, 2026 shift, density |
+| `figures/fig14_district_choropleth.png` | Figure 14 | three static panels: level, 2026 shift, density |
 | `reports/district_map_interactive.html` | Figure 15 | standalone Bokeh map: metric selector, hover row, supply-versus-demand tab |
 
 Four rules govern every number on that map.
@@ -313,16 +369,34 @@ carries about 2.2 times the scheduled departures.
 
 ## 8. Known gaps
 
-- `demand_district_hour_panel_2023_2026.csv`, `match_zone_supply_demand.csv` and
-  `match_hourly_profile.csv` were produced by exploratory steps that were not saved as
-  scripts. They are committed here so the notebook runs end to end, but rebuilding them
-  from `data/` still requires redoing those steps by hand. `build_panels.py` covers the
-  three panels the proposal quotes as dataset rows 3.1-3.7; the matching layers are the
-  remaining gap.
+The chain in section 1 now starts from the raw downloads for seven of the nine steps. What is
+still not scripted:
+
+- `match_zone_supply_demand.csv` and `match_hourly_profile.csv` were produced by exploratory
+  steps that were not saved as scripts. They are committed here so the notebook runs end to
+  end, but rebuilding them from `data/` still means redoing those two steps by hand;
+  `build_panels.py` covers the three panels the report quotes as dataset rows 3.1-3.7, and the
+  matching layers are the remaining gap.
+- `analysis_dataset_master*.csv` is a wide convenience file for the exploratory work in the
+  notebook. Every column the report quotes is also in `monthly_panel_2023_01_2026_09.csv` or
+  `monthly_detail_2023_01_2026_09.csv`, so no number depends on it.
+- The stop-to-zone and stop-to-district assignment on the supply side was resolved
+  interactively against the stop list; `data_processed/stop_district_assignment.csv` is the
+  committed result (586 stops, 567 matched by point-in-polygon).
 - The bus ridership series is assembled from DSAT monthly and quarterly PDF releases;
   the per-row provenance is in `Monthly_Bus_Database/source_index.csv`.
 - The DSEC portal download for hotel guests and rooms is not stored in the repository;
   the export in `Dataset/` is the file the report was computed from.
+
+Two gaps that earlier versions of this file listed are now closed, and the closing scripts are
+in the tree: `demand_monthly_arrivals.csv` is rebuilt by `scripts/build_arrivals.py` (225 rows,
+2008-01..2026-09, from the three DSEC JSON snapshots plus the 2026-09 supplement) and the three
+hotel tables in `Dashboard/data/` are rebuilt by `scripts/build_hotel_tables.py` (45 / 180 / 153
+rows, from the extracts in `Dataset/`). Both accept `--check` and report a match on the delivered
+tree. The MGTO workbook parse is not a gap either: `scripts/build_panels.py` (`build_mgto_master`) reads the
+four year-end year-to-date `_en.xlsx` workbooks itself, sheet `1`, with the two-row header handled per year,
+and refuses to write unless the result is 45 months x 576 rows. An earlier draft of this file described that
+parse as notebook-only; the code and section 3.2.2 of the report now say the same thing.
 
 ---
 

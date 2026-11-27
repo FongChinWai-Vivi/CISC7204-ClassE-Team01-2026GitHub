@@ -25,16 +25,25 @@ Inputs (all read-only):
   Monthly_Bus_Database/bus_monthly_2020_2026.csv
         DSAT monthly bus statistics (daily average trips, buses in service).
 
-Outputs (overwritten):
+Outputs (overwritten after a snapshot):
   data_processed/demand_district_hour_panel_2023_2026.csv       25,920 rows
   data_processed/monthly_panel_2023_01_2026_09.csv               45 rows
   data_processed/quarterly_panel_2023Q1_2026Q3.csv               15 rows
+
+Before the first byte is written, each of the three files is copied to
+data_processed/_backup/<YYYYmmdd_HHMMSS>/ and its MD5 is printed; the same stamp
+receives manifest.csv with the pre- and post-write hash of every file, so a
+rebuild can be checked and rolled back without touching git history.  A panel
+whose row count assertion fails is never written.
 
 Run from the repository root:  python scripts/build_panels.py
 """
 from __future__ import annotations
 
+import datetime
+import hashlib
 import os
+import shutil
 import sys
 
 import numpy as np
@@ -55,6 +64,48 @@ YTD_FILES = [
 ]
 
 WINDOW = ("2023-01", "2026-09")
+
+# The three panel files this script owns. Every one of them is copied and hashed
+# before it is opened for writing, so an interrupted or wrong rebuild can be rolled
+# back from data_processed/_backup/<stamp>/ without touching git history.
+OUTPUTS = [
+    "demand_district_hour_panel_2023_2026.csv",
+    "monthly_panel_2023_01_2026_09.csv",
+    "quarterly_panel_2023Q1_2026Q3.csv",
+]
+
+
+def md5_of(path: str) -> str:
+    """MD5 of a file, read in 1 MiB blocks."""
+    h = hashlib.md5()
+    with open(path, "rb") as fh:
+        for chunk in iter(lambda: fh.read(1 << 20), b""):
+            h.update(chunk)
+    return h.hexdigest()
+
+
+def snapshot_before_write(names) -> tuple[str, list[dict]]:
+    """Hash and copy the panel files that are about to be overwritten.
+
+    Returns the backup stamp and one record per file: whether it existed, its size
+    and its MD5 before the write. Nothing is deleted, and when no file exists yet
+    the run simply records that it is a first build.
+    """
+    stamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
+    bdir = os.path.join(PROC, "_backup", stamp)
+    rows = []
+    for name in names:
+        path = os.path.join(PROC, name)
+        if os.path.exists(path):
+            before, size = md5_of(path), os.path.getsize(path)
+            os.makedirs(bdir, exist_ok=True)
+            shutil.copy2(path, os.path.join(bdir, name))
+        else:
+            before, size = "", 0
+        rows.append({"file": name, "existed_before": bool(before),
+                     "bytes_before": size, "md5_before": before,
+                     "backup_dir": bdir if before else ""})
+    return stamp, rows
 
 
 def build_mgto_master() -> pd.DataFrame:
@@ -233,6 +284,15 @@ def build_quarterly(panel: pd.DataFrame) -> pd.DataFrame:
 
 
 def main() -> int:
+    # Nothing below may overwrite a panel before this snapshot exists.
+    stamp, before = snapshot_before_write(OUTPUTS)
+    print("pre-write snapshot (md5 before the rebuild):")
+    for rec in before:
+        state = rec["md5_before"] if rec["existed_before"] else "(absent - first build)"
+        print(f"  {rec['file']:<48} {rec['bytes_before']:>10,} B  {state}")
+    if any(rec["existed_before"] for rec in before):
+        print(f"  backups -> {os.path.join(PROC, '_backup', stamp)}")
+
     master = build_mgto_master()
     master.to_csv(
         os.path.join(PROC, "demand_district_hour_panel_2023_2026.csv"),
@@ -255,6 +315,8 @@ def main() -> int:
           f"{panel['month'].max()}, missing hotel cells = {missing}")
 
     q = build_quarterly(panel)
+    if q.shape[0] != 15:
+        raise SystemExit(f"quarterly panel has {q.shape[0]} rows, expected 15")
     q.to_csv(
         os.path.join(PROC, "quarterly_panel_2023Q1_2026Q3.csv"),
         index=False,
@@ -263,6 +325,24 @@ def main() -> int:
     )
     print(f"quarterly panel      : {q.shape[0]} rows, {q['quarter'].iloc[0]} .. "
           f"{q['quarter'].iloc[-1]}")
+
+    # Post-write hashes and the manifest that pairs them with the pre-write ones.
+    rows = []
+    print("post-write hashes:")
+    for rec in before:
+        path = os.path.join(PROC, rec["file"])
+        after = md5_of(path)
+        rec["md5_after"] = after
+        rec["bytes_after"] = os.path.getsize(path)
+        rec["changed"] = after != rec["md5_before"]
+        rows.append(rec)
+        print(f"  {rec['file']:<48} {rec['bytes_after']:>10,} B  {after}"
+              f"  {'changed' if rec['changed'] else 'identical to the file before'}")
+    manifest = pd.DataFrame(rows)
+    mdir = os.path.join(PROC, "_backup", stamp)
+    os.makedirs(mdir, exist_ok=True)
+    manifest.to_csv(os.path.join(mdir, "manifest.csv"), index=False)
+    print(f"manifest            -> {os.path.join(mdir, 'manifest.csv')}")
 
     # Read-back checks quoted in the report.
     win = panel[(panel["month"] >= "2023-01") & (panel["month"] <= "2025-12")]

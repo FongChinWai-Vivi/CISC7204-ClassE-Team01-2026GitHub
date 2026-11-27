@@ -15,7 +15,7 @@ Inputs
 Outputs
   data_processed/macau_stats_zones.geojson        the 24 data districts only, coordinate-rounded layer
   data_processed/district_map_metrics.csv         24 rows of map indicators (area/density on DSEC areas)
-  figures/pipe_fig14_district_choropleth.png           three-panel static map
+  figures/fig14_district_choropleth.png           three-panel static map
   reports/district_map_interactive.html           interactive Bokeh map
 
 Area policy: polygon area is taken from the DSEC publication (zone_area_official.csv), not from the
@@ -426,7 +426,7 @@ def plot_static(zones, metrics, ctx=None):
     fig.suptitle("Head-count across the 24 statistical districts and the 2026 structural shift",
                  fontsize=10.0, y=0.985)
     fig.tight_layout(rect=(0, 0, 1, 0.96))
-    out = os.path.join(FIGD, "pipe_fig14_district_choropleth.png")
+    out = os.path.join(FIGD, "fig14_district_choropleth.png")
     fig.savefig(out, dpi=200, bbox_inches="tight")
     plt.close(fig)
     print(f"[figure] {out}")

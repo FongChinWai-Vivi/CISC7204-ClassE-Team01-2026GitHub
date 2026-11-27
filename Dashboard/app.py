@@ -1,4 +1,4 @@
-﻿"""
+"""
 CISC7204 Class E Team 01 - Macau visitor demand dashboard (Dash port).
 
 This module is a 1:1 Dash rebuild of the static deliverable

@@ -1,0 +1,11 @@
+group,file,rows,columns,role
+Demand,data/mgtodataplus/MacaoDistrictTourismData_*.xlsx,45,workbook,"MGTO district x hour workbooks, year-to-date"
+Demand,data/dsec_timeseries/DSEC_KeyIndicator_27.json,1,json,DSEC monthly visitor arrivals
+Demand,data/dsec_timeseries/DSEC_KeyIndicator_127.json,1,json,DSEC same-day visitor arrivals
+Demand,Dataset/DSEC_arrivals_2026_09_supplement.csv,1,year|month|arrivals,DSEC September 2026 release
+Demand,Dataset/DSEC_hotel_guests_rooms_2023_01_2026_09.csv,45,month|guests|rooms,DSEC hotel guests and rooms
+Demand,Dataset/Hotel_occ_total.csv,153,Year|Quarter|Month|Hotel Establishments|Occupancy rate|Remark|Difference|Remark.1,"DSEC hotel occupancy rate, monthly"
+Supply,Monthly_Bus_Database/bus_monthly_2020_2026.csv,81,month|year|month_no|days_in_month|daily_avg_trips_wan|daily_avg_trips|monthly_trips_est|buses_in_service|bus_stops|trips_per_bus_per_day|visitor_arrivals|same_day_arrivals|trips_per_arrival|dsat_minfu_daily_wan|dsat_tcm_daily_wan|source,DSAT monthly bus statistics
+Panel,data_processed/demand_monthly_arrivals.csv,225,date|year|month|arrivals|same_day_arrivals|arrivals_yoy_pct|same_day_share_pct,delivered panel
+Panel,data_processed/demand_district_hour_panel_2023_2026.csv,25920,year|month|period|district_cn|district_en|headcount|hour|zone,delivered panel
+Panel,data_processed/monthly_panel_2023_01_2026_09.csv,45,month|year|month_no|quarter|visitor_arrivals|hotel_occ_pct|hotel_guests|hotel_rooms|bus_daily_avg_trips_wan|bus_monthly_trips|buses_in_service|mgto_district_headcount|bus_trips_per_arrival,delivered panel
