@@ -1,3 +1,14 @@
+---
+AIGC:
+    Label: "1"
+    ContentProducer: 001191440300708461136T1XGW3
+    ProduceID: 8aaebaa239fa14c1cf5eb03fd99189ca_cc275532ea8a11f1a20652540072b1e8
+    ReservedCode1: BmJDcW2BoKhVJyztgLGN2+kVI3Nbu4J64THuzofvzJtjF7NgeS1RoSc9mHa2cyOKyfVE3GzFHD7FYqCMQS/4I37BWWda6FwTMeuKlMfPzU+Y5AFb4fFR3X1znCdpDSzcP7/c5RPyTg6hSI0SifNtkyA8YDbsCDSScTuToJk5oxK1hEXBHcX2Sko17Us=
+    ContentPropagator: 001191440300708461136T1XGW3
+    PropagateID: 8aaebaa239fa14c1cf5eb03fd99189ca_cc275532ea8a11f1a20652540072b1e8
+    ReservedCode2: BmJDcW2BoKhVJyztgLGN2+kVI3Nbu4J64THuzofvzJtjF7NgeS1RoSc9mHa2cyOKyfVE3GzFHD7FYqCMQS/4I37BWWda6FwTMeuKlMfPzU+Y5AFb4fFR3X1znCdpDSzcP7/c5RPyTg6hSI0SifNtkyA8YDbsCDSScTuToJk5oxK1hEXBHcX2Sko17Us=
+---
+
 # scripts/data_cleaning
 
 Numbered cleaning scripts behind Section 3.2.2 of the final report. They take the raw downloads in
@@ -126,3 +137,4 @@ the code.
 Python 3.11 or newer with pandas, numpy and openpyxl (see `requirements.txt` at the repository root; the
 delivered run used Python 3.11.8 with pandas 3.1.1). No network access is needed: every script reads files
 already in the repository.
+*（内容由AI生成，仅供参考）*
