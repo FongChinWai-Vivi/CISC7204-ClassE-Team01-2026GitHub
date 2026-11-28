@@ -227,22 +227,40 @@ column, so the zone mapping no longer needs a second table. Figures that describ
 
 ## 4. Panel to figure: what each notebook cell draws
 
-| Code cell (M3 pipeline) | Figure file | Reads | What it shows |
-| --- | --- | --- | --- |
-| code cell 19 | `figures/fig1_general_trend.png` | `demand_monthly_arrivals.csv` | Monthly arrivals 2015-01 to 2026-09, pandemic years in red dashed and left blank, 36-month estimation window shaded |
-| code cell 20 | `figures/fig2_zone_mismatch.png` | `match_zone_supply_demand.csv` | Three shares per zone (demand, departures, stops), January-July 2026 |
-| code cell 21 | `figures/fig3_hourly_profile.png` | `match_hourly_profile.csv` | Hour-of-day demand share against weekday and weekend departure shares, undersupplied hours shaded |
-| code cell 22 | `figures/fig4_correlation.png` | `monthly_panel_2023_01_2026_09.csv`, `quarterly_panel_2023Q1_2026Q3.csv` | (a) monthly scatter with `r` printed, n = 36; (b) bus trips per arrival by quarter, n = 12 |
-| code cell 23 | `figures/fig5_district_hour_heatmap.png` | `demand_district_hour_panel_2023_2026.csv` | The ten busiest districts by hour, each row rescaled to its own daily total, 2023-2025 |
-| code cell 24 | `figures/fig6_workplan.png` | hard-coded work plan | The four-week delivery plan, bar length = duration, red outline = critical chain |
+| Code cell (M3 pipeline) | Figure file | Drawing code on 2026-11-28 | Reads | What it shows |
+| --- | --- | --- | --- | --- |
+| code cell 19 | `figures/fig1_general_trend.png` | removed, placeholder comment only | `demand_monthly_arrivals.csv` | Monthly arrivals 2015-01 to 2026-09, pandemic years in red dashed and left blank, 36-month estimation window shaded |
+| code cell 20 | `figures/fig2_zone_mismatch.png` | removed, placeholder comment only | `match_zone_supply_demand.csv` | Three shares per zone (demand, departures, stops), January-July 2026 |
+| code cell 21 | `figures/fig3_hourly_profile.png` | removed, placeholder comment only | `match_hourly_profile.csv` | Hour-of-day demand share against weekday and weekend departure shares, undersupplied hours shaded |
+| code cell 22 | `figures/fig4_correlation.png` | removed, placeholder comment only | `monthly_panel_2023_01_2026_09.csv`, `quarterly_panel_2023Q1_2026Q3.csv` | (a) monthly scatter with `r` printed, n = 36; (b) bus trips per arrival by quarter, n = 12 |
+| code cell 23 | `figures/fig5_district_hour_heatmap.png` | removed, placeholder comment only | `demand_district_hour_panel_2023_2026.csv` | The ten busiest districts by hour, each row rescaled to its own daily total, 2023-2025 |
+| code cell 24 | `figures/fig6_workplan.png` | still draws the file | hard-coded work plan | The four-week delivery plan, bar length = duration, red outline = critical chain |
 
-Figure numbers in the proposal caption correspond one-to-one to these files. The cell
-numbers above are counted over **code cells only** in
-`notebooks/cisc7204_pipeline_M3_vivi.ipynb`; the proposal-figure notebook
-`notebooks/cisc7204_proposal_figures_colour.ipynb` draws the same six files in its code
-cells 3-8. The caption of Figure 5 describes the ten-district subset the cell actually
-draws, and the caption of Figure 6 refers to the week-by-week plan of Section 7 (there
-is no Table 10 in the proposal).
+The pipeline no longer draws six of these files. Figures 1-5 and Figure 8 were drawn
+twice, once here and once in `notebooks/CISC7204_ClassE_Team01_Visualization_updated.ipynb`.
+The drawing code in code cells 19-23 and 30 was removed on 2026-11-28 so that each figure
+is produced by exactly one cell in the repository; the PNG files stay on disk because
+`Proposal/` embeds them. Those six figures are now drawn only by the visualisation
+notebook, which is the authoritative artwork for the corresponding final report figures:
+`viz_fig01_arrivals_longrun.png` (fig1), `viz_fig02b_zone_mismatch.png` (fig2),
+`viz_fig03_hourly_mismatch.png` (fig3), `viz_fig04_intensity_decline.png` (fig4),
+`viz_fig05b_district_hour_heatmap.png` (fig5) and `viz_fig05_seasonality_2026.png` (fig8).
+Cell 30 keeps its printed seasonal-index diagnostics, because they do not depend on the
+figure.
+
+What the pipeline still draws: code cell 24 (`fig6_workplan.png`), code cell 29
+(`fig7_monthly_dashboard.png`) and code cells 31-35 (`fig9` to `fig13`). Code cell 37 does
+not draw `fig14_district_choropleth.png`: it asserts that the file exists and displays it,
+and the file is rendered by `scripts/build_district_map.py`. The cell numbers above are
+counted over **code cells only** in `notebooks/cisc7204_pipeline_M3_vivi.ipynb`.
+`notebooks/cisc7204_proposal_figures_colour.ipynb` is untouched and still redraws the six
+proposal figures from `data_processed/` in its code cells 3-8, which is what Step 8 of
+Section 1 runs.
+
+Figure numbers in the proposal caption correspond one-to-one to these files. The caption of
+Figure 5 describes the ten-district subset the cell actually draws, and the caption of
+Figure 6 refers to the week-by-week plan of Section 7 (there is no Table 10 in the
+proposal).
 
 ---
 
